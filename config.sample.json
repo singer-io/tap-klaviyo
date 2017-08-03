@@ -1,0 +1,13 @@
+{
+    "api_key": "asasdkldasdlkaasdkfdsjadf",
+    "start_date": "2017-01-01T00:00:00Z",
+    "user_agent": "email_address",
+    "events": [
+      {"name": "receive", "id": "ID", "primary_key": "uuid"},
+      {"name": "click", "id": "ID", "primary_key": "uuid"},
+      {"name": "open", "id": "ID", "primary_key": "uuid"},
+      {"name": "bounce", "id": "ID", "primary_key": "uuid"},
+      {"name": "unsubscribe", "id": "ID", "primary_key": "uuid"},
+      {"name": "mark_as_spam", "id": "ID", "primary_key": "uuid"}
+    ]
+}

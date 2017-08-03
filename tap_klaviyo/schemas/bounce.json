@@ -1,0 +1,139 @@
+{
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "event_name": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "integer"
+    },
+    "object": {
+      "type": "string"
+    },
+    "datetime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "statistic_id": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "event_properties": {
+      "type": "object",
+      "properties": {
+        "Email Domain": {
+          "type": "string"
+        },
+        "$event_id": {
+          "type": "string"
+        },
+        "$_cohort$message_send_cohort": {
+          "type": "string"
+        },
+        "Bounce Type": {
+          "type": "string"
+        },
+        "$message": {
+          "type": "string"
+        },
+        "Campaign Name": {
+          "type": "string"
+        },
+        "$flow": {
+          "type": "string"
+        },
+        "Subject": {
+          "type": "string"
+        }
+      }
+    },
+    "person": {
+      "type": "objects",
+      "properties": {
+        "updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "$longitude": {
+          "type": "number"
+        },
+        "$email": {
+          "type": "string"
+        },
+        "object": {
+          "type": "string"
+        },
+        "$latitude": {
+          "type": "number"
+        },
+        "$address1": {
+          "type": "string"
+        },
+        "$address2": {
+          "type": "string"
+        },
+        "$title": {
+          "type": "string"
+        },
+        "$timezone": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "$organization": {
+          "type": "string"
+        },
+        "Shopify Tags": {
+          "type": "array",
+          "items":
+        },
+        "$region": {
+          "type": "string"
+        },
+        "$id": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "$last_name": {
+          "type": "string"
+        },
+        "$phone_number": {
+          "type": "string"
+        },
+        "$country": {
+          "type": "string"
+        },
+        "$zip": {
+          "type": "string"
+        },
+        "$first_name": {
+          "type": "string"
+        },
+        "$city": {
+          "type": "string"
+        },
+        "Accepts Marketing": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
