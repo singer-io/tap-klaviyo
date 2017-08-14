@@ -1,34 +1,26 @@
 {
   "type": "object",
   "properties": {
-    "uuid": {
+    "created": {
       "type": "string"
     },
-    "event_name": {
+    "updated": {
       "type": "string"
     },
-    "timestamp": {
+    "person_count": {
       "type": "integer"
     },
     "object": {
       "type": "string"
     },
-    "datetime": {
+    "name": {
       "type": "string"
     },
-    "statistic_id": {
+    "type": {
       "type": "string"
     },
     "id": {
       "type": "string"
-    },
-    "event_properties": {
-      "type": "object",
-      "properties": {}
-    },
-    "person": {
-      "type": "object",
-      "properties": {}
     }
   }
 }

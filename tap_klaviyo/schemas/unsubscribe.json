@@ -14,8 +14,7 @@
       "type": "string"
     },
     "datetime": {
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "statistic_id": {
       "type": "string"
@@ -25,109 +24,11 @@
     },
     "event_properties": {
       "type": "object",
-      "properties": {
-        "Email Domain": {
-          "type": "string"
-        },
-        "$event_id": {
-          "type": "string"
-        },
-        "$message": {
-          "type": "string"
-        },
-        "Campaign Name": {
-          "type": "string"
-        },
-        "$flow": {
-          "type": "string"
-        },
-        "Subject": {
-          "type": "string"
-        }
-      }
+      "properties": {}
     },
     "person": {
-      "type": "objects",
-      "properties": {
-        "updated": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "last_name": {
-          "type": "string"
-        },
-        "$longitude": {
-          "type": "number"
-        },
-        "$email": {
-          "type": "string"
-        },
-        "object": {
-          "type": "string"
-        },
-        "$latitude": {
-          "type": "number"
-        },
-        "$address1": {
-          "type": "string"
-        },
-        "$address2": {
-          "type": "string"
-        },
-        "$title": {
-          "type": "string"
-        },
-        "$timezone": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "first_name": {
-          "type": "string"
-        },
-        "$organization": {
-          "type": "string"
-        },
-        "Shopify Tags": {
-          "type": "array",
-          "items":
-        },
-        "$region": {
-          "type": "string"
-        },
-        "$id": {
-          "type": "string"
-        },
-        "created": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "$last_name": {
-          "type": "string"
-        },
-        "$phone_number": {
-          "type": "string"
-        },
-        "$country": {
-          "type": "string"
-        },
-        "$zip": {
-          "type": "string"
-        },
-        "$first_name": {
-          "type": "string"
-        },
-        "$city": {
-          "type": "string"
-        },
-        "Accepts Marketing": {
-          "type": "boolean"
-        },
-        "email": {
-          "type": "string"
-        }
-      }
+      "type": "object",
+      "properties": {}
     }
   }
 }

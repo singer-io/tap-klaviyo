@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "object": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
+}

@@ -1,18 +1,23 @@
 import argparse
 import requests
-import singer
 import json
 import os
-import datetime
-import time
+import singer
 import singer.metrics as metrics
-import singer.utils as utils
+
+from utils import (
+    dt_to_ts, ts_to_dt, update_state
+)
+
 
 session = requests.Session()
 logger = singer.get_logger()
 
 METRICS_ENDPOINT = 'https://a.klaviyo.com/api/v1/metrics'
 METRIC_ENDPOINT = 'https://a.klaviyo.com/api/v1/metric/'
+LISTS_ENDPOINT = 'https://a.klaviyo.com/api/v1/lists'
+GLOBAL_EXCLUSIONS = 'https://a.klaviyo.com/api/v1/people/exclusions'
+
 
 def authed_get(source, url):
     with metrics.http_request_timer(source) as timer:
@@ -21,7 +26,7 @@ def authed_get(source, url):
         return resp
 
 
-def authed_get_all_pages(source, url, since):
+def authed_get_all_using_next(source, url, since=None):
     while True:
         r = authed_get(source, '{}&since={}'.format(
             url, since) if since else url)
@@ -32,39 +37,48 @@ def authed_get_all_pages(source, url, since):
             break
 
 
+def authed_get_all_pages(source, url):
+    page = 0
+    while True:
+        r = authed_get(source, '{}&page={}'.format(
+            url, page))
+        yield r
+        if r.json()['end'] < r.json()['total'] - 1:
+            page += 1
+        else:
+            break
+
+
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
 
-def load_schemas(event_names):
+def load_schemas(events, lists, exclusions):
+    tables = events + lists + exclusions
     schemas = {}
 
-    for event in event_names:
-        with open(get_abs_path('tap_klaviyo/{}.json'.format(event))) as file:
-            schemas[event] = json.load(file)
+    for table in tables:
+        with open(get_abs_path('schemas/{}.json'.format(table['name']))) as file:
+            schemas[table['name']] = json.load(file)
 
     return schemas
 
 
-def dt_to_ts(dt):
-    return int(time.mktime(datetime.datetime.strptime(
-        dt, "%Y-%m-%dT%H:%M:%SZ").timetuple()))
+def get_starting_point(event, state, start_date):
+    if event['name'] in state and state[event['name']] is not None:
+        return dt_to_ts(state[event['name']])
+    elif start_date:
+        return dt_to_ts(start_date)
+    else:
+        return None
 
 
-def ts_to_dt(ts):
-    return datetime.datetime.fromtimestamp(
-        int(ts)).strftime("%Y-%m-%dT%H:%M:%SZ")
+def get_latest_event_time(events):
+    return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
 
 
 def get_events_by_type(event, state, api_key, start_date):
-    if event['name'] in state and state[event['name']] is not None:
-        since = dt_to_ts(state[event['name']])
-    elif start_date:
-        since = dt_to_ts(start_date)
-    else:
-        since = None
-
-    latest_event_time = None
+    latest_event_time = get_starting_point(event, state, start_date)
 
     with metrics.record_counter(event['name']) as counter:
         url = '{}{}/timeline?api_key={}&sort=asc'.format(
@@ -72,41 +86,72 @@ def get_events_by_type(event, state, api_key, start_date):
             event['id'],
             api_key
         )
-        for response in authed_get_all_pages(event['name'], url, since):
+        for response in authed_get_all_using_next(
+                event['name'], url, latest_event_time):
             events = response.json().get('data')
 
-            for e in events:
-                counter.increment()
+            counter.increment(len(events))
 
             singer.write_records(event['name'], events)
-            latest_event_time = ts_to_dt(int(events[-1]['timestamp'])) \
-                if len(events) else None
 
-            logger.info('Replicated events up to %s', latest_event_time)
+            update_state(state, event['name'], get_latest_event_time(events))
+            singer.write_state(state)
 
-    state[event['name']] = latest_event_time if latest_event_time else since
+            logger.info('Replicated events up to %s', ts_to_dt(latest_event_time))
+
     return state
+
+
+def get_full_pulls(resource, endpoint, api_key):
+    with metrics.record_counter(resource['name']) as counter:
+        url = '{}?api_key={}'.format(
+            endpoint,
+            api_key
+        )
+        for response in authed_get_all_pages(resource['name'], url):
+            records = response.json().get('data')
+
+            counter.increment(len(records))
+
+            singer.write_records(resource['name'], records)
 
 
 def do_sync(config, state):
     api_key = config['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
-    events = config['events']
-    schemas = load_schemas(event['name'] for event in events)
+    events = config['events'] if 'events' in config else None
+    lists = config.get('lists', [])
+    exclusions = config.get('exclusions', [])
+    schemas = load_schemas(events, lists, exclusions)
 
-    if state:
-        logger.info('Replicating events since %s', state)
-    else:
-        logger.info('Replicating all events')
+    for list in lists:
+        singer.write_schema(list['name'], schemas[list['name']],
+                            list['primary_key'])
+        get_full_pulls(list, LISTS_ENDPOINT, api_key)
+
+    for group in exclusions:
+        singer.write_schema(
+            group['name'],
+            schemas[group['name']],
+            group['primary_key']
+        )
+        get_full_pulls(group, GLOBAL_EXCLUSIONS, api_key)
 
     for event in events:
+
+        if state:
+            logger.info('Replicating event since %s', state[event['name']])
+        else:
+            logger.info('Replicating event since %s', start_date)
+
         singer.write_schema(event['name'], schemas[event['name']], event['primary_key'])
         state = get_events_by_type(event, state, api_key, start_date)
 
-    singer.write_state(state)
-
 
 def get_available_metrics(api_key):
+    """
+    Lists available event metrics that can synced with ID for config
+    """
     resp = authed_get('metric_list', '{}?api_key={}'.format(
         METRICS_ENDPOINT,
         api_key
@@ -125,6 +170,8 @@ def main():
         '-s', '--state', help='State file')
     parser.add_argument(
         '-d', '--discover', help='Discover available metrics')
+    # parser.add_argument(
+    #     '-c', '--catalog', help='Sync the metrics provided in the catalog')
 
     args = parser.parse_args()
 
