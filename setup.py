@@ -23,7 +23,13 @@ setup(name='tap-klaviyo',
                 "mark_as_spam.json",
                 "open.json",
                 "receive.json",
-                "unsubscribe.json"
+                "unsubscribe.json",
+                "unsub_list.json",
+                "subscribe_list.json",
+                "update_email_preferences.json",
+                "dropped_email.json",
+                "lists.json",
+                "global_exclusions.json"
               ]
          }
 )
