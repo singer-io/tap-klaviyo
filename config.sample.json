@@ -9,5 +9,11 @@
       {"name": "bounce", "id": "ID", "primary_key": "uuid"},
       {"name": "unsubscribe", "id": "ID", "primary_key": "uuid"},
       {"name": "mark_as_spam", "id": "ID", "primary_key": "uuid"}
+    ],
+    "lists": [
+      {"name": "lists", "primary_key": "id"}
+    ],
+    "exclusions": [
+      {"name": "global_exclusions", "primary_key": "email"}
     ]
 }
