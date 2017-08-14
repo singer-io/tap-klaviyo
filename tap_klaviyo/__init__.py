@@ -139,7 +139,7 @@ def do_sync(config, state):
 
     for event in events:
 
-        if state:
+        if state and event['name'] in state:
             logger.info('Replicating event since %s', state[event['name']])
         else:
             logger.info('Replicating event since %s', start_date)
