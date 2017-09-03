@@ -124,12 +124,12 @@ def do_sync(config, state):
     exclusions = config.get('exclusions', [])
     schemas = load_schemas(events, lists, exclusions)
 
-    for l in lists:
+    # for l in lists:
         # singer.write_schema(l['name'], schemas[l['name']],
          #                   l['primary_key'])
         # get_full_pulls(l, LISTS_ENDPOINT, api_key)
 
-    for group in exclusions:
+    # for group in exclusions:
         # singer.write_schema(
         #     group['name'],
         #    schemas[group['name']],
