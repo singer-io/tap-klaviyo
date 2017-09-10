@@ -1,202 +1,124 @@
-import argparse
-import requests
 import json
 import os
 import singer
-import singer.metrics as metrics
 
-from utils import (
-    dt_to_ts, ts_to_dt, update_state
-)
+from utils import get_incremental_pull, get_full_pulls, get_all_pages
 
+ENDPOINTS = {
+    'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
+    'lists': 'https://a.klaviyo.com/api/v1/lists',
+    'metrics': 'https://a.klaviyo.com/api/v1/metrics',
+    'metric': 'https://a.klaviyo.com/api/v1/metric/',
+}
 
-session = requests.Session()
-logger = singer.get_logger()
-
-METRICS_ENDPOINT = 'https://a.klaviyo.com/api/v1/metrics'
-METRIC_ENDPOINT = 'https://a.klaviyo.com/api/v1/metric/'
-LISTS_ENDPOINT = 'https://a.klaviyo.com/api/v1/lists'
-GLOBAL_EXCLUSIONS = 'https://a.klaviyo.com/api/v1/people/exclusions'
-
-
-def authed_get(source, url):
-    with metrics.http_request_timer(source) as timer:
-        resp = session.request(method='get', url=url)
-        timer.tags[metrics.Tag.http_status_code] = resp.status_code
-        return resp
-
-
-def authed_get_all_using_next(source, url, since=None):
-    while True:
-        r = authed_get(source, '{}&since={}'.format(
-            url, since) if since else url)
-        yield r
-        if 'next' in r.json() and r.json()['next']:
-            since = r.json()['next']
-        else:
-            break
+EVENT_MAPPINGS = {
+    "Received Email": "receive",
+    "Clicked Email": "click",
+    "Opened Email": "open",
+    "Bounced Email": "bounce",
+    "Unsubscribed": "unsubscribe",
+    "Marked Email as Spam": "mark_as_spam",
+    "Unsubscribed from List": "unsub_list",
+    "Subscribed to List": "subscribe_list",
+    "Updated Email Preferences": "update_email_preferences",
+    "Dropped Email": "dropped_email",
+}
 
 
-def authed_get_all_pages(source, url):
-    page = 0
-    while True:
-        r = authed_get(source, '{}&page={}'.format(
-            url, page))
-        yield r
-        if r.json()['end'] < r.json()['total'] - 1:
-            page += 1
-        else:
-            break
+class Stream(object):
+    def __init__(self, stream, tap_stream_id, key_properties, puller):
+        self.stream = stream
+        self.tap_stream_id = tap_stream_id
+        self.key_properties = key_properties
+        self.puller = puller
+
+    def to_catalog_dict(self):
+        return {
+            'stream': self.stream,
+            'tap_stream_id': self.tap_stream_id,
+            'key_properties': self.key_properties,
+            'schema': load_schema(self.stream)
+        }
+
+CREDENTIALS_KEYS = ["credentials"]
+REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
+
+FULL_STREAMS = [
+    Stream(
+        stream,
+        stream,
+        'id',
+        'full'
+    ) for stream in ['global_exclusions', 'lists']
+]
 
 
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
 
-def load_schemas(events, lists, exclusions):
-    tables = events + lists + exclusions
-    schemas = {}
-
-    for table in tables:
-        with open(get_abs_path('schemas/{}.json'.format(table['name']))) as file:
-            schemas[table['name']] = json.load(file)
-
-    return schemas
+def load_schema(name):
+    return json.load(open(get_abs_path('schemas/{}.json'.format(name))))
 
 
-def get_starting_point(event, state, start_date):
-    if event['name'] in state and state[event['name']] is not None:
-        return dt_to_ts(state[event['name']])
-    elif start_date:
-        return dt_to_ts(start_date)
-    else:
-        return None
-
-
-def get_latest_event_time(events):
-    return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
-
-
-def get_events_by_type(event, state, api_key, start_date):
-    latest_event_time = get_starting_point(event, state, start_date)
-
-    with metrics.record_counter(event['name']) as counter:
-        url = '{}{}/timeline?api_key={}&sort=asc'.format(
-            METRIC_ENDPOINT,
-            event['id'],
-            api_key
-        )
-        for response in authed_get_all_using_next(
-                event['name'], url, latest_event_time):
-            events = response.json().get('data')
-
-            counter.increment(len(events))
-
-            singer.write_records(event['name'], events)
-
-            update_state(state, event['name'], get_latest_event_time(events))
-            singer.write_state(state)
-
-            logger.info('Replicated events up to %s', ts_to_dt(latest_event_time))
-
-    return state
-
-
-def get_full_pulls(resource, endpoint, api_key):
-    with metrics.record_counter(resource['name']) as counter:
-        url = '{}?api_key={}'.format(
-            endpoint,
-            api_key
-        )
-        for response in authed_get_all_pages(resource['name'], url):
-            records = response.json().get('data')
-
-            counter.increment(len(records))
-
-            singer.write_records(resource['name'], records)
-
-
-def do_sync(config, state):
-    api_key = config['api_key']
+def do_sync(config, state, catalog):
+    api_key = config['credentials']['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
-    events = config['events'] if 'events' in config else None
-    lists = config.get('lists', [])
-    exclusions = config.get('exclusions', [])
-    schemas = load_schemas(events, lists, exclusions)
 
-    # for l in lists:
-        # singer.write_schema(l['name'], schemas[l['name']],
-         #                   l['primary_key'])
-        # get_full_pulls(l, LISTS_ENDPOINT, api_key)
-
-    # for group in exclusions:
-        # singer.write_schema(
-        #     group['name'],
-        #    schemas[group['name']],
-        #    group['primary_key']
-        # )
-        # get_full_pulls(group, GLOBAL_EXCLUSIONS, api_key)
-
-    for event in events:
-
-        if state and event['name'] in state:
-            logger.info('Replicating event since %s', state[event['name']])
+    for stream in catalog['streams']:
+        singer.write_schema(
+            stream['stream'],
+            stream['schema'],
+            stream['key_properties']
+        )
+        if stream['stream'] in EVENT_MAPPINGS.values():
+            get_incremental_pull(stream, ENDPOINTS['metric'], state,
+                                 api_key, start_date)
         else:
-            logger.info('Replicating event since %s', start_date)
-
-        singer.write_schema(event['name'], schemas[event['name']], event['primary_key'])
-        state = get_events_by_type(event, state, api_key, start_date)
+            get_full_pulls(stream, ENDPOINTS[stream['stream']], api_key)
 
 
 def get_available_metrics(api_key):
-    """
-    Lists available event metrics that can synced with ID for config
-    """
-    resp = authed_get('metric_list', '{}?api_key={}'.format(
-        METRICS_ENDPOINT,
-        api_key
-    ))
-    metric_list = resp.json()
-    print(json.dumps(metric_list))
+    metric_streams = []
+    for response in get_all_pages('metric_list',
+                                  ENDPOINTS['metrics'], api_key):
+        for metric in response.json().get('data'):
+            if metric['name'] in EVENT_MAPPINGS:
+                metric_streams.append(
+                    Stream(
+                        stream=EVENT_MAPPINGS[metric['name']],
+                        tap_stream_id=metric['id'],
+                        key_properties="id",
+                        puller='incremental'
+                    )
+                )
+
+    return metric_streams
+
+
+def discover(credentials):
+    metric_streams = get_available_metrics(credentials['api_key'])
+    return {"streams": [a.to_catalog_dict()
+                        for a in metric_streams + FULL_STREAMS]}
+
+
+def do_discover(credentials):
+    print(json.dumps(discover(credentials), indent=4))
 
 
 def main():
 
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        '-c', '--config', help='Config file', required=True)
-    parser.add_argument(
-        '-s', '--state', help='State file')
-    parser.add_argument(
-        '-d', '--discover', help='Discover available metrics')
-    # parser.add_argument(
-    #     '-c', '--catalog', help='Sync the metrics provided in the catalog')
-
-    args = parser.parse_args()
-
-    with open(args.config) as config_file:
-        config = json.load(config_file)
-
-    if 'api_key' not in config:
-        logger.fatal("Missing api_key")
-        exit(1)
+    args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
 
     if args.discover:
-        get_available_metrics(config['api_key'])
-        return
-
-    if len(config['events']) < 1:
-        logger.fatal("No events to track")
+        do_discover(args.config['credentials'])
         exit(1)
 
-    state = {}
-    if args.state:
-        with open(args.state, 'r') as state_file:
-            for line in state_file:
-                state = json.loads(line.strip())
+    else:
+        catalog = args.catalog.to_dict() if args.catalog else discover(
+            args.config['credentials'])
+        do_sync(args.config, args.state, catalog)
 
-    do_sync(config, state)
 
 if __name__ == '__main__':
     main()

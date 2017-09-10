@@ -9,7 +9,7 @@ setup(name='tap-klaviyo',
       url='http://singer.io',
       classifiers=['Programming Language :: Python :: 3 :: Only'],
       py_modules=['CHANGEME'],
-      install_requires=['singer-python==1.7.0',
+      install_requires=['singer-python==3.2.1',
                         'requests==2.13.0'],
       entry_points='''
           [console_scripts]
@@ -24,12 +24,12 @@ setup(name='tap-klaviyo',
                 "open.json",
                 "receive.json",
                 "unsubscribe.json",
-                "unsub_list.json",
-                "subscribe_list.json",
-                "update_email_preferences.json",
                 "dropped_email.json",
+                "global_exclusions.json",
                 "lists.json",
-                "global_exclusions.json"
+                "subscribe_list.json",
+                "unsub_list.json",
+                "update_email_preferences.json",
               ]
          }
 )
