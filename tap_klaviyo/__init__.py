@@ -1,8 +1,10 @@
+#!/usr/bin/env/python
+
 import json
 import os
 import singer
 
-from utils import get_incremental_pull, get_full_pulls, get_all_pages
+from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
 ENDPOINTS = {
     'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
