@@ -1,4 +1,39 @@
 {
   "type": "object",
-  "properties": {}
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "event_name": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "integer"
+    },
+    "object": {
+      "type": "string"
+    },
+    "datetime": {
+      "type": "string"
+    },
+    "statistic_id": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "event_properties": {
+      "type": "object",
+      "properties": {
+        "List": {
+          "type": "string"
+        },
+        "$event_id": "string"
+      }
+    },
+    "person": {
+      "type": "object",
+      "properties": {}
+    }
+  }
 }
