@@ -96,12 +96,13 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
                 latest_event_time):
             events = response.json().get('data')
 
-            counter.increment(len(events))
+            if events:
+                counter.increment(len(events))
 
-            singer.write_records(stream['stream'], events)
+                singer.write_records(stream['stream'], events)
 
-            update_state(state, stream['stream'], get_latest_event_time(events))
-            singer.write_state(state)
+                update_state(state, stream['stream'], get_latest_event_time(events))
+                singer.write_state(state)
 
     return state
 
