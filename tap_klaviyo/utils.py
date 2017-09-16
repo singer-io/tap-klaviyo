@@ -41,7 +41,7 @@ def update_state(state, entity, dt):
 def get_starting_point(stream, state, start_date):
     if stream['stream'] in state['bookmarks'] and \
                     state['bookmarks'][stream['stream']] is not None:
-        return dt_to_ts(state['bookmarks'][stream['stream']])
+        return dt_to_ts(state['bookmarks'][stream['stream']]['since'])
     elif start_date:
         return dt_to_ts(start_date)
     else:
@@ -84,7 +84,6 @@ def get_all_pages(source, url, api_key):
 
 def get_incremental_pull(stream, endpoint, state, api_key, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)
-    logger.info('Replicating events since %s', start_date)
 
     with metrics.record_counter(stream['stream']) as counter:
         url = '{}{}/timeline'.format(
@@ -108,6 +107,7 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 
 
 def get_full_pulls(resource, endpoint, api_key):
+    logger.info("Schema: %s" % resource.to_catalog_dict())
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages(resource['stream'], endpoint, api_key):
             records = response.json().get('data')
