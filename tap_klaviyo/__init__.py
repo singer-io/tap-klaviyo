@@ -45,14 +45,21 @@ class Stream(object):
 CREDENTIALS_KEYS = ["credentials"]
 REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 
-FULL_STREAMS = [
-    Stream(
-        stream,
-        stream,
-        'id',
-        'full'
-    ) for stream in ['global_exclusions', 'lists']
-]
+GLOBAL_EXCLUSIONS = Stream(
+    'global_exclusions',
+    'global_exclusions',
+    'email',
+    'full'
+)
+
+LISTS = Stream(
+    'lists',
+    'lists',
+    'id',
+    'lists'
+)
+
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS]
 
 
 def get_abs_path(path):
