@@ -107,7 +107,6 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 
 
 def get_full_pulls(resource, endpoint, api_key):
-    logger.info("Schema: %s" % resource.to_catalog_dict())
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages(resource['stream'], endpoint, api_key):
             records = response.json().get('data')

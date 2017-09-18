@@ -55,7 +55,7 @@ GLOBAL_EXCLUSIONS = Stream(
 LISTS = Stream(
     'lists',
     'lists',
-    'id',
+    'uuid',
     'lists'
 )
 

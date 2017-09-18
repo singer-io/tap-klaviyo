@@ -28,12 +28,18 @@
         "List": {
           "type": "string"
         },
-        "$event_id": "string"
+        "$event_id": {
+          "type": "string"
+        }
       }
     },
     "person": {
       "type": "object",
-      "properties": {}
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
     }
   }
 }

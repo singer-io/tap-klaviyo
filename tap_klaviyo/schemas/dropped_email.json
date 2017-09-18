@@ -28,7 +28,11 @@
     },
     "person": {
       "type": "object",
-      "properties": {}
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
     }
   }
 }
