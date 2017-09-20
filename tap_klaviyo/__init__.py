@@ -42,7 +42,7 @@ class Stream(object):
             'schema': load_schema(self.stream)
         }
 
-CREDENTIALS_KEYS = ["credentials"]
+CREDENTIALS_KEYS = ["api_key"]
 REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 
 GLOBAL_EXCLUSIONS = Stream(
@@ -71,7 +71,7 @@ def load_schema(name):
 
 
 def do_sync(config, state, catalog):
-    api_key = config['credentials']['api_key']
+    api_key = config['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
 
     for stream in catalog['streams']:
@@ -105,14 +105,14 @@ def get_available_metrics(api_key):
     return metric_streams
 
 
-def discover(credentials):
-    metric_streams = get_available_metrics(credentials['api_key'])
+def discover(api_key):
+    metric_streams = get_available_metrics(api_key)
     return {"streams": [a.to_catalog_dict()
                         for a in metric_streams + FULL_STREAMS]}
 
 
-def do_discover(credentials):
-    print(json.dumps(discover(credentials), indent=4))
+def do_discover(api_key):
+    print(json.dumps(discover(api_key), indent=4))
 
 
 def main():
@@ -120,12 +120,12 @@ def main():
     args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
 
     if args.discover:
-        do_discover(args.config['credentials'])
+        do_discover(args.config['api_key'])
         exit(1)
 
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(
-            args.config['credentials'])
+            args.config['api_key'])
         state = args.state if args.state else {"bookmarks": {}}
         do_sync(args.config, state, catalog)
 
