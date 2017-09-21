@@ -2,8 +2,8 @@
 
 import json
 import os
+import sys
 import singer
-
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
 ENDPOINTS = {
@@ -38,7 +38,7 @@ class Stream(object):
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
-            'key_properties': self.key_properties,
+            'key_properties': [self.key_properties],
             'schema': load_schema(self.stream)
         }
 
@@ -74,7 +74,12 @@ def do_sync(config, state, catalog):
     api_key = config['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
 
+    stream_ids_to_sync = [c['tap_stream_id'] for c in catalog['streams']
+                          if 'selected' in c and c['selected']]
+
     for stream in catalog['streams']:
+        if stream['tap_stream_id'] not in stream_ids_to_sync:
+          continue
         singer.write_schema(
             stream['stream'],
             stream['schema'],
@@ -112,8 +117,7 @@ def discover(api_key):
 
 
 def do_discover(api_key):
-    print(json.dumps(discover(api_key), indent=4))
-
+    print(json.dumps(discover(api_key), sys.stdout, indent=2))
 
 def main():
 
@@ -121,11 +125,11 @@ def main():
 
     if args.discover:
         do_discover(args.config['api_key'])
-        exit(1)
 
     else:
-        catalog = args.catalog.to_dict() if args.catalog else discover(
-            args.config['api_key'])
+        catalog = args.properties if args.properties else discover(
+             args.config['api_key'])
+
         state = args.state if args.state else {"bookmarks": {}}
         do_sync(args.config, state, catalog)
 
