@@ -37,10 +37,9 @@ class Stream(object):
 
     def to_catalog_dict(self):
         return {
-            'selected': False,
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
-            'key_properties': self.key_properties,
+            'key_properties': [self.key_properties],
             'schema': load_schema(self.stream)
         }
 
