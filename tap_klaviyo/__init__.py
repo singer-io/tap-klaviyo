@@ -4,7 +4,6 @@ import json
 import os
 import sys
 import singer
-from singer.catalog import Catalog
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
 ENDPOINTS = {
@@ -118,9 +117,7 @@ def discover(api_key):
 
 
 def do_discover(api_key):
-    result = discover(api_key)
-    res = json.dumps(discover(api_key), sys.stdout, indent=2)
-    print(res)
+    print(json.dumps(discover(api_key), sys.stdout, indent=2))
 
 def main():
 
