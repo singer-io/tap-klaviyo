@@ -35,11 +35,16 @@ class Stream(object):
         self.puller = puller
 
     def to_catalog_dict(self):
+        schema = load_schema(self.stream)
+
+        for k in schema['properties']:
+            schema['properties'][k]['inclusion'] = 'automatic'
+
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
             'key_properties': [self.key_properties],
-            'schema': load_schema(self.stream)
+            'schema': schema
         }
 
 CREDENTIALS_KEYS = ["api_key"]
@@ -55,7 +60,7 @@ GLOBAL_EXCLUSIONS = Stream(
 LISTS = Stream(
     'lists',
     'lists',
-    'uuid',
+    'id',
     'lists'
 )
 
