@@ -80,7 +80,7 @@ def do_sync(config, state, catalog):
     start_date = config['start_date'] if 'start_date' in config else None
 
     stream_ids_to_sync = [c['tap_stream_id'] for c in catalog['streams']
-                          if 'selected' in c and c['selected']]
+                          if c.get('schema').get('selected')]
 
     for stream in catalog['streams']:
         if stream['tap_stream_id'] not in stream_ids_to_sync:
