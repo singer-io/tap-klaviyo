@@ -33,18 +33,35 @@ class Stream(object):
         self.tap_stream_id = tap_stream_id
         self.key_properties = key_properties
         self.puller = puller
+        self.metadata = []
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
 
+        replication_method = puller.upper()
+
+        assert(replication_method in ['FULL', 'INCREMENTAL'])
+
+        self.metadata.append({
+            'breadcrumb': (),
+            'metadata': {
+                'table-key-properties' : self.key_properties,
+                'forced-replication-method' : replication_method
+            }
+        })
+
         for k in schema['properties']:
-            schema['properties'][k]['inclusion'] = 'automatic'
+            self.metadata.append({
+                'breadcrumb': ('properties', k),
+                'metadata': { 'inclusion': 'automatic' }
+            })
 
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
             'key_properties': [self.key_properties],
-            'schema': schema
+            'schema': schema,
+            'metadata': self.metadata
         }
 
 CREDENTIALS_KEYS = ["api_key"]
@@ -61,7 +78,7 @@ LISTS = Stream(
     'lists',
     'lists',
     'id',
-    'lists'
+    'full'
 )
 
 FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS]
@@ -79,8 +96,12 @@ def do_sync(config, state, catalog):
     api_key = config['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
 
-    stream_ids_to_sync = [c['tap_stream_id'] for c in catalog['streams']
-                          if c.get('schema').get('selected')]
+    stream_ids_to_sync = {}
+
+    for stream in catalog.get('streams'):
+        for mdata in stream['metadata']:
+            if mdata['breadcrumb'] == [] and mdata['metadata'].get('selected') == True:
+                stream_ids_to_sync.add(stream['tap_stream_id']))
 
     for stream in catalog['streams']:
         if stream['tap_stream_id'] not in stream_ids_to_sync:
@@ -90,7 +111,7 @@ def do_sync(config, state, catalog):
             stream['schema'],
             stream['key_properties']
         )
-        if stream['stream'] in EVENT_MAPPINGS.values():
+        if stream['stream']['replication_method'] == 'INCREMENTAL':
             get_incremental_pull(stream, ENDPOINTS['metric'], state,
                                  api_key, start_date)
         else:
