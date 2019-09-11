@@ -95,9 +95,9 @@ def do_sync(config, state, catalog):
     stream_ids_to_sync = set()
 
     for stream in catalog.get('streams'):
-        for mdata in stream['metadata']:
-            if len(mdata['breadcrumb']) == 0 and mdata['metadata'].get('selected') == True:
-                stream_ids_to_sync.add(stream['tap_stream_id'])
+        mdata = metadata.to_map(stream['metadata'])
+        if metadata.get(mdata, (), 'selected'):
+            stream_ids_to_sync.add(stream['tap_stream_id'])
 
     for stream in catalog['streams']:
         if stream['tap_stream_id'] not in stream_ids_to_sync:
