@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import singer
+from singer import metadata
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
 ENDPOINTS = {
