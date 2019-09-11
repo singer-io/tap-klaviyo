@@ -34,8 +34,7 @@ def update_state(state, entity, dt):
     if dt >= state['bookmarks'][entity]['since']:
         state['bookmarks'][entity] = {'since': dt}
 
-    logger.info("Replicated %s up to %s" % (
-        entity, state['bookmarks'][entity]))
+    logger.info("Replicated %s up to %s", entity, state['bookmarks'][entity])
 
 
 def get_starting_point(stream, state, start_date):

@@ -102,7 +102,7 @@ def do_sync(config, state, catalog):
 
     for stream in catalog['streams']:
         if stream['tap_stream_id'] not in stream_ids_to_sync:
-          continue
+            continue
         singer.write_schema(
             stream['stream'],
             stream['schema'],
