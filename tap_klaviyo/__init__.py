@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import singer
+from singer import metadata
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
 ENDPOINTS = {
@@ -28,23 +29,36 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, key_properties, puller):
+    def __init__(self, stream, tap_stream_id, key_properties, replication_method):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
         self.key_properties = key_properties
-        self.puller = puller
+        self.replication_method = replication_method
+        self.metadata = []
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
 
+        self.metadata.append({
+            'breadcrumb': (),
+            'metadata': {
+                'table-key-properties': self.key_properties,
+                'forced-replication-method': self.replication_method
+            }
+        })
+
         for k in schema['properties']:
-            schema['properties'][k]['inclusion'] = 'automatic'
+            self.metadata.append({
+                'breadcrumb': ('properties', k),
+                'metadata': { 'inclusion': 'automatic' }
+            })
 
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
             'key_properties': [self.key_properties],
-            'schema': schema
+            'schema': schema,
+            'metadata': self.metadata
         }
 
 CREDENTIALS_KEYS = ["api_key"]
@@ -54,14 +68,14 @@ GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
     'global_exclusions',
     'email',
-    'full'
+    'FULL_TABLE'
 )
 
 LISTS = Stream(
     'lists',
     'lists',
     'id',
-    'lists'
+    'FULL_TABLE'
 )
 
 FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS]
@@ -79,17 +93,22 @@ def do_sync(config, state, catalog):
     api_key = config['api_key']
     start_date = config['start_date'] if 'start_date' in config else None
 
-    stream_ids_to_sync = [c['tap_stream_id'] for c in catalog['streams']
-                          if c.get('schema').get('selected')]
+    stream_ids_to_sync = set()
+
+    for stream in catalog.get('streams'):
+        mdata = metadata.to_map(stream['metadata'])
+        if metadata.get(mdata, (), 'selected'):
+            stream_ids_to_sync.add(stream['tap_stream_id'])
 
     for stream in catalog['streams']:
         if stream['tap_stream_id'] not in stream_ids_to_sync:
-          continue
+            continue
         singer.write_schema(
             stream['stream'],
             stream['schema'],
             stream['key_properties']
         )
+
         if stream['stream'] in EVENT_MAPPINGS.values():
             get_incremental_pull(stream, ENDPOINTS['metric'], state,
                                  api_key, start_date)
@@ -108,7 +127,7 @@ def get_available_metrics(api_key):
                         stream=EVENT_MAPPINGS[metric['name']],
                         tap_stream_id=metric['id'],
                         key_properties="id",
-                        puller='incremental'
+                        replication_method='INCREMENTAL'
                     )
                 )
 
