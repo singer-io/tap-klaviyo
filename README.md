@@ -28,10 +28,7 @@ This tap:
     Use -l option to list all available Klaviyo metrics in your account.
 
     ```json
-    {
-        "credentials": {
-            "api_key": "pk_XYZ"
-        },
+        "api_key": "pk_XYZ",
         "start_date": "2017-01-01T00:00:00Z",
         "user_agent": "email_address",
     }
