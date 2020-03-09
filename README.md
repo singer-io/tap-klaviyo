@@ -63,13 +63,12 @@ This tap:
 
 
 
-# Debugging
+## Debugging
 
 If you have made changes to your repository, you may need to run the following command after navigating to your local repository:
 
-    ```bash
+    
     pip install -e .
-    ```
 
 ---
 
