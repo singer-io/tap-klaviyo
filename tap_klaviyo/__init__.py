@@ -151,12 +151,11 @@ def main():
         do_discover(args.config['api_key'])
 
     else:
-        catalog = args.properties if args.properties else discover(
+        catalog = args.catalog.to_dict() if args.catalog else discover(
              args.config['api_key'])
 
         state = args.state if args.state else {"bookmarks": {}}
         do_sync(args.config, state, catalog)
-
 
 if __name__ == '__main__':
     main()
