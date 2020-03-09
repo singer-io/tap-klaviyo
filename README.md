@@ -22,10 +22,7 @@ This tap:
 
 2. Create the config file
 
-    Create a JSON file containing your API key, start date, email and events.
-    The Klaviyo events you want to replicate each have a unique metric ID that needs
-    to be added to the config file.
-    Use -l option to list all available Klaviyo metrics in your account.
+    Create a JSON file containing your API key, start date, and email.
 
     ```json
     {
