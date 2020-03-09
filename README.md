@@ -61,7 +61,16 @@ This tap:
     tap-klaviyo --config config.json [--state state.json] [--catalog catalog.json]
     ```
 
----
 
+
+# Debugging
+
+If you have made changes to your repository, you may need to run the following command after navigating to your local repository:
+
+    ```bash
+    pip install -e .
+    ```
+
+---
 
 Copyright &copy; 2017 Stitch
