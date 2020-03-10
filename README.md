@@ -48,33 +48,10 @@ To select a stream to sync, add {"breadcrumb": [], "metadata": {"selected": true
 
 The following example syncs the pipelines stream:
 
-...
-    "type": [
-      "null",
-      "object"
-    ],
-    "additionalProperties": false
-  },
-  "stream": "pipelines",
-  "metadata": [{"breadcrumb": [], "metadata": {"selected": true}}]
-},
-...
 
 *Option 2:*
 Add "selected": true to the stream's schema.
 
-...
-"tap_stream_id": "workflows",
-"key_properties": [],
-"schema": {
-  "selected": true,
-  "properties": {
-    "_pipeline_id": {
-      "type": [
-        "null",
-        "string"
-      ]
-...
 
 *Option 3:*
 You can use an [open-source tool called Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
