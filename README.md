@@ -69,7 +69,10 @@ If you have made changes to your repository, you may need to run the following c
     pip install -e .
     
 
-# Formatting catalog.json
+## Formatting catalog.json
+You can format catalog.json to select which streams should be synced when the tap is run in sync mode. This [link](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md) explains the process of formatting catalog.json for stream selection (scroll to "Stream/Field Selection).
+
+You can also use an [open-source tool called Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
 
 
 
