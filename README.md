@@ -34,9 +34,55 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
     }
     ```
 
-3. [Optional] Create the initial state file
+3. Run discover command and save catalog into catalog file
 
-    You can provide JSON file that contains a date for the metrics endpoints to force the application to only fetch events since those dates. If you omit the file it will fetch all
+    ```bash
+    tap-klaviyo --config config.json --discover > catalog.json
+    ```
+
+4. Select streams to sync in catalog.json file
+This [link](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md) explains the process of formatting catalog.json for stream selection (scroll to "Stream/Field Selection).
+
+*Option 1:* 
+To select a stream to sync, add {"breadcrumb": [], "metadata": {"selected": true}} to its "metadata" entry.
+
+The following example syncs the pipelines stream:
+
+...
+    "type": [
+      "null",
+      "object"
+    ],
+    "additionalProperties": false
+  },
+  "stream": "pipelines",
+  "metadata": [{"breadcrumb": [], "metadata": {"selected": true}}]
+},
+...
+
+*Option 2:*
+Add "selected": true to the stream's schema.
+
+...
+"tap_stream_id": "workflows",
+"key_properties": [],
+"schema": {
+  "selected": true,
+  "properties": {
+    "_pipeline_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+...
+
+*Option 3:*
+You can use an [open-source tool called Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
+    
+    
+5. [Optional] Create the initial state file
+
+    You can provide a JSON file that contains a date for the metrics endpoints to force the application to only fetch events since those dates. If you omit the file it will fetch all
     commits and issues.
 
     ```json
@@ -46,13 +92,7 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
     }
     ```
 
-4. [Optional] Run discover command and save catalog into catalog file
-
-    ```bash
-    tap-klaviyo --config config.json --discover > catalog.json
-    ```
-
-5. Run the application
+6. Run the application
 
     `tap-klaviyo` can be run with:
 
@@ -60,20 +100,11 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
     tap-klaviyo --config config.json [--state state.json] [--catalog catalog.json]
     ```
 
-
-
 ## Debugging
 
 If you have made changes to your repository, you may need to run the following command after navigating to your local repository (before running the tap):
 
     pip install -e .
-    
-
-## Formatting catalog.json
-You can format catalog.json to select which streams should be synced when the tap is run in sync mode. This [link](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md) explains the process of formatting catalog.json for stream selection (scroll to "Stream/Field Selection).
-
-You can also use an [open-source tool called Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
-
 
 
 ---
