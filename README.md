@@ -10,7 +10,7 @@ This tap:
 - Incrementally pulls data based on the input state for incremental endpoints
 - Updates full tables for global exclusions and lists endpoints
 
-Singer taps function in two modes: [discovery mode](https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md) and [sync mode](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md).
+Singer taps function in two modes: [discovery mode](https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md) and [sync mode](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md). Before running the tap in sync mode, you should run the tap in discovery mode and direct the output to a file called catalog.json, which can be used as an input to run the tap in sync mode and to specify which streams should be synced (see Step 4).
 
 ## Quick start
 
@@ -46,14 +46,10 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
     }
     ```
 
-Before running the tap in Sync mode, you must run the tap in Discover mode and pipe the output into the catalog file.
-
-
-
 4. [Optional] Run discover command and save catalog into catalog file
 
     ```bash
-    tap-klaviyo --config config.json --discover
+    tap-klaviyo --config config.json --discover > catalog.json
     ```
 
 5. Run the application
@@ -70,8 +66,12 @@ Before running the tap in Sync mode, you must run the tap in Discover mode and p
 
 If you have made changes to your repository, you may need to run the following command after navigating to your local repository (before running the tap):
 
-    
     pip install -e .
+    
+
+# Formatting catalog.json
+
+
 
 ---
 
