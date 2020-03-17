@@ -43,9 +43,9 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
 4. Select streams to sync in catalog.json file
 [This link](https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md) explains the process of formatting catalog.json for stream selection (scroll to "Stream/Field Selection).
 
-Option 1: To select a stream to sync, add `{"breadcrumb": [], "metadata": {"selected": true}}` to its "metadata" entry.
+- Option 1: To select a stream to sync, add `{"breadcrumb": [], "metadata": {"selected": true}}` to its "metadata" entry.
 
-Option 2: You can use an open-source tool called [Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
+- Option 2: You can use an open-source tool called [Singer Discover](https://github.com/chrisgoddard/singer-discover) to format the catalog.json file.
     
     
 5. [Optional] Create the initial state file
