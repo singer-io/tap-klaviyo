@@ -27,3 +27,19 @@ jobs:
           command: |
             source ~/.virtualenvs/tap-klaviyo/bin/activate
             python -m unittest
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+  build_daily:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
