@@ -97,6 +97,8 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
             if events:
                 counter.increment(len(events))
                 
+                logger.info('getting events')
+                logger.info(events)
                 singer.write_records(stream['stream'], events)
 
                 update_state(state, stream['stream'], get_latest_event_time(events))

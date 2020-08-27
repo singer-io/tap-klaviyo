@@ -19,7 +19,7 @@
     "statistic_id": {
       "type": "string"
     },
-    "iddd": {
+    "id": {
       "type": "string"
     },
     "event_properties": {

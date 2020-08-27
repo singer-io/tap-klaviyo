@@ -27,9 +27,6 @@
       "properties": {
         "List": {
           "type": "string"
-        },
-        "$event_id": {
-          "type": "string"
         }
       }
     },

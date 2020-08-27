@@ -25,13 +25,13 @@
     "event_properties": {
       "type": "object",
       "properties": {
-        "$event_id": {
-          "type": "string"
-        },
         "Campaign Name": {
           "type": "string"
         },
         "Subject": {
+          "type": "string"
+        },
+        "$event_id": {
           "type": "string"
         }
       }
