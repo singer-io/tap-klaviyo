@@ -19,22 +19,12 @@
     "statistic_id": {
       "type": "string"
     },
-    "id": {
+    "iddd": {
       "type": "string"
     },
     "event_properties": {
       "type": "object",
-      "properties": {
-        "event_id": {
-          "type": "string"
-        },
-        "Campaign Name": {
-          "type": "string"
-        },
-        "Subject": {
-          "type": "string"
-        }
-      }
+      "properties": {}
     },
     "person": {
       "type": "object",
