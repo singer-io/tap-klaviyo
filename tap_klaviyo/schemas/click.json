@@ -24,12 +24,28 @@
     },
     "event_properties": {
       "type": "object",
-      "properties": {}
+      "properties": {        
+        "event_id": {
+          "type": "string"
+        },
+        "Campaign Name": {
+          "type": "string"
+        },
+        "Subject": {
+          "type": "string"
+        }
+      }
     },
     "person": {
       "type": "object",
       "properties": {
         "email": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "country": {
           "type": "string"
         }
       }
