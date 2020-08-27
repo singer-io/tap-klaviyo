@@ -42,10 +42,10 @@
         "email": {
           "type": "string"
         },
-        "timezone": {
+        "$timezone": {
           "type": "string"
         },
-        "country": {
+        "$country": {
           "type": "string"
         }
       }

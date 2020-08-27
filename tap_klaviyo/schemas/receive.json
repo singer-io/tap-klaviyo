@@ -41,6 +41,12 @@
       "properties": {
         "email": {
           "type": "string"
+        },
+        "$timezone": {
+          "type": "string"
+        },
+        "$country": {
+          "type": "string"
         }
       }
     }
