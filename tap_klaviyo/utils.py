@@ -96,7 +96,7 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 
             if events:
                 counter.increment(len(events))
-                
+
                 singer.write_records(stream['stream'], events)
 
                 update_state(state, stream['stream'], get_latest_event_time(events))
@@ -109,7 +109,7 @@ def get_full_pulls(resource, endpoint, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages(resource['stream'], endpoint, api_key):
             records = response.json().get('data')
-            
+
             counter.increment(len(records))
 
             singer.write_records(resource['stream'], records)
