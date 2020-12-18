@@ -56,12 +56,12 @@ class Stream(object):
 
             self.metadata.append({
                 'breadcrumb': ('properties', k),
-                'metadata': {'inclusion': inclusion}
+                'metadata': { 'inclusion': inclusion }
             })
 
         return {
-            'stream': self.stream,
-            'tap_stream_id': self.tap_stream_id,
+            'stream': self.tap_stream_id,
+            'tap_stream_id': self.stream,
             'key_properties': [self.key_properties],
             'schema': schema,
             'metadata': self.metadata
@@ -115,17 +115,18 @@ def do_sync(config, state, catalog):
             stream['key_properties']
         )
 
-        if stream['stream'] in EVENT_MAPPINGS.values():
+        if stream['tap_stream_id'] in EVENT_MAPPINGS.values():
             get_incremental_pull(stream, ENDPOINTS['metric'], state,
                                  api_key, start_date)
         else:
-            get_full_pulls(stream, ENDPOINTS[stream['stream']], api_key)
+            get_full_pulls(stream, ENDPOINTS[stream['tap_stream_id']], api_key)
 
 
 def get_available_metrics(api_key):
     metric_streams = []
     for response in get_all_pages('metric_list',
                                   ENDPOINTS['metrics'], api_key):
+
         for metric in response.json().get('data'):
             if metric['name'] in EVENT_MAPPINGS:
                 metric_streams.append(

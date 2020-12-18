@@ -89,13 +89,12 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
     with metrics.record_counter(stream['stream']) as counter:
         url = '{}{}/timeline'.format(
             endpoint,
-            stream['tap_stream_id']
+            stream['stream']
         )
         for response in get_all_using_next(
                 stream['stream'], url, api_key,
                 latest_event_time):
             events = response.json().get('data')
-
             if events:
                 counter.increment(len(events))
 
