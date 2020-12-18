@@ -4,7 +4,7 @@ import singer
 from singer import metrics
 import requests
 
-DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
+DATETIME_FMT = "%Y-%m-%dT%H:%M:%S"
 
 
 session = requests.Session()
@@ -12,6 +12,8 @@ logger = singer.get_logger()
 
 
 def dt_to_ts(dt):
+    # Remove microseconds
+    dt = dt[:-5]
     return int(time.mktime(datetime.datetime.strptime(
         dt, DATETIME_FMT).timetuple()))
 
