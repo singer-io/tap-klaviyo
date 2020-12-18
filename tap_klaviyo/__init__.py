@@ -48,9 +48,15 @@ class Stream(object):
         })
 
         for k in schema['properties']:
+
+            inclusion = 'available'
+
+            if k == self.key_properties:
+                inclusion = 'automatic'
+
             self.metadata.append({
                 'breadcrumb': ('properties', k),
-                'metadata': { 'inclusion': 'automatic' }
+                'metadata': {'inclusion': inclusion}
             })
 
         return {
@@ -141,7 +147,8 @@ def discover(api_key):
 
 
 def do_discover(api_key):
-    print(json.dumps(discover(api_key), indent=2))
+    data = json.dumps(discover(api_key), indent=2);
+    print(data)
 
 def main():
 
