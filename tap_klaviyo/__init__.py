@@ -82,7 +82,7 @@ class Stream(object):
         return {
             'stream': self.tap_stream_id,
             'tap_stream_id': self.stream,
-            'key_properties': [self.key_properties],
+            'key_properties': self.key_properties,
             'schema': schema,
             'metadata': self.metadata,
             'group': self.group
