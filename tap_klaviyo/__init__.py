@@ -29,12 +29,13 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, key_properties, replication_method):
+    def __init__(self, stream, tap_stream_id, key_properties, replication_method, group=None):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
         self.key_properties = key_properties
         self.replication_method = replication_method
         self.metadata = []
+        self.group = group
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
@@ -64,7 +65,8 @@ class Stream(object):
             'tap_stream_id': self.stream,
             'key_properties': [self.key_properties],
             'schema': schema,
-            'metadata': self.metadata
+            'metadata': self.metadata,
+            'group': self.group
         }
 
 CREDENTIALS_KEYS = ["api_key"]
@@ -148,7 +150,8 @@ def get_available_metrics(api_key):
                 stream="list_members",
                 tap_stream_id="list_members",
                 key_properties="id",
-                replication_method='FULL_REPLICATION'
+                replication_method='FULL_TABLE',
+                group="list_members"
             )
         )
 
