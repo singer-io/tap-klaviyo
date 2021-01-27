@@ -53,7 +53,7 @@ class Stream(object):
             self.metadata.append({
                 'breadcrumb': (),
                 'metadata': {
-                    'table-key-properties': self.key_properties,
+                    'table-key-properties': [self.key_properties],
                     'forced-replication-method': self.replication_method,
                 }
             })
