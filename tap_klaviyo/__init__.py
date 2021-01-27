@@ -82,7 +82,7 @@ class Stream(object):
         return {
             'stream': self.tap_stream_id,
             'tap_stream_id': self.stream,
-            'key_properties': self.key_properties,
+            'key_properties': [self.key_properties],
             'schema': schema,
             'metadata': self.metadata,
             'group': self.group
@@ -164,7 +164,7 @@ def get_available_metrics(api_key):
                     Stream(
                         stream=EVENT_MAPPINGS[metric['name']],
                         tap_stream_id=metric['id'],
-                        key_properties="id",
+                        key_properties=["id"],
                         replication_method='INCREMENTAL'
                     )
                 )
