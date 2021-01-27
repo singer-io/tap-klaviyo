@@ -90,7 +90,7 @@ class Stream(object):
 
 
 CREDENTIALS_KEYS = ["api_key"]
-REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
+REQUIRED_CONFIG_KEYS = CREDENTIALS_KEYS
 
 GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
