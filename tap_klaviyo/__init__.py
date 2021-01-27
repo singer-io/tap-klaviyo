@@ -5,7 +5,7 @@ import os
 import sys
 import singer
 from singer import metadata
-from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
+from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages, get_list_members_pull
 
 ENDPOINTS = {
     'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
@@ -114,12 +114,14 @@ def do_sync(config, state, catalog):
             stream['schema'],
             stream['key_properties']
         )
-
-        if stream['tap_stream_id'] in EVENT_MAPPINGS.values():
-            get_incremental_pull(stream, ENDPOINTS['metric'], state,
-                                 api_key, start_date)
+        if stream['tap_stream_id'] == 'list_members':
+            get_list_members_pull(stream, api_key)
         else:
-            get_full_pulls(stream, ENDPOINTS[stream['tap_stream_id']], api_key)
+            if stream['tap_stream_id'] in EVENT_MAPPINGS.values():
+                get_incremental_pull(stream, ENDPOINTS['metric'], state,
+                                     api_key, start_date)
+            else:
+                get_full_pulls(stream, ENDPOINTS[stream['tap_stream_id']], api_key)
 
 
 def get_available_metrics(api_key):
@@ -137,6 +139,18 @@ def get_available_metrics(api_key):
                         replication_method='INCREMENTAL'
                     )
                 )
+
+    # Schema for List members
+    with open(get_abs_path('schemas/list_members.json')) as ListMemberSchema:
+        data = json.load(ListMemberSchema)
+        metric_streams.append(
+            Stream(
+                stream="list_members",
+                tap_stream_id="list_members",
+                key_properties="id",
+                replication_method='FULL_REPLICATION'
+            )
+        )
 
     return metric_streams
 

@@ -2,6 +2,7 @@ import datetime
 import time
 import singer
 from singer import metrics
+import json
 import requests
 
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%S"
@@ -114,3 +115,37 @@ def get_full_pulls(resource, endpoint, api_key):
             counter.increment(len(records))
 
             singer.write_records(resource['stream'], records)
+
+def get_list_members_pull(resource, api_key):
+    with metrics.record_counter(resource['stream']) as counter:
+        for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
+            lists = response.json()
+            lists = lists['data']
+            total_lists = len(lists)
+            current_list = 0
+            for list in lists:
+                current_list += 1
+                logger.info("Syncing list " + list['id'] + " : " + str(current_list) + " of " + str(total_lists))
+                get_all_members_single_list(list['id'], api_key, resource['stream'], counter)
+
+
+def get_all_members_single_list(list_id, api_key, resource_stream, counter):
+
+    endpoint = 'https://a.klaviyo.com/api/v2/group/' + list_id + '/members/all'
+    marker = None
+
+    while True:
+        r = requests.get(endpoint, {'api_key': api_key, 'marker': marker})
+        data = json.loads(r.content)
+        if "records" not in data:
+            break
+        records = data['records']
+        for record in records:
+            record['list_id'] = list_id
+            counter.increment()
+        singer.write_records(resource_stream, records)
+        if "marker" in data:
+            marker = data['marker']
+        else:
+            break
+

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "push_token":{
+      "type": "string"
+    },
+    "list_id": {
+      "type": "string"
+    }
+  }
+}
