@@ -86,7 +86,14 @@ LISTS = Stream(
     'FULL_TABLE'
 )
 
-FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS]
+LIST_MEMBERS = Stream(
+    'list_members',
+    'list_members',
+    'id',
+    'FULL_TABLE'
+)
+
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS]
 
 
 def get_abs_path(path):
@@ -142,18 +149,7 @@ def get_available_metrics(api_key):
                     )
                 )
 
-    # Schema for List members
-    with open(get_abs_path('schemas/list_members.json')) as ListMemberSchema:
-        data = json.load(ListMemberSchema)
-        metric_streams.append(
-            Stream(
-                stream="list_members",
-                tap_stream_id="list_members",
-                key_properties="id",
-                replication_method='FULL_TABLE',
-                group="list_members"
-            )
-        )
+
 
     return metric_streams
 
