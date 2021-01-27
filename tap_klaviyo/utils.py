@@ -2,6 +2,7 @@ import datetime
 import time
 import singer
 from singer import metrics
+import requests
 import json
 import requests
 

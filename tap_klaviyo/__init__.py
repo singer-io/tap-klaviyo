@@ -40,13 +40,32 @@ class Stream(object):
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
 
-        self.metadata.append({
-            'breadcrumb': (),
-            'metadata': {
-                'table-key-properties': self.key_properties,
-                'forced-replication-method': self.replication_method
-            }
-        })
+        valid_replication_keys = ["timestamp"]
+
+        if self.tap_stream_id == 'list_members':
+            valid_replication_keys = None
+        if self.tap_stream_id == 'list_members':
+            valid_replication_keys = ['created']
+        if self.tap_stream_id == 'global_exclusions':
+            valid_replication_keys = ["timestamp"]
+
+        if self.replication_method == 'FULL_TABLE':
+            self.metadata.append({
+                'breadcrumb': (),
+                'metadata': {
+                    'table-key-properties': self.key_properties,
+                    'forced-replication-method': self.replication_method,
+                }
+            })
+        else:
+            self.metadata.append({
+                'breadcrumb': (),
+                'metadata': {
+                    'table-key-properties': self.key_properties,
+                    'valid-replication-keys': valid_replication_keys,
+                    'forced-replication-method': self.replication_method,
+                }
+            })
 
         for k in schema['properties']:
 
@@ -57,7 +76,7 @@ class Stream(object):
 
             self.metadata.append({
                 'breadcrumb': ('properties', k),
-                'metadata': { 'inclusion': inclusion }
+                'metadata': {'inclusion': inclusion}
             })
 
         return {
@@ -68,6 +87,7 @@ class Stream(object):
             'metadata': self.metadata,
             'group': self.group
         }
+
 
 CREDENTIALS_KEYS = ["api_key"]
 REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
@@ -149,8 +169,6 @@ def get_available_metrics(api_key):
                     )
                 )
 
-
-
     return metric_streams
 
 
@@ -164,8 +182,8 @@ def do_discover(api_key):
     data = json.dumps(discover(api_key), indent=2);
     print(data)
 
-def main():
 
+def main():
     args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
 
     if args.discover:
@@ -173,10 +191,11 @@ def main():
 
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(
-             args.config['api_key'])
+            args.config['api_key'])
 
         state = args.state if args.state else {"bookmarks": {}}
         do_sync(args.config, state, catalog)
+
 
 if __name__ == '__main__':
     main()
