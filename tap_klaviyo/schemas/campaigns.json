@@ -16,8 +16,8 @@
     "from_email": {
       "type": "string"
     },
-    "list_id": {
-      "type": "string"
+    "lists": {
+      "type": "array"
     },
     "status": {
       "type": "string"
