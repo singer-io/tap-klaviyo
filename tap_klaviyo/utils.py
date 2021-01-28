@@ -15,7 +15,7 @@ logger = singer.get_logger()
 
 def dt_to_ts(dt):
     # Remove microseconds
-    dt = dt[:-1]
+    dt = dt[:19]
     return int(time.mktime(datetime.datetime.strptime(
         dt, DATETIME_FMT).timetuple()))
 
