@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "object": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "from_email": {
+      "type": "string"
+    },
+    "list_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "datetime"
+    },
+    "created_at": {
+      "type": "datetime"
+    }
+  }
+}
