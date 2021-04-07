@@ -38,20 +38,12 @@ class Stream(object):
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
-
-        self.metadata.append({
-            'breadcrumb': (),
-            'metadata': {
-                'table-key-properties': self.key_properties,
-                'forced-replication-method': self.replication_method
-            }
-        })
-
-        for k in schema['properties']:
-            self.metadata.append({
-                'breadcrumb': ('properties', k),
-                'metadata': { 'inclusion': 'automatic' }
-            })
+        mdata = metadata.get_standard_metadata(
+            schema = schema,
+            key_properties = self.key_properties,
+            replication_method = self.replication_method
+        )
+        self.metadata = mdata
 
         return {
             'stream': self.stream,
@@ -141,7 +133,7 @@ def discover(api_key):
 
 
 def do_discover(api_key):
-    print(json.dumps(discover(api_key), sys.stdout, indent=2))
+    print(json.dumps(discover(api_key), indent=2))
 
 def main():
 

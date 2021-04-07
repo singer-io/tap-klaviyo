@@ -1,7 +1,7 @@
 import datetime
 import time
 import singer
-from singer import metrics
+from singer import metrics, metadata, Transformer
 import requests
 
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
@@ -97,7 +97,17 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
             if events:
                 counter.increment(len(events))
 
-                singer.write_records(stream['stream'], events)
+                event_stream = stream['stream']
+                event_schema = stream['schema']
+                event_mdata = metadata.to_map(stream['metadata'])
+
+                with Transformer() as transformer:
+                    for event in events:
+                        singer.write_record(
+                            event_stream, 
+                            transformer.transform(
+                                event, event_schema, event_mdata
+                        ))
 
                 update_state(state, stream['stream'], get_latest_event_time(events))
                 singer.write_state(state)
@@ -112,4 +122,14 @@ def get_full_pulls(resource, endpoint, api_key):
 
             counter.increment(len(records))
 
-            singer.write_records(resource['stream'], records)
+            record_stream = resource['stream']
+            record_schema = resource['schema']
+            record_mdata = metadata.to_map(resource['metadata'])
+
+            with Transformer() as transformer:
+                for record in records:
+                    singer.write_record(
+                        record_stream, 
+                        transformer.transform(
+                            record, record_schema, record_mdata
+                    ))
