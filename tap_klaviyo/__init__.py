@@ -141,7 +141,7 @@ def discover(api_key):
 
 
 def do_discover(api_key):
-    print(json.dumps(discover(api_key), sys.stdout, indent=2))
+    print(json.dumps(discover(api_key), indent=2))
 
 def main():
 
