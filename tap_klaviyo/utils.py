@@ -123,4 +123,3 @@ def transfrom_and_write_records(events, stream):
                 transformer.transform(
                     event, event_schema, event_mdata
             ))
-            
