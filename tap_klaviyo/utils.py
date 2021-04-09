@@ -96,19 +96,7 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 
             if events:
                 counter.increment(len(events))
-
-                event_stream = stream['stream']
-                event_schema = stream['schema']
-                event_mdata = metadata.to_map(stream['metadata'])
-
-                with Transformer() as transformer:
-                    for event in events:
-                        singer.write_record(
-                            event_stream, 
-                            transformer.transform(
-                                event, event_schema, event_mdata
-                        ))
-
+                transfrom_and_write_records(events, stream)
                 update_state(state, stream['stream'], get_latest_event_time(events))
                 singer.write_state(state)
 
@@ -119,17 +107,19 @@ def get_full_pulls(resource, endpoint, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages(resource['stream'], endpoint, api_key):
             records = response.json().get('data')
-
             counter.increment(len(records))
+            transfrom_and_write_records(records, resource)
 
-            record_stream = resource['stream']
-            record_schema = resource['schema']
-            record_mdata = metadata.to_map(resource['metadata'])
 
-            with Transformer() as transformer:
-                for record in records:
-                    singer.write_record(
-                        record_stream, 
-                        transformer.transform(
-                            record, record_schema, record_mdata
-                    ))
+def transfrom_and_write_records(events, stream):
+    event_stream = stream['stream']
+    event_schema = stream['schema']
+    event_mdata = metadata.to_map(stream['metadata'])
+
+    with Transformer() as transformer:
+        for event in events:
+            singer.write_record(
+                event_stream, 
+                transformer.transform(
+                    event, event_schema, event_mdata
+            ))
