@@ -27,7 +27,10 @@
             "type": "boolean"
         },
         "send_time": {
-            "type": "string",
+            "type": [
+                "null",
+                "string"
+            ],
             "format": "date-time"
         },
         "excluded_lists": {
@@ -37,7 +40,10 @@
             "type": "string"
         },
         "sent_at": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "campaign_type": {
             "type": "string"
@@ -56,13 +62,19 @@
             "type": "string"
         },
         "subject": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "message_type": {
             "type": "string"
         },
         "template_id": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         }
     }
 }
