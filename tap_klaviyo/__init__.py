@@ -38,12 +38,17 @@ class Stream(object):
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
-        mdata = metadata.get_standard_metadata(
-            schema = schema,
-            key_properties = self.key_properties,
-            replication_method = self.replication_method
+        mdata = metadata.to_map(
+            metadata.get_standard_metadata(
+                schema = schema,
+                key_properties = self.key_properties,
+                replication_method = self.replication_method
+            )
         )
-        self.metadata = mdata
+
+        if self.replication_method == 'INCREMENTAL':
+            mdata = metadata.write(mdata, ('properties', 'timestamp'), 'inclusion', 'automatic')
+        self.metadata = metadata.to_list(mdata)
 
         return {
             'stream': self.stream,
