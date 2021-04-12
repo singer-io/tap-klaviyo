@@ -3,9 +3,10 @@ import unittest
 from unittest import mock
 import requests
 import singer
+import json
 
 class Mockresponse:
-    def __init__(self, resp, status_code, content=None, headers=None, raise_error=False):
+    def __init__(self, status_code, resp={}, content=None, headers=None, raise_error=False):
         self.json_data = resp
         self.status_code = status_code
         self.content = content
@@ -13,49 +14,59 @@ class Mockresponse:
         self.raise_error = raise_error
     
     def json(self):
-            return self.json_data
+        return self.json_data
+
+    def raise_for_status(self):
+        raise requests.HTTPError
+
+def successful_200_request(*args, **kwargs):
+    json_str = {"tap": "klaviyo", "code": 200}
+
+    return Mockresponse(200, json_str)
 
 def klaviyo_400_error(*args, **kwargs):
-    json_str = {}
 
-    return Mockresponse(json_str, 400, raise_error=True)
+    return Mockresponse(status_code=400, raise_error=True)
 
 def klaviyo_401_error(*args, **kwargs):
-    json_str = {}
 
-    return Mockresponse(json_str, 401, raise_error=True)
+    return Mockresponse(status_code=401, raise_error=True)
 
 def klaviyo_403_error(*args, **kwargs):
-    json_str = {}
 
-    return Mockresponse(json_str, 403, raise_error=True)
+    return Mockresponse(status_code=403, raise_error=True)
 
 def klaviyo_403_error_wrong_api_key(*args, **kwargs):
     json_str = {
     "status": 403,
     "message": "The API key specified is invalid."}
 
-    return Mockresponse(json_str, 403, raise_error=True)
+    return Mockresponse(resp=json_str, status_code=403, raise_error=True)
 
 def klaviyo_403_error_missing_api_key(*args, **kwargs):
     json_str = {
     "status": 403,
     "message": "You must specify an API key to make requests."}
 
-    return Mockresponse(json_str, 403, raise_error=True)
+    return Mockresponse(resp=json_str, status_code=403, raise_error=True)
 
 def klaviyo_404_error(*args, **kwargs):
-    json_str = {}
 
-    return Mockresponse(json_str, 404, raise_error=True)
+    return Mockresponse(status_code=404, raise_error=True)
 
 def klaviyo_500_error(*args, **kwargs):
-    json_str = {}
 
-    return Mockresponse(json_str, 500, raise_error=True)
+    return Mockresponse(status_code=500, raise_error=True)
 
 
 class TestBackoff(unittest.TestCase):
+
+    @mock.patch('requests.Session.request', side_effect=successful_200_request)
+    def test_200(self, successful_200_request):
+        test_data = {"tap": "klaviyo", "code": 200}
+
+        actual_data = utils_.authed_get("", "", "").json()
+        self.assertEquals(actual_data, test_data)
     
     @mock.patch('requests.Session.request', side_effect=klaviyo_400_error)
     def test_400_error(self, klaviyo_400_error):

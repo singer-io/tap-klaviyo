@@ -55,15 +55,18 @@ ERROR_CODE_EXCEPTION_MAPPING = {
 
 def raise_for_error(response):   
     try:
-        json_resp = response.json()
-    except Exception:
-        json_resp = {}
+        response.raise_for_status()
+    except requests.HTTPError:
+        try:
+            json_resp = response.json()
+        except Exception:
+            json_resp = {}
 
-    error_code = response.status_code
-    message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
-    message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
-    exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
-    raise exc(message)
+        error_code = response.status_code
+        message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
+        message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
+        exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
+        raise exc(message)
 
 def dt_to_ts(dt):
     return int(time.mktime(datetime.datetime.strptime(
@@ -108,7 +111,7 @@ def get_latest_event_time(events):
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params)
-
+        
         if resp.status_code != 200:
             raise_for_error(resp)
         else:
@@ -166,8 +169,9 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 def get_full_pulls(resource, endpoint, api_key):
 
     with metrics.record_counter(resource['stream']) as counter:
-        for response in get_all_pages(resource['stream'], endpoint, api_key):
 
+        for response in get_all_pages(resource['stream'], endpoint, api_key):
+            
             records = response.json().get('data')
 
             counter.increment(len(records))

@@ -14,7 +14,11 @@ class TestBackoff(unittest.TestCase):
 
         mock_resp = mock.Mock()
         klaviyo_error = utils_.KlaviyoError()
+        http_error = requests.HTTPError()
+
         mock_resp.raise_for_error.side_effect = klaviyo_error
+        mock_resp.raise_for_status.side_effect = http_error
+        
         mocked_session.return_value = mock_resp
 
         try:
@@ -27,12 +31,12 @@ class TestBackoff(unittest.TestCase):
     @mock.patch("tap_klaviyo.utils.get_all_pages")
     def test_jsondecode(self, mock1):
 
-        mock1.return_value = ["abc"]
+        mock1.return_value = utils_.get_all_pages("lists", "http://www.youtube.com/results?bad+blood", "")
 
         data = {'stream': 'lists'}
         try:
-            utils_.get_full_pulls(data, "", "")
+            utils_.get_full_pulls(data, "http://www.youtube.com/results?abcd", "")
         except simplejson.scanner.JSONDecodeError:
             pass
 
-        self.assertEquals(mock1.call_count, 3)
+        self.assertEquals(mock1.call_count, 2)
