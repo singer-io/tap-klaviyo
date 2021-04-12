@@ -7,6 +7,8 @@ import singer
 from singer import metadata
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages
 
+LOGGER = singer.get_logger()
+
 ENDPOINTS = {
     'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
     'lists': 'https://a.klaviyo.com/api/v1/lists',
@@ -143,6 +145,7 @@ def discover(api_key):
 def do_discover(api_key):
     print(json.dumps(discover(api_key), indent=2))
 
+@singer.utils.handle_top_exception(LOGGER)
 def main():
 
     args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
