@@ -36,8 +36,6 @@ class PaginationTest(KlaviyoBaseTest):
 
         synced_records = runner.get_records_from_target_output()
 
-        # self.assertGreater(sum(record_count_by_stream.values()), 0)
-
         for stream in expected_streams:
             with self.subTest(stream=stream):
                 # expected values
