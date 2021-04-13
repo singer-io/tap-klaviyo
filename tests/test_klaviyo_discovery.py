@@ -17,6 +17,8 @@ class DiscoveryTest(KlaviyoBaseTest):
         """
         Testing that discovery creates the appropriate catalog with valid metadata.
 
+        • Verify stream names follow naming convention
+          streams should only have lowercase alphas and underscores
         • Verify number of actual streams discovered match expected
         • verify there is only 1 top level breadcrumb
         • verify primary key(s)
@@ -29,6 +31,12 @@ class DiscoveryTest(KlaviyoBaseTest):
         conn_id = connections.ensure_connection(self)
 
         found_catalogs = self.run_and_verify_check_mode(conn_id)
+
+        # Verify stream names follow naming convention
+        # streams should only have lowercase alphas and underscores
+        found_catalog_names = {c['stream_name'] for c in found_catalogs}
+        self.assertTrue(all([re.fullmatch(r"[a-z_]+",  name) for name in found_catalog_names]),
+                        msg="One or more streams don't follow standard naming")
 
         for stream in streams_to_test:
             with self.subTest(stream=stream):
