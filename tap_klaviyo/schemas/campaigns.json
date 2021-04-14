@@ -43,7 +43,8 @@
             "type": [
                 "null",
                 "string"
-            ]
+            ],
+            "format": "date-time"
         },
         "campaign_type": {
             "type": "string"
