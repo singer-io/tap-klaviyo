@@ -31,7 +31,7 @@ class TestBackoff(unittest.TestCase):
     @mock.patch("tap_klaviyo.utils.get_all_pages")
     def test_jsondecode(self, mock1):
 
-        mock1.return_value = utils_.get_all_pages("lists", "http://www.youtube.com/results?bad+blood", "")
+        mock1.return_value = utils_.get_all_pages("lists", "http://www.youtube.com/results?abcd", "")
 
         data = {'stream': 'lists'}
         try:

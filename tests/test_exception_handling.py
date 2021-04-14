@@ -6,7 +6,7 @@ import singer
 import json
 
 class Mockresponse:
-    def __init__(self, status_code, resp={}, content=None, headers=None, raise_error=False):
+    def __init__(self, status_code, resp=None, content=None, headers=None, raise_error=False):
         self.json_data = resp
         self.status_code = status_code
         self.content = content
@@ -92,7 +92,7 @@ class TestBackoff(unittest.TestCase):
         except utils_.KlaviyoError as e:
             with open("abc.txt", "w") as f:
                 f.write(str(e))
-            self.assertEquals(str(e), "HTTP-error-code: 403, Error: Request is missing or has an invalid API key.")
+            self.assertEquals(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_wrong_api_key)
     def test_403_error_wrong_api_key(self, klaviyo_403_error_wrong_api_key):
@@ -124,4 +124,4 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "")
         except utils_.KlaviyoError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 500, Error: Something is wrong on Klaviyo's end.")
+            self.assertEquals(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")

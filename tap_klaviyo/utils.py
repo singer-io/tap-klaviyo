@@ -41,7 +41,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     },
     403: {
         "raise_exception": KlaviyoForbiddenError,
-        "message": "Request is missing or has an invalid API key."
+        "message": "Invalid authorization credentials or permissions."
     },
     404: {
         "raise_exception": KlaviyoNotFoundError,
@@ -49,7 +49,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     },
     500: {
         "raise_exception": KlaviyoInternalServiceError,
-        "message": "Something is wrong on Klaviyo's end."
+        "message": "Internal Service Error from Klaviyo."
     }
 }
 
