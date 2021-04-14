@@ -4,7 +4,6 @@ import singer
 from singer import metrics
 import requests
 import backoff
-import json
 import simplejson
 
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
@@ -56,17 +55,17 @@ ERROR_CODE_EXCEPTION_MAPPING = {
 def raise_for_error(response):   
     try:
         response.raise_for_status()
-    except requests.HTTPError:
+    except requests.HTTPError as e:
         try:
             json_resp = response.json()
-        except Exception:
+        except (ValueError, TypeError, IndexError, KeyError):
             json_resp = {}
 
         error_code = response.status_code
         message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
-        raise exc(message)
+        raise exc(message) from e
 
 def dt_to_ts(dt):
     return int(time.mktime(datetime.datetime.strptime(
