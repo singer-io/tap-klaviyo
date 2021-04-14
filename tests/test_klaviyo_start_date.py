@@ -81,6 +81,7 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
 
                 # expected values
                 expected_primary_keys = self.expected_primary_keys()[stream]
+                expected_bookmark_keys = self.expected_bookmark_keys()[stream]
 
                 # collect information for assertions from syncs 1 & 2 base on expected values
                 record_count_sync_1 = record_count_by_stream_1.get(stream, 0)
@@ -97,9 +98,10 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
 
                 if self.is_incremental(stream):
 
-                    bookmark_keys_list_1 = [message.get('data').get('timestamp') for message in synced_records_1.get(stream).get('messages')
+                    # Expected bookmark key is one element in set so directly access it
+                    bookmark_keys_list_1 = [message.get('data').get(next(iter(expected_bookmark_keys))) for message in synced_records_1.get(stream).get('messages')
                                             if message.get('action') == 'upsert']
-                    bookmark_keys_list_2 = [message.get('data').get('timestamp') for message in synced_records_2.get(stream).get('messages')
+                    bookmark_keys_list_2 = [message.get('data').get(next(iter(expected_bookmark_keys))) for message in synced_records_2.get(stream).get('messages')
                                             if message.get('action') == 'upsert']
 
                     bookmark_key_sync_1 = set(bookmark_keys_list_1)

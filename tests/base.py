@@ -130,6 +130,12 @@ class KlaviyoBaseTest(unittest.TestCase):
                 for table, properties
                 in self.expected_metadata().items()}
 
+    def expected_bookmark_keys(self):
+        """return a dictionary with key of table name and value as a set of bookmark key fields"""
+        return {table: properties.get(self.BOOKMARK, set())
+                for table, properties
+                in self.expected_metadata().items()}
+
     def expected_automatic_fields(self):
         """return a dictionary with key of table name and set of value of automatic(primary key and bookmark field) fields"""
         auto_fields = {}
