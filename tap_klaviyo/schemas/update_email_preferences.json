@@ -24,22 +24,11 @@
     },
     "event_properties": {
       "type": "object",
-      "properties": {
-        "List": {
-          "type": "string"
-        },
-        "$event_id": {
-          "type": "string"
-        }
-      }
+      "properties": {}
     },
     "person": {
       "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        }
-      }
+      "properties": {}
     }
   }
 }
