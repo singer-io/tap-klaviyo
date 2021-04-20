@@ -36,7 +36,7 @@ class TestBackoff(unittest.TestCase):
         mock_resp = mock.Mock()
 
         mock_resp.status_code = 200
-        mock_resp.json.side_effect = None
+        mock_resp.json.side_effect = simplejson.scanner.JSONDecodeError("", "", 1)
 
         mocked_request.return_value = mock_resp
 
