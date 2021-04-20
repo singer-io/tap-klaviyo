@@ -55,7 +55,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
 def raise_for_error(response):   
     try:
         response.raise_for_status()
-    except requests.HTTPError as e:
+    except requests.HTTPError:
         try:
             json_resp = response.json()
         except (ValueError, TypeError, IndexError, KeyError):
@@ -65,7 +65,7 @@ def raise_for_error(response):
         message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
-        raise exc(message) from e
+        raise exc(message) from None
 
 def dt_to_ts(dt):
     return int(time.mktime(datetime.datetime.strptime(
@@ -106,7 +106,7 @@ def get_starting_point(stream, state, start_date):
 def get_latest_event_time(events):
     return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
 
-@backoff.on_exception(backoff.expo, KlaviyoError, max_tries=3)
+@backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoInternalServiceError), max_tries=3)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params)
@@ -114,6 +114,7 @@ def authed_get(source, url, params):
         if resp.status_code != 200:
             raise_for_error(resp)
         else:
+            resp.json()
             timer.tags[metrics.Tag.http_status_code] = resp.status_code
             return resp
 
