@@ -27,7 +27,7 @@ class KlaviyoBaseTest(unittest.TestCase):
 
     def setUp(self):
         required_creds = {
-            "api_key": 'KLAVIYO_API_KEY'
+            "api_key": 'TAP_KLAVIYO_API_KEY'
         }
         missing_creds = [v for v in required_creds.values() if not os.getenv(v)]
         if missing_creds:
@@ -35,7 +35,7 @@ class KlaviyoBaseTest(unittest.TestCase):
         self._credentials = {k: os.getenv(v) for k, v in required_creds.items()}
 
     def get_credentials(self):
-        self._credentials["api_key"] = os.getenv('KLAVIYO_API_KEY')
+        self._credentials["api_key"] = os.getenv('TAP_KLAVIYO_API_KEY')
         return self._credentials
 
     def get_type(self):
