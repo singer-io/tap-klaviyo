@@ -31,6 +31,8 @@ class TestFieldsInclusionInMetadata(unittest.TestCase):
                    {"name": "Subscribed to List", "id": "UrDfwD"},
                    {"name": "Updated Email Preferences", "id": "AdfDfD"},
                    {"name": "Dropped Email", "id": "AfdfdD"}]
+        full_table_stream = ["global_exclusions", "lists", "campaigns"]
+        bookmark_key = 'timestamp'
 
         mock_get_all_pages.return_value = [get_mock_http_response(
             200, {"data": streams})]
@@ -41,11 +43,15 @@ class TestFieldsInclusionInMetadata(unittest.TestCase):
 
         for catalog_entry in catalog:
             # Breadcrumbs of key_properties
-            key_prop_breadcrumbs = {('properties', x) for x in catalog_entry['key_properties']}
+            automatic_prop_breadcrumbs = {('properties', x) for x in catalog_entry['key_properties']}
+
+            # Breadcrumbs of bookmark_key
+            if catalog_entry['stream'] not in full_table_stream:
+                automatic_prop_breadcrumbs.add(('properties', bookmark_key))
 
             for field in catalog_entry['metadata']:
-                if field['breadcrumb'] in key_prop_breadcrumbs:
-                    # Verifying that all key properties are automatic inclusion
+                if field['breadcrumb'] in automatic_prop_breadcrumbs:
+                    # Verifying that all key properties and bookmark keys are automatic inclusion
                     self.assertEqual(field['metadata']['inclusion'], 'automatic')
                 else:
                     # Verifying that all normal fields are available inclusion
