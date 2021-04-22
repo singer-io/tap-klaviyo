@@ -45,7 +45,7 @@ class KlaviyoBaseTest(unittest.TestCase):
         """Configuration properties required for the tap."""
         return_value = {
             'start_date': '2021-04-07T00:00:00Z',
-            'user_agent': 'email_address'
+            # 'user_agent': 'email_address'
         }
         if original:
             return return_value
