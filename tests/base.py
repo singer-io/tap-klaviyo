@@ -38,7 +38,13 @@ class KlaviyoBaseTest(unittest.TestCase):
         self._credentials["api_key"] = os.getenv('TAP_KLAVIYO_API_KEY')
         return self._credentials
 
-    def get_type(self):
+    @staticmethod
+    def tap_name():
+        """The name of the tap"""
+        return "tap-stripe"
+
+    @staticmethod
+    def get_type():
         return "platform.klaviyo"
 
     def get_properties(self, original: bool = True):
