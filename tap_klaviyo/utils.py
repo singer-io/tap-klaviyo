@@ -141,7 +141,6 @@ def get_all_pages(source, url, api_key):
         else:
             break
 
-@backoff.on_exception(backoff.expo, simplejson.scanner.JSONDecodeError, max_tries=3)
 def get_incremental_pull(stream, endpoint, state, api_key, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)
 
@@ -163,7 +162,6 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 
     return state
 
-@backoff.on_exception(backoff.expo, simplejson.scanner.JSONDecodeError, max_tries=3)
 def get_full_pulls(resource, endpoint, api_key):
 
     with metrics.record_counter(resource['stream']) as counter:
