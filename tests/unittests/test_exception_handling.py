@@ -6,7 +6,7 @@ import singer
 import json
 
 class Mockresponse:
-    def __init__(self, status_code, resp=None, content=None, headers=None, raise_error=False):
+    def __init__(self, status_code, resp={}, content=None, headers=None, raise_error=False):
         self.json_data = resp
         self.status_code = status_code
         self.content = content
@@ -73,7 +73,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoBadRequestError as e:
             self.assertEquals(str(e), "HTTP-error-code: 400, Error: Request is missing or has a bad parameter.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_401_error)
@@ -81,7 +81,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoUnauthorizedError as e:
             self.assertEquals(str(e), "HTTP-error-code: 401, Error: Invalid authorization credentials.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error)
@@ -89,9 +89,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
-            with open("abc.txt", "w") as f:
-                f.write(str(e))
+        except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_wrong_api_key)
@@ -99,7 +97,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: The API key specified is invalid.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_missing_api_key)
@@ -107,7 +105,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: You must specify an API key to make requests.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_404_error)
@@ -115,7 +113,7 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoNotFoundError as e:
             self.assertEquals(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_500_error)
@@ -123,5 +121,5 @@ class TestBackoff(unittest.TestCase):
 
         try:
             utils_.authed_get("", "", "")
-        except utils_.KlaviyoError as e:
+        except utils_.KlaviyoInternalServiceError as e:
             self.assertEquals(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")
