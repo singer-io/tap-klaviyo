@@ -16,11 +16,17 @@
     "name": {
       "type": "string"
     },
-    "type": {
+    "list_type": {
       "type": "string"
     },
     "id": {
       "type": "string"
+    },
+    "folder": {
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
 }

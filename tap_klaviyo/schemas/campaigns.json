@@ -1,0 +1,81 @@
+{
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "string"
+        },
+        "updated": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "from_name": {
+            "type": "string"
+        },
+        "status_id": {
+            "type": "integer"
+        },
+        "object": {
+            "type": "string"
+        },
+        "num_recipients": {
+            "type": "integer"
+        },
+        "lists": {
+            "$ref": "lists.json"
+        },
+        "is_segmented": {
+            "type": "boolean"
+        },
+        "send_time": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "excluded_lists": {
+            "$ref": "lists.json"
+        },
+        "id": {
+            "type": "string"
+        },
+        "sent_at": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "campaign_type": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "created": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "status_label": {
+            "type": "string"
+        },
+        "from_email": {
+            "type": "string"
+        },
+        "subject": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "message_type": {
+            "type": "string"
+        },
+        "template_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        }
+    }
+}
