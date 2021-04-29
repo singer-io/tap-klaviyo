@@ -41,7 +41,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     @staticmethod
     def tap_name():
         """The name of the tap"""
-        return "tap-stripe"
+        return "tap-klaviyo"
 
     @staticmethod
     def get_type():
@@ -50,7 +50,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     def get_properties(self, original: bool = True):
         """Configuration properties required for the tap."""
         return_value = {
-            'start_date': '2021-04-07T00:00:00Z',
+            'start_date': '2021-04-26T00:00:00Z',
             # 'user_agent': 'email_address'
         }
         if original:
