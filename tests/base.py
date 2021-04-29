@@ -179,7 +179,7 @@ class KlaviyoBaseTest(unittest.TestCase):
         print(found_catalog_names)
         self.assertSetEqual(self.expected_streams(), found_catalog_names, msg="discovered schemas do not match")
         print("discovered schemas are OK")
-
+        print(found_catalogs)
         return found_catalogs
 
     def run_and_verify_sync(self, conn_id):
