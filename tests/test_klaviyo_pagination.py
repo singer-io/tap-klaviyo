@@ -25,6 +25,7 @@ class PaginationTest(KlaviyoBaseTest):
         # Expected stream is only opened emails
         expected_streams = ["open"]
         found_catalogs = self.run_and_verify_check_mode(conn_id)
+        print(found_catalogs)
 
         # table and field selection
         test_catalogs = [catalog for catalog in found_catalogs
