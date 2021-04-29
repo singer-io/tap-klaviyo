@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:tap-tester
+      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:tap-tester-v4
     steps:
       - checkout
       - run:
@@ -16,7 +16,7 @@ jobs:
           name: 'JSON Validator'
           command: |
             source /usr/local/share/virtualenvs/tap-tester/bin/activate
-            stitch-validate-json ~/.virtualenvs/tap-klaviyo/lib/python3.5/site-packages/tap_klaviyo/schemas/*.json
+            stitch-validate-json tap_klaviyo/schemas/*.json
       - run:
           name: 'Pylint'
           command: |
@@ -27,12 +27,28 @@ jobs:
           command: |
             source ~/.virtualenvs/tap-klaviyo/bin/activate
             python -m unittest
+      - add_ssh_keys
+      - run:
+          name: 'Integration Tests'
+          command: |
+            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/sandbox dev_env.sh
+            source dev_env.sh
+            source /usr/local/share/virtualenvs/tap-tester/bin/activate
+            run-test --tap=tap-klaviyo \
+                       --target=target-stitch \
+                       --orchestrator=stitch-orchestrator \
+                       --email=harrison+sandboxtest@stitchdata.com \
+                       --password=$SANDBOX_PASSWORD \
+                       --client-id=50 \
+                       --token=$STITCH_API_TOKEN \
+                       tests
 
 workflows:
   version: 2
   commit:
     jobs:
-      - build
+      - build:
+          context: circleci-user
   build_daily:
     triggers:
       - schedule:
@@ -42,4 +58,5 @@ workflows:
               only:
                 - master
     jobs:
-      - build
+      - build:
+          context: circleci-user
