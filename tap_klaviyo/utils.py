@@ -136,8 +136,13 @@ def get_all_members_single_list(list_id, api_key, resource_stream, counter):
     marker = None
 
     while True:
-        r = requests.get(endpoint, {'api_key': api_key, 'marker': marker})
+        r = session.get(endpoint, params={'api_key': api_key, 'marker': marker})
         data = json.loads(r.content)
+        if r.status_code == 429:
+            retry_after = int(r.headers['retry-after'])
+            time.sleep(retry_after)
+            continue
+
         if "records" not in data:
             break
         records = data['records']
