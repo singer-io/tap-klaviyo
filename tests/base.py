@@ -3,7 +3,7 @@ import os
 from datetime import timedelta
 from datetime import datetime as dt
 import time
-
+import dateutil.parser
 import singer
 from tap_tester import connections, menagerie, runner
 
@@ -280,6 +280,25 @@ class KlaviyoBaseTest(unittest.TestCase):
             connections.select_catalog_and_fields_via_metadata(
                 conn_id, catalog, schema, [], non_selected_properties)
 
+    def calculated_states_by_stream(self, current_state):
+        timedelta_by_stream = {stream: [0,0,1]  # {stream_name: [days, hours, minutes], ...}
+                               for stream in self.expected_streams()}
+        
+        stream_to_calculated_state = {stream: "" for stream in current_state['bookmarks'].keys()}
+        for stream, state in current_state['bookmarks'].items():
+            state_key, state_value = next(iter(state.keys())), next(iter(state.values()))
+            state_as_datetime = dateutil.parser.parse(state_value)
+
+            days, hours, minutes = timedelta_by_stream[stream]
+            calculated_state_as_datetime = state_as_datetime - timedelta(days=days, hours=hours, minutes=minutes)
+
+            state_format = '%Y-%m-%dT%H:%M:%SZ'
+            calculated_state_formatted = dt.strftime(calculated_state_as_datetime, state_format)
+
+            stream_to_calculated_state[stream] = {state_key: calculated_state_formatted}
+
+        return stream_to_calculated_state
+    
     def timedelta_formatted(self, dtime, days=0):
         date_stripped = dt.strptime(dtime, self.START_DATE_FORMAT)
         return_date = date_stripped + timedelta(days=days)
