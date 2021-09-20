@@ -45,8 +45,6 @@ class Stream(object):
 
         if self.tap_stream_id == 'list_members':
             valid_replication_keys = None
-        if self.tap_stream_id == 'list_members':
-            valid_replication_keys = ['created']
         if self.tap_stream_id == 'global_exclusions':
             valid_replication_keys = ["timestamp"]
 
