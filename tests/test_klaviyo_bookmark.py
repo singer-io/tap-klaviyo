@@ -28,9 +28,8 @@ class BookmarkTest(KlaviyoBaseTest):
             different values for the replication key
         """
         
-        expected_streams = self.expected_streams()
         # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
-        expected_streams = expected_streams - {"mark_as_spam", "dropped_email"}
+        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
         
         expected_bookmark_keys = self.expected_bookmark_keys()
         expected_replication_methods = self.expected_replication_method()
