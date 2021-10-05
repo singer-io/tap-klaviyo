@@ -20,6 +20,9 @@ class AutomaticFieldsTest(KlaviyoBaseTest):
         """
         expected_streams = self.expected_streams()
         
+        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
+        expected_streams = expected_streams - {"mark_as_spam", "dropped_email"}
+        
         conn_id = connections.ensure_connection(self)
 
         # Run in check mode
@@ -37,11 +40,6 @@ class AutomaticFieldsTest(KlaviyoBaseTest):
         synced_records = runner.get_records_from_target_output()
         
         for stream in expected_streams:
-            
-            # WE ARE NOT ABLE TO GENERATE TEST DATA SO SKIPPING TWO STREAMS(mark_as_spam, dropped_email)
-            if stream in ["mark_as_spam", "dropped_email"]:
-                continue
-            
             with self.subTest(stream=stream):
 
                 # expected values
