@@ -29,6 +29,9 @@ class BookmarkTest(KlaviyoBaseTest):
         """
         
         expected_streams = self.expected_streams()
+        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
+        expected_streams = expected_streams - {"mark_as_spam", "dropped_email"}
+        
         expected_bookmark_keys = self.expected_bookmark_keys()
         expected_replication_methods = self.expected_replication_method()
         
@@ -76,12 +79,7 @@ class BookmarkTest(KlaviyoBaseTest):
         ##########################################################################
 
 
-        for stream in expected_streams:
-            
-            # WE ARE NOT ABLE TO GENERATE TEST DATA SO SKIPPING TWO STREAMS(mark_as_spam, dropped_email)
-            if stream in ["mark_as_spam", "dropped_email"]:
-                continue
-            
+        for stream in expected_streams:            
             with self.subTest(stream=stream):
 
                 # expected values
