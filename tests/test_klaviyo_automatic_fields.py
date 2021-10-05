@@ -18,10 +18,8 @@ class AutomaticFieldsTest(KlaviyoBaseTest):
         • Verify that only the automatic fields are sent to the target.
         • Verify that all replicated records have unique primary key values.
         """
-        expected_streams = self.expected_streams()
-        
         # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
-        expected_streams = expected_streams - {"mark_as_spam", "dropped_email"}
+        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
         
         conn_id = connections.ensure_connection(self)
 
