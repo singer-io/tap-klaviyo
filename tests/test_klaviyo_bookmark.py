@@ -32,6 +32,7 @@ class BookmarkTest(KlaviyoBaseTest):
         expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
         
         expected_bookmark_keys = self.expected_bookmark_keys()
+        expected_replication_keys = self.expected_replication_keys()
         expected_replication_methods = self.expected_replication_method()
         
         ##########################################################################
@@ -102,7 +103,7 @@ class BookmarkTest(KlaviyoBaseTest):
                 if expected_replication_method == self.INCREMENTAL:
 
                     # collect information specific to incremental streams from syncs 1 & 2
-                    replication_key = 'since' #As in it writes bookmark in key 'since' for all stream
+                    replication_key = list(expected_replication_keys[stream])[0] #Key in which state has been saved in state file
                     record_replication_key = list(expected_bookmark_keys[stream])[0]
 
                     first_bookmark_value = first_bookmark_key_value.get(replication_key)

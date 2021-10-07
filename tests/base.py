@@ -20,6 +20,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     INCREMENTAL = "INCREMENTAL"
     FULL_TABLE = "FULL_TABLE"
     BOOKMARK = "bookmark"
+    REPLICATION_KEYS = "REPLICATION_KEYS"
     START_DATE_FORMAT = "%Y-%m-%dT00:00:00Z"
     DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
     start_date = ""
@@ -61,55 +62,67 @@ class KlaviyoBaseTest(unittest.TestCase):
 
     def expected_metadata(self):
         """The expected primary key of the streams"""
+        # Added new REPLICATION_KEYS field as all incremental streams save the bookmark in `since` 
+        # field which is different from the bookmark key.
         return{
             "receive": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "click": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "open": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "bounce": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsubscribe": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "mark_as_spam": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "dropped_email": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsub_list": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "subscribe_list": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "update_email_preferences": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "global_exclusions": {
@@ -139,6 +152,12 @@ class KlaviyoBaseTest(unittest.TestCase):
     def expected_bookmark_keys(self):
         """return a dictionary with key of table name and value as a set of bookmark key fields"""
         return {table: properties.get(self.BOOKMARK, set())
+                for table, properties
+                in self.expected_metadata().items()}
+
+    def expected_replication_keys(self):
+        """return a dictionary with key of table name and value as a set of replication key fields"""
+        return {table: properties.get(self.REPLICATION_KEYS, set())
                 for table, properties
                 in self.expected_metadata().items()}
 
