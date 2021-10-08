@@ -3,7 +3,7 @@ import os
 from datetime import timedelta
 from datetime import datetime as dt
 import time
-
+import dateutil.parser
 import singer
 from tap_tester import connections, menagerie, runner
 
@@ -20,6 +20,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     INCREMENTAL = "INCREMENTAL"
     FULL_TABLE = "FULL_TABLE"
     BOOKMARK = "bookmark"
+    REPLICATION_KEYS = "REPLICATION_KEYS"
     START_DATE_FORMAT = "%Y-%m-%dT00:00:00Z"
     DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
     start_date = ""
@@ -61,55 +62,67 @@ class KlaviyoBaseTest(unittest.TestCase):
 
     def expected_metadata(self):
         """The expected primary key of the streams"""
+        # Added new REPLICATION_KEYS field as all incremental streams save the bookmark in `since` 
+        # field which is different from the bookmark key.
         return{
             "receive": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "click": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "open": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "bounce": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsubscribe": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "mark_as_spam": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "dropped_email": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsub_list": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "subscribe_list": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "update_email_preferences": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "global_exclusions": {
@@ -139,6 +152,12 @@ class KlaviyoBaseTest(unittest.TestCase):
     def expected_bookmark_keys(self):
         """return a dictionary with key of table name and value as a set of bookmark key fields"""
         return {table: properties.get(self.BOOKMARK, set())
+                for table, properties
+                in self.expected_metadata().items()}
+
+    def expected_replication_keys(self):
+        """return a dictionary with key of table name and value as a set of replication key fields"""
+        return {table: properties.get(self.REPLICATION_KEYS, set())
                 for table, properties
                 in self.expected_metadata().items()}
 
@@ -280,6 +299,25 @@ class KlaviyoBaseTest(unittest.TestCase):
             connections.select_catalog_and_fields_via_metadata(
                 conn_id, catalog, schema, [], non_selected_properties)
 
+    def calculated_states_by_stream(self, current_state):
+        timedelta_by_stream = {stream: [0,0,1]  # {stream_name: [days, hours, minutes], ...}
+                               for stream in self.expected_streams()}
+        
+        stream_to_calculated_state = {stream: "" for stream in current_state['bookmarks'].keys()}
+        for stream, state in current_state['bookmarks'].items():
+            state_key, state_value = next(iter(state.keys())), next(iter(state.values()))
+            state_as_datetime = dateutil.parser.parse(state_value)
+
+            days, hours, minutes = timedelta_by_stream[stream]
+            calculated_state_as_datetime = state_as_datetime - timedelta(days=days, hours=hours, minutes=minutes)
+
+            state_format = '%Y-%m-%dT%H:%M:%SZ'
+            calculated_state_formatted = dt.strftime(calculated_state_as_datetime, state_format)
+
+            stream_to_calculated_state[stream] = {state_key: calculated_state_formatted}
+
+        return stream_to_calculated_state
+    
     def timedelta_formatted(self, dtime, days=0):
         date_stripped = dt.strptime(dtime, self.START_DATE_FORMAT)
         return_date = date_stripped + timedelta(days=days)
