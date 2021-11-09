@@ -117,41 +117,52 @@ def get_full_pulls(resource, endpoint, api_key):
 
             singer.write_records(resource['stream'], records)
 
+
+def request_with_retry(endpoint, params):
+    while True:
+        r = session.get(endpoint, params=params)
+
+        if r.status_code == 429:
+            retry_after = int(r.headers['retry-after'])
+            time.sleep(retry_after)
+            continue
+        return r.json()
+
+
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
             lists = response.json()
             lists = lists['data']
             total_lists = len(lists)
+            pushed_profile_ids = []
             current_list = 0
             for list in lists:
                 current_list += 1
                 logger.info("Syncing list " + list['id'] + " : " + str(current_list) + " of " + str(total_lists))
-                get_all_members_single_list(list['id'], api_key, resource['stream'], counter)
 
+                endpoint = 'https://a.klaviyo.com/api/v2/group/' + list['id'] + '/members/all'
+                marker = None
 
-def get_all_members_single_list(list_id, api_key, resource_stream, counter):
+                while True:
+                    data = request_with_retry(endpoint, params={'api_key': api_key, 'marker': marker})
 
-    endpoint = 'https://a.klaviyo.com/api/v2/group/' + list_id + '/members/all'
-    marker = None
-
-    while True:
-        r = session.get(endpoint, params={'api_key': api_key, 'marker': marker})
-        data = json.loads(r.content)
-        if r.status_code == 429:
-            retry_after = int(r.headers['retry-after'])
-            time.sleep(retry_after)
-            continue
-
-        if "records" not in data:
-            break
-        records = data['records']
-        for record in records:
-            record['list_id'] = list_id
-            counter.increment()
-        singer.write_records(resource_stream, records)
-        if "marker" in data:
-            marker = data['marker']
-        else:
-            break
-
+                    if "records" not in data:
+                        break
+                    records = data['records']
+                    if resource["tap_stream_id"] == "profiles":
+                        for record in records:
+                            if record["id"] not in pushed_profile_ids:
+                                endpoint = f"https://a.klaviyo.com/api/v1/person/{record['id']}"
+                                data = request_with_retry(endpoint, params={'api_key': api_key})
+                                singer.write_records(resource['stream'], [data])
+                                pushed_profile_ids.append(record["id"])
+                    else:
+                        for record in records:
+                            record['list_id'] = list['id']
+                            counter.increment()
+                        singer.write_records(resource['stream'], records)
+                    if "marker" in data:
+                        marker = data['marker']
+                    else:
+                        break

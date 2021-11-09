@@ -2,7 +2,6 @@
 
 import json
 import os
-import sys
 import singer
 from singer import metadata
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages, get_list_members_pull
@@ -112,6 +111,13 @@ LIST_MEMBERS = Stream(
     'FULL_TABLE'
 )
 
+PROFILES = Stream(
+    'profiles',
+    'profiles',
+    'id',
+    'FULL_TABLE'
+)
+
 CAMPAIGNS = Stream(
     'campaigns',
     'campaigns',
@@ -119,7 +125,7 @@ CAMPAIGNS = Stream(
     'FULL_TABLE'
 )
 
-FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS]
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS, PROFILES]
 
 
 def get_abs_path(path):
@@ -149,7 +155,7 @@ def do_sync(config, state, catalog):
             stream['schema'],
             stream['key_properties']
         )
-        if stream['tap_stream_id'] == 'list_members':
+        if stream['tap_stream_id'] in ['list_members', 'profiles']:
             get_list_members_pull(stream, api_key)
         else:
             if stream['tap_stream_id'] in EVENT_MAPPINGS.values():
