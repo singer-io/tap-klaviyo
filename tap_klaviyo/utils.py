@@ -155,6 +155,7 @@ def get_list_members_pull(resource, api_key):
                             if record["id"] not in pushed_profile_ids:
                                 endpoint = f"https://a.klaviyo.com/api/v1/person/{record['id']}"
                                 data = request_with_retry(endpoint, params={'api_key': api_key})
+                                data = singer.transform(data, resource['schema'])
                                 singer.write_records(resource['stream'], [data])
                                 pushed_profile_ids.append(record["id"])
                     else:
