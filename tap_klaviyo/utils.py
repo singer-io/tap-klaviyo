@@ -5,8 +5,12 @@ from singer import metrics, metadata, Transformer
 import requests
 import backoff
 import simplejson
+from requests import Timeout, ConnectionError
 
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
+
+# set default timeout of 300 seconds
+REQUEST_TIMEOUT = 300
 
 session = requests.Session()
 logger = singer.get_logger()
@@ -107,9 +111,13 @@ def get_latest_event_time(events):
     return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
 
 @backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoInternalServiceError), max_tries=3)
+# during 'Timeout' error there is also possibility of 'ConnectionError',
+# hence added backoff for 'ConnectionError' too.
+@backoff.on_exception(backoff.expo, Timeout, max_tries=5, factor=2)
+@backoff.on_exception(backoff.expo, ConnectionError, max_tries=5, factor=2)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
-        resp = session.request(method='get', url=url, params=params)
+        resp = session.request(method='get', url=url, params=params, timeout=get_request_timeout())
         
         if resp.status_code != 200:
             raise_for_error(resp)
@@ -185,3 +193,17 @@ def transfrom_and_write_records(events, stream):
                 transformer.transform(
                     event, event_schema, event_mdata
             ))
+
+# return the 'timeout'
+def get_request_timeout():
+    args = singer.utils.parse_args([])
+    # get the value of request timeout from config
+    config_request_timeout = args.config.get('request_timeout')
+
+    if config_request_timeout and float(config_request_timeout):
+        request_timeout = float(config_request_timeout)
+        # return the timeout from config
+        return request_timeout
+
+    # return default timeout
+    return REQUEST_TIMEOUT

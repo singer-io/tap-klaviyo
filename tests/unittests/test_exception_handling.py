@@ -59,17 +59,18 @@ def klaviyo_500_error(*args, **kwargs):
     return Mockresponse(status_code=500, raise_error=True)
 
 
+@mock.patch("tap_klaviyo.utils.get_request_timeout")
 class TestBackoff(unittest.TestCase):
 
     @mock.patch('requests.Session.request', side_effect=successful_200_request)
-    def test_200(self, successful_200_request):
+    def test_200(self, successful_200_request, mocked_get_request_timeout):
         test_data = {"tap": "klaviyo", "code": 200}
 
         actual_data = utils_.authed_get("", "", "").json()
         self.assertEquals(actual_data, test_data)
     
     @mock.patch('requests.Session.request', side_effect=klaviyo_400_error)
-    def test_400_error(self, klaviyo_400_error):
+    def test_400_error(self, klaviyo_400_error, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -77,7 +78,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 400, Error: Request is missing or has a bad parameter.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_401_error)
-    def test_401_error(self, klaviyo_401_error):
+    def test_401_error(self, klaviyo_401_error, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -85,7 +86,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 401, Error: Invalid authorization credentials.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error)
-    def test_403_error(self, klaviyo_403_error):
+    def test_403_error(self, klaviyo_403_error, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -93,7 +94,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_wrong_api_key)
-    def test_403_error_wrong_api_key(self, klaviyo_403_error_wrong_api_key):
+    def test_403_error_wrong_api_key(self, klaviyo_403_error_wrong_api_key, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -101,7 +102,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: The API key specified is invalid.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_missing_api_key)
-    def test_403_error_missing_api_key(self, klaviyo_403_error_missing_api_key):
+    def test_403_error_missing_api_key(self, klaviyo_403_error_missing_api_key, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -109,7 +110,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: You must specify an API key to make requests.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_404_error)
-    def test_404_error(self, klaviyo_404_error):
+    def test_404_error(self, klaviyo_404_error, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
@@ -117,7 +118,7 @@ class TestBackoff(unittest.TestCase):
             self.assertEquals(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_500_error)
-    def test_500_error(self, klaviyo_500_error):
+    def test_500_error(self, klaviyo_500_error, mocked_get_request_timeout):
 
         try:
             utils_.authed_get("", "", "")
