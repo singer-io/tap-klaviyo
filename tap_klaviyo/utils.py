@@ -109,11 +109,10 @@ def get_starting_point(stream, state, start_date):
 def get_latest_event_time(events):
     return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
 
-@backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoInternalServiceError), max_tries=3)
 # during 'Timeout' error there is also possibility of 'ConnectionError',
 # hence added backoff for 'ConnectionError' too.
-@backoff.on_exception(backoff.expo, requests.Timeout, max_tries=5, factor=2)
-@backoff.on_exception(backoff.expo, requests.ConnectionError, max_tries=5, factor=2)
+@backoff.on_exception(backoff.expo, (requests.Timeout, requests.ConnectionError), max_tries=5, factor=2)
+@backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoInternalServiceError), max_tries=3)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params, timeout=get_request_timeout())
