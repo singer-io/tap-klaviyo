@@ -31,6 +31,7 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
         "api_key": "pk_XYZ",
         "start_date": "2017-01-01T00:00:00Z",
         "user_agent": "email_address",
+        "request_timeout": 300
     }
     ```
 
