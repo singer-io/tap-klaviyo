@@ -1,13 +1,13 @@
 import datetime
 import time
+import backoff
+import simplejson
 import singer
+import urllib3.exceptions
 from singer import metrics
-import requests
-import json
 import requests
 
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%S"
-
 
 session = requests.Session()
 logger = singer.get_logger()
@@ -118,6 +118,10 @@ def get_full_pulls(resource, endpoint, api_key):
             singer.write_records(resource['stream'], records)
 
 
+@backoff.on_exception(backoff.expo, (
+        simplejson.scanner.JSONDecodeError, requests.exceptions.ConnectionError,
+        urllib3.exceptions.ProtocolError,ConnectionResetError),
+                      max_tries=10)
 def request_with_retry(endpoint, params):
     while True:
         r = session.get(endpoint, params=params)
