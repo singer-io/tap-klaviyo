@@ -134,7 +134,7 @@ class TestTimeoutAndConnectionErrorBackoff(unittest.TestCase):
         except requests.Timeout:
             pass
 
-        # verfiy that we backoff for 5 times
+        # verify that we backoff for 5 times
         self.assertEquals(5, mocked_request.call_count)
 
     def test_connection_error_backoff(self, mocked_parse_args, mocked_request, mocked_sleep):
@@ -152,6 +152,5 @@ class TestTimeoutAndConnectionErrorBackoff(unittest.TestCase):
         except requests.ConnectionError:
             pass
 
-        # verfiy that we backoff for 5 times
+        # verify that we backoff for 5 times
         self.assertEquals(5, mocked_request.call_count)
-    
