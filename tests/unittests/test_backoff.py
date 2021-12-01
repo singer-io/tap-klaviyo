@@ -7,10 +7,11 @@ from singer import metrics
 import json
 import requests
 
+@mock.patch("tap_klaviyo.utils.get_request_timeout")
 class TestBackoff(unittest.TestCase):
     
     @mock.patch('requests.Session.request')
-    def test_httperror(self, mocked_session):
+    def test_httperror(self, mocked_session, mocked_get_request_timeout):
 
         mock_resp = mock.Mock()
         
@@ -31,7 +32,7 @@ class TestBackoff(unittest.TestCase):
         self.assertEquals(mocked_session.call_count, 3)
 
     @mock.patch("requests.Session.request")
-    def test_jsondecode(self, mocked_request):
+    def test_jsondecode(self, mocked_request, mocked_get_request_timeout):
 
         mock_resp = mock.Mock()
 

@@ -24,13 +24,14 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
 
 2. Create the config file
 
-    Create a JSON file containing your API key, start date, and email.
+    Create a JSON file containing your API key, start date, email and request timeout (Optional parameter. Default value: 300 seconds).
 
     ```json
     {
         "api_key": "pk_XYZ",
         "start_date": "2017-01-01T00:00:00Z",
         "user_agent": "email_address",
+        "request_timeout": 300
     }
     ```
 
