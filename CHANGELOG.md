@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.1
+  * Added Request Timeout [#47](https://github.com/singer-io/tap-klaviyo/pull/47)
+
 ## 0.2.0
   * Add support for field selection [#25](https://github.com/singer-io/tap-klaviyo/pull/25)
   * Add retry mechanism [#30](https://github.com/singer-io/tap-klaviyo/pull/30)
