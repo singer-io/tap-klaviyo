@@ -55,10 +55,9 @@ def get_latest_event_time(events):
     return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
 
 
-@backoff.on_exception(backoff.expo, (
-        simplejson.scanner.JSONDecodeError, requests.exceptions.ConnectionError,
-        urllib3.exceptions.ProtocolError, ConnectionResetError),
-                      max_tries=10)
+@backoff.on_exception(backoff.expo, (requests.exceptions.ConnectionError,
+                                     urllib3.exceptions.ProtocolError, ConnectionResetError),
+                      max_tries=5)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params)
