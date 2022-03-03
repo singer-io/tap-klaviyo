@@ -138,11 +138,11 @@ def request_with_retry(endpoint, params):
 
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
+        pushed_profile_ids = []
         for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
             lists = response.json()
             lists = lists['data']
             total_lists = len(lists)
-            pushed_profile_ids = []
             current_list = 0
             for list in lists:
                 current_list += 1
