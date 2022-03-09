@@ -142,7 +142,7 @@ def get_list_members_pull(resource, api_key):
             lists = response.json()
             lists = lists['data']
             total_lists = len(lists)
-            pushed_profile_ids = []
+            pushed_profile_ids = set()
             current_list = 0
             for list in lists:
                 current_list += 1
@@ -164,7 +164,7 @@ def get_list_members_pull(resource, api_key):
                                 data = request_with_retry(endpoint, params={'api_key': api_key})
                                 data = singer.transform(data, resource['schema'])
                                 singer.write_records(resource['stream'], [data])
-                                pushed_profile_ids.append(record["id"])
+                                pushed_profile_ids.add(record["id"])
                     else:
                         for record in records:
                             record['list_id'] = list['id']
