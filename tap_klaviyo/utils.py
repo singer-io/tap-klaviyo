@@ -57,7 +57,7 @@ def get_latest_event_time(events):
 
 @backoff.on_exception(backoff.expo, (requests.exceptions.ConnectionError,
                                      urllib3.exceptions.ProtocolError, ConnectionResetError),
-                      max_tries=5)
+                      max_tries=10)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params)
