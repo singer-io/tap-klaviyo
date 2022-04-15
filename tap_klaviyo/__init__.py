@@ -12,6 +12,7 @@ ENDPOINTS = {
     'metrics': 'https://a.klaviyo.com/api/v1/metrics',
     'metric': 'https://a.klaviyo.com/api/v1/metric/',
     'campaigns': 'https://a.klaviyo.com/api/v1/campaigns',
+    'flows': 'https://a.klaviyo.com/api/v1/flows',
 }
 
 EVENT_MAPPINGS = {
@@ -125,7 +126,14 @@ CAMPAIGNS = Stream(
     'FULL_TABLE'
 )
 
-FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS, PROFILES]
+FLOWS = Stream(
+    'flows',
+    'flows',
+    'id',
+    'FULL_TABLE'
+)
+
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS, PROFILES, FLOWS]
 
 
 def get_abs_path(path):
