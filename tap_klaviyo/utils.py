@@ -56,13 +56,13 @@ def get_latest_event_time(events):
 
 
 @backoff.on_exception(backoff.expo, (requests.exceptions.ConnectionError,
-                                     urllib3.exceptions.ProtocolError, ConnectionResetError),
+                                     urllib3.exceptions.ProtocolError, ConnectionResetError, simplejson.scanner.JSONDecodeError),
                       max_tries=10)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params)
         timer.tags[metrics.Tag.http_status_code] = resp.status_code
-        return resp
+        return resp.json()
 
 
 def get_all_using_next(stream, url, api_key, since=None):
@@ -71,8 +71,8 @@ def get_all_using_next(stream, url, api_key, since=None):
                                      'since': since,
                                      'sort': 'asc'})
         yield r
-        if 'next' in r.json() and r.json()['next']:
-            since = r.json()['next']
+        if 'next' in r and r['next']:
+            since = r['next']
         else:
             break
 
@@ -82,7 +82,7 @@ def get_all_pages(source, url, api_key):
     while True:
         r = authed_get(source, url, {'page': page, 'api_key': api_key})
         yield r
-        if r.json()['end'] < r.json()['total'] - 1:
+        if r['end'] < r['total'] - 1:
             page += 1
         else:
             break
@@ -99,7 +99,7 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
         for response in get_all_using_next(
                 stream['stream'], url, api_key,
                 latest_event_time):
-            events = response.json().get('data')
+            events = response.get('data')
             if events:
                 counter.increment(len(events))
 
@@ -114,7 +114,7 @@ def get_incremental_pull(stream, endpoint, state, api_key, start_date):
 def get_full_pulls(resource, endpoint, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         for response in get_all_pages(resource['stream'], endpoint, api_key):
-            records = response.json().get('data')
+            records = response.get('data')
 
             counter.increment(len(records))
 
@@ -140,7 +140,7 @@ def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         pushed_profile_ids = set()
         for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
-            lists = response.json()
+            lists = response
             lists = lists['data']
             total_lists = len(lists)
             current_list = 0

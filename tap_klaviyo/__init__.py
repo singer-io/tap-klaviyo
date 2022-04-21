@@ -178,7 +178,7 @@ def get_available_metrics(api_key):
     for response in get_all_pages('metric_list',
                                   ENDPOINTS['metrics'], api_key):
 
-        for metric in response.json().get('data'):
+        for metric in response.get('data'):
             if metric['name'] in EVENT_MAPPINGS:
                 metric_streams.append(
                     Stream(
