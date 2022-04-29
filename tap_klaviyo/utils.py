@@ -144,6 +144,8 @@ def get_list_members_pull(resource, api_key):
             lists = lists['data']
             total_lists = len(lists)
             current_list = 0
+            records_on_list = []
+            duplicated_profiles = 0
             for list in lists:
                 current_list += 1
                 logger.info("Syncing list " + list['id'] + " : " + str(current_list) + " of " + str(total_lists))
@@ -157,6 +159,8 @@ def get_list_members_pull(resource, api_key):
                     if "records" not in data:
                         break
                     records = data['records']
+                    logger.info("This list " + list['id'] + " has : " + str(len(records)))
+                    records_on_list.append(len(records))
                     if resource["tap_stream_id"] == "profiles":
                         for record in records:
                             if record["id"] not in pushed_profile_ids:
@@ -165,6 +169,8 @@ def get_list_members_pull(resource, api_key):
                                 data = singer.transform(data, resource['schema'])
                                 singer.write_records(resource['stream'], [data])
                                 pushed_profile_ids.add(record["id"])
+                            else:
+                                duplicated_profiles += 1
                     else:
                         for record in records:
                             record['list_id'] = list['id']
@@ -174,3 +180,7 @@ def get_list_members_pull(resource, api_key):
                         marker = data['marker']
                     else:
                         break
+
+        logger.info("Total number pushed profiles on" + " : " + str(len(pushed_profile_ids)))
+        logger.info("Sum of profiles in lists" + " : " + str(sum(records_on_list)))
+        logger.info("Number of duplicated profiles" + " : " + str(duplicated_profiles))
