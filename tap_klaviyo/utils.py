@@ -135,6 +135,10 @@ def request_with_retry(endpoint, params):
             continue
         return r.json()
 
+# def get_data(endpoint, params):
+#     data = request_with_retry(endpoint, params)
+#     return data
+
 
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
@@ -150,12 +154,15 @@ def get_list_members_pull(resource, api_key):
                 current_list += 1
                 logger.info("Syncing list " + list['id'] + " : " + str(current_list) + " of " + str(total_lists))
 
-                endpoint = 'https://a.klaviyo.com/api/v2/group/' + list['id'] + '/members/all'
+                list_endpoint = 'https://a.klaviyo.com/api/v2/group/' + list['id'] + '/members/all'
+                next_marker = True
                 marker = None
-
-                while True:
-                    data = request_with_retry(endpoint, params={'api_key': api_key, 'marker': marker})
-
+                while next_marker:
+                    data = request_with_retry(list_endpoint, params={'api_key': api_key, 'marker': marker})
+                    # if "marker" in data:
+                    #     next_marker = True
+                    #     marker = data['marker']
+                    # else: next_marker = False
                     if "records" not in data:
                         break
                     records = data['records']
@@ -165,9 +172,9 @@ def get_list_members_pull(resource, api_key):
                         for record in records:
                             if record["id"] not in pushed_profile_ids:
                                 endpoint = f"https://a.klaviyo.com/api/v1/person/{record['id']}"
-                                data = request_with_retry(endpoint, params={'api_key': api_key})
-                                data = singer.transform(data, resource['schema'])
-                                singer.write_records(resource['stream'], [data])
+                                datas = request_with_retry(endpoint, params={'api_key': api_key})
+                                datas = singer.transform(datas, resource['schema'])
+                                singer.write_records(resource['stream'], [datas])
                                 pushed_profile_ids.add(record["id"])
                             else:
                                 duplicated_profiles += 1
@@ -178,6 +185,7 @@ def get_list_members_pull(resource, api_key):
                         singer.write_records(resource['stream'], records)
                     if "marker" in data:
                         marker = data['marker']
+                        next_marker = True
                     else:
                         break
 
