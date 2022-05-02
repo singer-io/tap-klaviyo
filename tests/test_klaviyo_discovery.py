@@ -25,10 +25,9 @@ class DiscoveryTest(KlaviyoBaseTest):
         • verify the actual replication matches our expected replication method
         • verify that primary keys and bookmarks are given the inclusion of automatic.
         • verify that all other fields have inclusion of available metadata.
-        • verify no duplicate metadata entries
+        • verify there are no duplicate metadata entries
         • verify replication key(s)
-        • verify if there is replication key,
-          replication methos is INCREMENTAL otherwise FULL_TABLE
+        • verify that if there is a replication key we are doing INCREMENTAL otherwise FULL
         """
         streams_to_test = self.expected_streams()
 
@@ -71,7 +70,7 @@ class DiscoveryTest(KlaviyoBaseTest):
                 actual_replication_keys = stream_properties[0].get(
                     "metadata", {self.REPLICATION_KEYS: None}).get(self.REPLICATION_KEYS)
                 
-                # verify to no duplicate metadata
+                # verify there are no duplicate metadata entries
                 for md in metadata:
                     self.assertEqual(metadata.count(md),1,msg="There is duplicated metadata in '{}' stream".format(stream))
                 
@@ -100,7 +99,7 @@ class DiscoveryTest(KlaviyoBaseTest):
                 #     self.assertIsNone(actual_replication_keys)
                     
                 
-                # verify if replication key is given, replication-method is INCREMENTAL or FULL_TABLE
+                # verify that if there is a replication key we are doing INCREMENTAL otherwise FULL
                 if expected_replication_keys:
                     self.assertEqual(actual_replication_method,self.INCREMENTAL)
                 else:

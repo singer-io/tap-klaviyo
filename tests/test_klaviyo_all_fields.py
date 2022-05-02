@@ -14,7 +14,7 @@ class TestKlaviyoAllFields(KlaviyoBaseTest):
         """
         Assert given conditions:
         • verify no unexpected streams are replicated
-        • Verify that more than automatic fields are replicated
+        • Verify that more than just the automatic fields are replicated for each stream. 
         • Verify all fields for each streams are replicated
 
         """
