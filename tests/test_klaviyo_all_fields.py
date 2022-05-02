@@ -7,7 +7,7 @@ class TestKlaviyoAllFields(KlaviyoBaseTest):
     """Ensure running the tap with all streams and fields selected results in the replication of all fields."""
 
     def name(self):
-        return "Klaviyo_all_fields"
+        return "tap_tester_klaviyo__all_fields"
     
     def test_all_fields_run(self):
 
