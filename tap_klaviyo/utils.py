@@ -60,7 +60,7 @@ def get_latest_event_time(events):
                       max_tries=10)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
-        resp = session.request(method='get', url=url, params=params)
+        resp = session.request(method='get', url=url, params=params, proxies={"https": "http://localhost:8866"}, verify=False)
         timer.tags[metrics.Tag.http_status_code] = resp.status_code
         return resp.json()
 
@@ -143,13 +143,13 @@ def request_with_retry(endpoint, params):
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         pushed_profile_ids = set()
+        records_on_list = []
+        duplicated_profiles = 0
         for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
             lists = response
             lists = lists['data']
             total_lists = len(lists)
             current_list = 0
-            records_on_list = []
-            duplicated_profiles = 0
             for list in lists:
                 current_list += 1
                 logger.info("Syncing list " + list['id'] + " : " + str(current_list) + " of " + str(total_lists))
