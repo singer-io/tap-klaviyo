@@ -22,8 +22,8 @@ class PaginationTest(KlaviyoBaseTest):
         page_size = 100 # Page size for opened emails
         conn_id = connections.ensure_connection(self)
 
-        # Expected stream is only opened emails
-        expected_streams = ["open"]
+        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
+        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
         found_catalogs = self.run_and_verify_check_mode(conn_id)
 
         # table and field selection

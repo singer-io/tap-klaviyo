@@ -25,6 +25,10 @@ class DiscoveryTest(KlaviyoBaseTest):
         • verify the actual replication matches our expected replication method
         • verify that primary keys and bookmarks are given the inclusion of automatic.
         • verify that all other fields have inclusion of available metadata.
+        • verify no duplicate metadata entries
+        • verify replication key(s)
+        • verify if there is replication key,
+          replication methos is INCREMENTAL otherwise FULL_TABLE
         """
         streams_to_test = self.expected_streams()
 
@@ -49,6 +53,7 @@ class DiscoveryTest(KlaviyoBaseTest):
                 expected_primary_keys = self.expected_primary_keys()[stream]
                 expected_replication_method = self.expected_replication_method()[stream]
                 expected_automatic_fields = self.expected_automatic_fields()[stream]
+                expected_replication_keys = self.expected_replication_keys()[stream]
 
                 # collecting actual values...
                 schema_and_metadata = menagerie.get_annotated_schema(conn_id, catalog['stream_id'])
@@ -63,6 +68,13 @@ class DiscoveryTest(KlaviyoBaseTest):
                     item.get("breadcrumb", ["properties", None])[1] for item in metadata
                     if item.get("metadata").get("inclusion") == "automatic"
                 )
+                actual_replication_keys = stream_properties[0].get(
+                    "metadata", {self.REPLICATION_KEYS: None}).get(self.REPLICATION_KEYS)
+                
+                # verify to no duplicate metadata
+                for md in metadata:
+                    self.assertEqual(metadata.count(md),1,msg="There is duplicated metadata in '{}' stream".format(stream))
+                
 
                 # verify there is only 1 top level breadcrumb in metadata
                 self.assertTrue(len(stream_properties) == 1,
@@ -78,6 +90,21 @@ class DiscoveryTest(KlaviyoBaseTest):
                 self.assertEqual(
                     expected_replication_method, actual_replication_method,
                 )
+                
+                # Currently, Tap is not writing the replication key in the metadata of the catalog 
+                # https://jira.talendforge.org/browse/TDL-18809
+                # # verify replication keys match expections
+                # if actual_replication_method==self.INCREMENTAL:
+                #     self.assertEqual(expected_replication_keys,actual_replication_keys)
+                # else:
+                #     self.assertIsNone(actual_replication_keys)
+                    
+                
+                # verify if replication key is given, replication-method is INCREMENTAL or FULL_TABLE
+                if expected_replication_keys:
+                    self.assertEqual(actual_replication_method,self.INCREMENTAL)
+                else:
+                    self.assertEqual(actual_replication_method,self.FULL_TABLE)  
 
                 # verify that primary keys and bookmark keys are given the inclusion of automatic in metadata.
                 self.assertSetEqual(expected_automatic_fields, actual_automatic_fields)
