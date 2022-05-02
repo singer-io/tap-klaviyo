@@ -67,10 +67,11 @@ class DiscoveryTest(KlaviyoBaseTest):
                     item.get("breadcrumb", ["properties", None])[1] for item in metadata
                     if item.get("metadata").get("inclusion") == "automatic"
                 )
-                actual_replication_keys = stream_properties[0].get(
-                    "metadata", {self.REPLICATION_KEYS: None}).get(self.REPLICATION_KEYS)
+                actual_replication_keys = set()
+                actual_replication_keys.add(stream_properties[0].get(
+                    "metadata", {self.REPLICATION_KEYS: None}).get(self.REPLICATION_KEYS))
                 
-                # verify there are no duplicate metadata entries
+                # verify to no duplicate metadata
                 for md in metadata:
                     self.assertEqual(metadata.count(md),1,msg="There is duplicated metadata in '{}' stream".format(stream))
                 
@@ -90,13 +91,11 @@ class DiscoveryTest(KlaviyoBaseTest):
                     expected_replication_method, actual_replication_method,
                 )
                 
-                # Currently, Tap is not writing the replication key in the metadata of the catalog 
-                # https://jira.talendforge.org/browse/TDL-18809
-                # # verify replication keys match expections
-                # if actual_replication_method==self.INCREMENTAL:
-                #     self.assertEqual(expected_replication_keys,actual_replication_keys)
-                # else:
-                #     self.assertIsNone(actual_replication_keys)
+                # verify replication keys match expections
+                if actual_replication_method==self.INCREMENTAL:
+                    self.assertEqual(expected_replication_keys,actual_replication_keys)
+                else:
+                    self.assertIsNone(next(iter(actual_replication_keys)))
                     
                 
                 # verify that if there is a replication key we are doing INCREMENTAL otherwise FULL
