@@ -20,7 +20,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     INCREMENTAL = "INCREMENTAL"
     FULL_TABLE = "FULL_TABLE"
     BOOKMARK = "bookmark"
-    REPLICATION_KEYS = "REPLICATION_KEYS"
+    REPLICATION_KEYS = "valid-replication-keys"
     START_DATE_FORMAT = "%Y-%m-%dT00:00:00Z"
     DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
     start_date = ""

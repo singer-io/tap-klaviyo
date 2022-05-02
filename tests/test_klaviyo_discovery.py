@@ -69,9 +69,9 @@ class DiscoveryTest(KlaviyoBaseTest):
                 )
                 actual_replication_keys = set()
                 actual_replication_keys.add(stream_properties[0].get(
-                    "metadata", {self.REPLICATION_KEYS: None}).get(self.REPLICATION_KEYS))
+                    "metadata", {self.REPLICATION_KEYS: []}).get(self.REPLICATION_KEYS))
                 
-                # verify to no duplicate metadata
+                # verify there are no duplicate metadata entries
                 for md in metadata:
                     self.assertEqual(metadata.count(md),1,msg="There is duplicated metadata in '{}' stream".format(stream))
                 
