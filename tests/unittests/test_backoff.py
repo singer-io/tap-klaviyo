@@ -14,7 +14,7 @@ class TestBackoff(unittest.TestCase):
     
     def test_internal_service_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoInternalServiceError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoInternalServiceError.
         """
         mock_resp = mock.Mock()
         
@@ -37,7 +37,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_jsondecode(self, mocked_request, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of JSONDecodeError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of JSONDecodeError.
         """
         mock_resp = mock.Mock()
 
@@ -56,7 +56,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_not_implemented_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoNotImplementedError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoNotImplementedError.
         """
         mock_resp = mock.Mock()
         
@@ -79,7 +79,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_bad_gateway_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoBadGatewayError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoBadGatewayError.
         """
         mock_resp = mock.Mock()
         
@@ -102,7 +102,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_service_unavailable_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoServiceUnavailableError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoServiceUnavailableError.
         """
         mock_resp = mock.Mock()
         
@@ -125,7 +125,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_gateway_timeout_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoGatewayTimeoutError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoGatewayTimeoutError.
         """
         mock_resp = mock.Mock()
         
@@ -148,7 +148,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_server_timeout_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoServerTimeoutError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoServerTimeoutError.
         """
         mock_resp = mock.Mock()
         
@@ -172,7 +172,7 @@ class TestBackoff(unittest.TestCase):
 
     def test_rate_limit_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
-        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoRateLimitError.
+        Check whether the request backoffs properly for authed_get() for 3 times in case of KlaviyoRateLimitError.
         """
         mock_resp = mock.Mock()
         
