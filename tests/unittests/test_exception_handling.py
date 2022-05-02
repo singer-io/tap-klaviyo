@@ -212,4 +212,4 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "")
         except utils_.KlaviyoServerTimeoutError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 524, Error: Server server took too long to respond to the request.")
+            self.assertEquals(str(e), "HTTP-error-code: 524, Error: Server took too long to respond to the request.")

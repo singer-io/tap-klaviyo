@@ -96,7 +96,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     },
     524: {
         "raise_exception": KlaviyoServerTimeoutError,
-        "message": "Server server took too long to respond to the request."
+        "message": "Server took too long to respond to the request."
     },
 }
 
