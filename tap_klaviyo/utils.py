@@ -72,7 +72,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     },
     429: {
         "raise_exception": KlaviyoRateLimitError,
-        "message": "The API rate limit for your organisation/application pairing has been exceeded."
+        "message": "The API rate limit for your organization/application pairing has been exceeded."
     },
     500: {
         "raise_exception": KlaviyoInternalServiceError,

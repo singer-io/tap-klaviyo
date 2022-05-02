@@ -58,6 +58,10 @@ def klaviyo_500_error(*args, **kwargs):
 
     return Mockresponse(status_code=500, raise_error=True)
 
+def klaviyo_429_error(*args, **kwargs):
+
+    return Mockresponse(status_code=429, raise_error=True)
+
 def klaviyo_501_error(*args, **kwargs):
 
     return Mockresponse(status_code=501, raise_error=True)
@@ -158,6 +162,17 @@ class TestBackoff(unittest.TestCase):
             utils_.authed_get("", "", "")
         except utils_.KlaviyoInternalServiceError as e:
             self.assertEquals(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")
+
+    @mock.patch('time.sleep')
+    @mock.patch('requests.Session.request', side_effect=klaviyo_429_error)
+    def test_429_error(self, klaviyo_429_error, mocked_sleep, mocked_get_request_timeout):
+        """
+        Test that `authed_get` raise 429 error with proper message
+        """
+        try:
+            utils_.authed_get("", "", "")
+        except utils_.KlaviyoRateLimitError as e:
+            self.assertEquals(str(e), "HTTP-error-code: 429, Error: The API rate limit for your organization/application pairing has been exceeded.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_501_error)

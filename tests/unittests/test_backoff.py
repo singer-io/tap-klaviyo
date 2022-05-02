@@ -146,7 +146,7 @@ class TestBackoff(unittest.TestCase):
         # verify that we backoff for 3 times
         self.assertEquals(mocked_session.call_count, 3)
 
-    def test_server_timeout_perror(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
+    def test_server_timeout_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
         Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoServerTimeoutError.
         """
@@ -164,6 +164,30 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "")
         except utils_.KlaviyoServerTimeoutError:
+            pass
+
+        # verify that we backoff for 3 times
+        self.assertEquals(mocked_session.call_count, 3)
+    
+
+    def test_rate_limit_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
+        """
+        Check whether the request backoffs properly for authed_get() for 5 times in case of KlaviyoRateLimitError.
+        """
+        mock_resp = mock.Mock()
+        
+        klaviyo_error = utils_.KlaviyoRateLimitError()
+        http_error = requests.HTTPError()
+
+        mock_resp.raise_for_error.side_effect = klaviyo_error
+        mock_resp.raise_for_status.side_effect = http_error
+        mock_resp.status_code = 429
+        
+        mocked_session.return_value = mock_resp
+
+        try:
+            utils_.authed_get("", "", "")
+        except utils_.KlaviyoRateLimitError:
             pass
 
         # verify that we backoff for 3 times
