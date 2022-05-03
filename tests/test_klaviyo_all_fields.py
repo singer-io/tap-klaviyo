@@ -30,7 +30,7 @@ class TestKlaviyoAllFields(KlaviyoBaseTest):
         
         # table and field selection
         test_catalogs_all_fields = [catalog for catalog in found_catalogs
-                            if catalog.get("tap_stream_id") in expected_streams]
+                            if catalog.get("stream") in expected_streams]
 
         # perform table and field selections
         self.perform_and_verify_table_and_field_selection(conn_id, test_catalogs_all_fields)
