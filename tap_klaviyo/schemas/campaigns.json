@@ -11,6 +11,38 @@
         "from_name": {
             "type": "string"
         },
+        "list_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "template": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {
+                "object": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "id": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "html": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
         "status_id": {
             "type": "integer"
         },
