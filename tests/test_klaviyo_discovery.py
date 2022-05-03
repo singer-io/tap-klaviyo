@@ -92,12 +92,10 @@ class DiscoveryTest(KlaviyoBaseTest):
                     expected_replication_method, actual_replication_method,
                 )
                 
-                # Currently, Tap is not writing the replication key in the metadata of the catalog
-                # https://jira.talendforge.org/browse/TDL-18809
-                # # verify replication keys match expections
-                # self.assertEqual(expected_replication_keys, actual_replication_keys,
-                #                  msg="expected replication key {} but actual is {}".format(
-                #                      expected_replication_keys, actual_replication_keys))
+                # verify replication keys match expections
+                self.assertEqual(expected_replication_keys, actual_replication_keys,
+                                 msg="expected replication key {} but actual is {}".format(
+                                     expected_replication_keys, actual_replication_keys))
                     
                 
                 # verify that if there is a replication key we are doing INCREMENTAL otherwise FULL
