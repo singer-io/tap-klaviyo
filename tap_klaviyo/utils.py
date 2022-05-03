@@ -60,7 +60,7 @@ def get_latest_event_time(events):
                       max_tries=10)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
-        resp = session.request(method='get', url=url, params=params, proxies={"https": "http://localhost:8866"}, verify=False)
+        resp = session.request(method='get', url=url, params=params)
         timer.tags[metrics.Tag.http_status_code] = resp.status_code
         return resp.json()
 
@@ -159,10 +159,6 @@ def get_list_members_pull(resource, api_key):
                 marker = None
                 while next_marker:
                     data = request_with_retry(list_endpoint, params={'api_key': api_key, 'marker': marker})
-                    # if "marker" in data:
-                    #     next_marker = True
-                    #     marker = data['marker']
-                    # else: next_marker = False
                     if "records" not in data:
                         break
                     records = data['records']
