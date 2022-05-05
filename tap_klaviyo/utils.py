@@ -143,8 +143,6 @@ def request_with_retry(endpoint, params):
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
         pushed_profile_ids = set()
-        records_on_list = []
-        duplicated_profiles = 0
         for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/lists', api_key):
             lists = response
             lists = lists['data']
@@ -163,7 +161,6 @@ def get_list_members_pull(resource, api_key):
                         break
                     records = data['records']
                     logger.info("This list " + list['id'] + " has : " + str(len(records)))
-                    records_on_list.append(len(records))
                     if resource["tap_stream_id"] == "profiles":
                         for record in records:
                             if record["id"] not in pushed_profile_ids:
@@ -172,8 +169,6 @@ def get_list_members_pull(resource, api_key):
                                 datas = singer.transform(datas, resource['schema'])
                                 singer.write_records(resource['stream'], [datas])
                                 pushed_profile_ids.add(record["id"])
-                            else:
-                                duplicated_profiles += 1
                     else:
                         for record in records:
                             record['list_id'] = list['id']
@@ -184,7 +179,3 @@ def get_list_members_pull(resource, api_key):
                         next_marker = True
                     else:
                         break
-
-        logger.info("Total number pushed profiles on" + " : " + str(len(pushed_profile_ids)))
-        logger.info("Sum of profiles in lists" + " : " + str(sum(records_on_list)))
-        logger.info("Number of duplicated profiles" + " : " + str(duplicated_profiles))
