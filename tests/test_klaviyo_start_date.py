@@ -15,17 +15,31 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
         return "tap_tester_klaviyo_start_date_test"
 
     def test_run(self):
+
+        # running start_date_test for old streams
+        expected_streams_1 = {"receive", "click", "open", "bounce", "unsubscribe", "unsub_list", "subscribe_list",
+                              "update_email_preferences","global_exclusions","lists","campaigns"}
+        self.run_start_date(expected_streams_1, days = 3)
+
+        # running start_date_test for newly added streams
+        expected_streams_2 = {"clicked_sms", "unsubscribed_from_sms", "consented_to_receive", "sent_sms",
+                              "received_automated_response", "received_sms"}
+        self.run_start_date(expected_streams_2, days=374)
+
+        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
+        # Skipping given streams due to data available only on a single date -  failed_to_deliver_automated_response, failed_to_deliver
+
+
+    def run_start_date(self, expected_streams, days = 0):
         """Instantiate start date according to the desired data set and run the test"""
 
         self.start_date_1 = self.get_properties().get('start_date')
-        self.start_date_2 = self.timedelta_formatted(self.start_date_1, days=3)
+        self.start_date_2 = self.timedelta_formatted(self.start_date_1, days=days)
 
         start_date_1_epoch = self.dt_to_ts(self.start_date_1)
         start_date_2_epoch = self.dt_to_ts(self.start_date_2)
 
         self.start_date = self.start_date_1
-
-        expected_streams = self.expected_streams()
 
         ##########################################################################
         ### First Sync
