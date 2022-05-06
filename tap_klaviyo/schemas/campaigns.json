@@ -21,7 +21,13 @@
             "type": "integer"
         },
         "lists": {
-            "$ref": "lists.json"
+            "type": [
+                "null",
+                "array"
+            ],
+            "items":{
+                "$ref": "shared/list.json#/"
+            }
         },
         "is_segmented": {
             "type": "boolean"
@@ -34,7 +40,13 @@
             "format": "date-time"
         },
         "excluded_lists": {
-            "$ref": "lists.json"
+            "type": [
+                "null",
+                "array"
+            ],
+            "items":{
+                "$ref": "shared/list.json#/"
+            }
         },
         "id": {
             "type": "string"
