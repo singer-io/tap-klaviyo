@@ -18,18 +18,8 @@ setup(name='tap-klaviyo',
       packages=['tap_klaviyo'],
       package_data={
           'tap_klaviyo/schemas': [
-                "bounce.json",
-                "click.json",
-                "mark_as_spam.json",
-                "open.json",
-                "receive.json",
-                "unsubscribe.json",
-                "dropped_email.json",
-                "global_exclusions.json",
-                "lists.json",
-                "subscribe_list.json",
-                "unsub_list.json",
-                "update_email_preferences.json",
+                "schemas/*.json",
+                "schemas/shared/*.json"
               ]
          },
       include_package_data=True
