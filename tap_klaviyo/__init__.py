@@ -47,7 +47,7 @@ class Stream(object):
                 schema = schema,
                 key_properties = self.key_properties,
                 valid_replication_keys=self.replication_keys, # Add replication key in the metadata of catalog
-                replication_method = self.replication_method,
+                replication_method = self.replication_method
             )
         )
 
