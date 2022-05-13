@@ -32,6 +32,9 @@ class KlaviyoUnauthorizedError(KlaviyoError):
 class KlaviyoForbiddenError(KlaviyoError):
     pass
 
+class KlaviyoConflictError(KlaviyoError):
+    pass
+
 class KlaviyoRateLimitError(KlaviyoBackoffError):
     pass
 
@@ -69,6 +72,10 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     404: {
         "raise_exception": KlaviyoNotFoundError,
         "message": "The requested resource doesn't exist."
+    },
+    409: {
+        "raise_exception": KlaviyoConflictError,
+        "message": "The API request cannot be completed because the requested operation would conflict with an existing item."
     },
     429: {
         "raise_exception": KlaviyoRateLimitError,

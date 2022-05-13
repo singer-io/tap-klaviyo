@@ -54,6 +54,10 @@ def klaviyo_404_error(*args, **kwargs):
 
     return Mockresponse(status_code=404, raise_error=True)
 
+def klaviyo_409_error(*args, **kwargs):
+
+    return Mockresponse(status_code=409, raise_error=True)
+
 def klaviyo_500_error(*args, **kwargs):
 
     return Mockresponse(status_code=500, raise_error=True)
@@ -151,6 +155,16 @@ class TestBackoff(unittest.TestCase):
             utils_.authed_get("", "", "")
         except utils_.KlaviyoNotFoundError as e:
             self.assertEquals(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
+
+    @mock.patch('requests.Session.request', side_effect=klaviyo_409_error)
+    def test_409_error(self, klaviyo_409_error, mocked_get_request_timeout):
+        """
+        Test that `authed_get` raise 409 error with proper message
+        """
+        try:
+            utils_.authed_get("", "", "")
+        except utils_.KlaviyoConflictError as e:
+            self.assertEquals(str(e), "HTTP-error-code: 409, Error: The API request cannot be completed because the requested operation would conflict with an existing item.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_500_error)
