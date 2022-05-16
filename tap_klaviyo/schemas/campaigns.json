@@ -20,15 +20,7 @@
         "num_recipients": {
             "type": "integer"
         },
-        "lists": {
-            "type": [
-                "null",
-                "array"
-            ],
-            "items":{
-                "$ref": "shared/list.json#/"
-            }
-        },
+        "lists": {},
         "is_segmented": {
             "type": "boolean"
         },
@@ -39,15 +31,7 @@
             ],
             "format": "date-time"
         },
-        "excluded_lists": {
-            "type": [
-                "null",
-                "array"
-            ],
-            "items":{
-                "$ref": "shared/list.json#/"
-            }
-        },
+        "excluded_lists": {},
         "id": {
             "type": "string"
         },
