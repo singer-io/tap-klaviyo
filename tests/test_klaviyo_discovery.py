@@ -52,7 +52,7 @@ class DiscoveryTest(KlaviyoBaseTest):
                 expected_primary_keys = self.expected_primary_keys()[stream]
                 expected_replication_method = self.expected_replication_method()[stream]
                 expected_automatic_fields = self.expected_automatic_fields()[stream]
-                expected_replication_keys = self.expected_replication_keys()[stream]
+                expected_replication_keys = self.expected_bookmark_keys()[stream]
 
                 # collecting actual values...
                 schema_and_metadata = menagerie.get_annotated_schema(conn_id, catalog['stream_id'])
@@ -72,11 +72,14 @@ class DiscoveryTest(KlaviyoBaseTest):
                         "metadata", {self.REPLICATION_KEYS: []}).get(self.REPLICATION_KEYS, [])
                 )
                 
-                # verify there are no duplicate metadata entries
-                for md in metadata:
-                    self.assertEqual(metadata.count(md),1,msg="There is duplicated metadata in '{}' stream".format(stream))
-                
+                actual_fields = []
+                for md_entry in metadata:
+                    if md_entry['breadcrumb'] != []:
+                        actual_fields.append(md_entry['breadcrumb'][1])
 
+                # verify there are no duplicate metadata entries
+                self.assertEqual(len(actual_fields), len(set(actual_fields)), msg = "duplicates in the metadata entries retrieved")
+                
                 # verify there is only 1 top level breadcrumb in metadata
                 self.assertTrue(len(stream_properties) == 1,
                                 msg="There is NOT only one top level breadcrumb for {}".format(stream) + \
