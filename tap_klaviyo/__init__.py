@@ -137,7 +137,7 @@ def get_available_metrics(api_key):
                         tap_stream_id=metric['id'],
                         key_properties="id",
                         replication_method='INCREMENTAL',
-                        replication_keys=["since"]
+                        replication_keys=["timestamp"]
                     )
                 )
 
