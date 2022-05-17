@@ -129,7 +129,7 @@ def request_with_retry(endpoint, params):
     while True:
         r = session.get(endpoint, params=params)
 
-        if r.status_code == 429:
+        if r.status_code == 429 or r.status_code == 408:
             retry_after = int(r.headers['retry-after'])
             time.sleep(retry_after)
             continue
