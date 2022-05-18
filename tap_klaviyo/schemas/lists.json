@@ -1,33 +1,32 @@
 {
-    "type": "object",
-    "properties": {
-      "created": {
-        "type": "string"
-      },
-      "updated": {
-        "type": "string"
-      },
-      "person_count": {
-        "type": "integer"
-      },
-      "object": {
-        "type": "string"
-      },
-      "name": {
-        "type": "string"
-      },
-      "list_type": {
-        "type": "string"
-      },
-      "id": {
-        "type": "string"
-      },
-      "folder": {
-        "type": [
-          "null",
-          "string"
-        ]
-      }
+  "type": "object",
+  "properties": {
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "person_count": {
+      "type": "integer"
+    },
+    "object": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "list_type": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "folder": {
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
-  
+}
