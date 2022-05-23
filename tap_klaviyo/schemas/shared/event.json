@@ -1,33 +1,63 @@
 {
-    "type": "object",
+    "type": [
+      "null",
+      "object"
+    ],
     "properties": {
       "uuid": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "event_name": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "timestamp": {
-        "type": "integer"
+        "type": [
+          "null",
+          "integer"
+        ]
       },
       "object": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "datetime": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "statistic_id": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "id": {
-        "type": "string"
+        "type": [
+          "null",
+          "string"
+        ]
       },
       "event_properties": {
-        "type": "object",
+        "type": [
+          "null",
+          "object"
+        ],
         "properties": {}
       },
       "person": {
-        "type": "object",
+        "type": [
+          "null",
+          "object"
+        ],
         "properties": {}
       }
     }
