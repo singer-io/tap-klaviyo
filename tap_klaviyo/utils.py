@@ -123,7 +123,7 @@ def get_full_pulls(resource, endpoint, api_key):
 
 @backoff.on_exception(backoff.expo, (
         simplejson.scanner.JSONDecodeError, requests.exceptions.ConnectionError,
-        urllib3.exceptions.ProtocolError,ConnectionResetError),
+        urllib3.exceptions.ProtocolError,ConnectionResetError, requests.exceptions.Timeout),
                       max_tries=10)
 def request_with_retry(endpoint, params):
     while True:
