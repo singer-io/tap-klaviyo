@@ -93,9 +93,6 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
 
         for stream in expected_streams:
 
-            # WE ARE NOT ABLE TO GENERATE TEST DATA SO SKIPPING TWO STREAMS(mark_as_spam, dropped_email)
-            if stream in ["mark_as_spam", "dropped_email"]:
-                continue
             
             with self.subTest(stream=stream):
 
