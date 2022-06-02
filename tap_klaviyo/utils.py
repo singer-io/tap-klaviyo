@@ -127,7 +127,10 @@ def get_full_pulls(resource, endpoint, api_key):
                       max_tries=10)
 def request_with_retry(endpoint, params):
     while True:
+        global session
         r = session.get(endpoint, params=params)
+        if r.status_code != 200:
+            session = requests.Session()
 
         if r.status_code == 429 or r.status_code == 408:
             retry_after = int(r.headers['retry-after'])
