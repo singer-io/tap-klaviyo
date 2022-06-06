@@ -1,15 +1,27 @@
 {
-    "type": "object",
+    "type": [
+        "null",
+        "object"
+    ],
     "properties": {
         "status": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "updated": {
-            "type": "string",
+            "type": [
+                "null",
+                "string"
+            ],
             "format": "date-time"
         },
         "from_name": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "list_id": {
             "type": [
@@ -44,19 +56,29 @@
             }
         },
         "status_id": {
-            "type": "integer"
+            "type": [
+                "null",
+                "integer"
+            ]
         },
         "object": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "num_recipients": {
-            "type": "integer"
+            "type": [
+                "null",
+                "integer"
+            ]
         },
-        "lists": {
-            "$ref": "lists.json"
-        },
+        "lists": {},
         "is_segmented": {
-            "type": "boolean"
+            "type": [
+                "null",
+                "boolean"
+            ]
         },
         "send_time": {
             "type": [
@@ -65,11 +87,12 @@
             ],
             "format": "date-time"
         },
-        "excluded_lists": {
-            "$ref": "lists.json"
-        },
+        "excluded_lists": {},
         "id": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "sent_at": {
             "type": [
@@ -79,20 +102,35 @@
             "format": "date-time"
         },
         "campaign_type": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "name": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "created": {
-            "type": "string",
+            "type": [
+                "null",
+                "string"
+            ],
             "format": "date-time"
         },
         "status_label": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "from_email": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "subject": {
             "type": [
@@ -101,7 +139,10 @@
             ]
         },
         "message_type": {
-            "type": "string"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "template_id": {
             "type": [

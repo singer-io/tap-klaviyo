@@ -15,17 +15,32 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
         return "tap_tester_klaviyo_start_date_test"
 
     def test_run(self):
+
+        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
+        # Skipping given streams due to data available only on a single date -  failed_to_deliver_automated_response, failed_to_deliver
+        
+        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email", "failed_to_deliver_automated_response", 
+                                                      "failed_to_deliver"}
+        
+        # running start_date_test for old streams
+        expected_streams_1 = {"receive", "click", "open", "bounce", "unsubscribe", "unsub_list", "subscribe_list",
+                              "update_email_preferences","global_exclusions","lists","campaigns"}
+        self.run_start_date(expected_streams_1, days = 3)
+        
+        # running start_date_test for newly added streams
+        expected_streams_2 = expected_streams - expected_streams_1
+        self.run_start_date(expected_streams_2, days=374)
+
+    def run_start_date(self, expected_streams, days = 0):
         """Instantiate start date according to the desired data set and run the test"""
 
         self.start_date_1 = self.get_properties().get('start_date')
-        self.start_date_2 = self.timedelta_formatted(self.start_date_1, days=3)
+        self.start_date_2 = self.timedelta_formatted(self.start_date_1, days=days)
 
         start_date_1_epoch = self.dt_to_ts(self.start_date_1)
         start_date_2_epoch = self.dt_to_ts(self.start_date_2)
 
         self.start_date = self.start_date_1
-
-        expected_streams = self.expected_streams()
 
         ##########################################################################
         ### First Sync
@@ -78,9 +93,6 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
 
         for stream in expected_streams:
 
-            # WE ARE NOT ABLE TO GENERATE TEST DATA SO SKIPPING TWO STREAMS(mark_as_spam, dropped_email)
-            if stream in ["mark_as_spam", "dropped_email"]:
-                continue
             
             with self.subTest(stream=stream):
 
