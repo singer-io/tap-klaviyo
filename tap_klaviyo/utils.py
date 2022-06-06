@@ -106,8 +106,11 @@ def get_starting_point(stream, state, start_date):
         return None
 
 
+# Decrease timestamp(maximum replication key value) by 1 second.
+# Because API returns records in which the replication key value is greater than the last saved bookmark value.
+# So, sometimes records with the same bookmark value may be lost.
 def get_latest_event_time(events):
-    return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
+    return ts_to_dt(int(events[-1]['timestamp']) - 1) if len(events) else None
 
 # during 'Timeout' error there is also possibility of 'ConnectionError',
 # hence added backoff for 'ConnectionError' too.
