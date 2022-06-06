@@ -32,12 +32,13 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, key_properties, replication_method):
+    def __init__(self, stream, tap_stream_id, key_properties, replication_method, replication_keys=None):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
         self.key_properties = key_properties
         self.replication_method = replication_method
         self.metadata = []
+        self.replication_keys = replication_keys
 
     def to_catalog_dict(self):
         schema = load_schema(self.stream)
@@ -45,6 +46,7 @@ class Stream(object):
             metadata.get_standard_metadata(
                 schema = schema,
                 key_properties = self.key_properties,
+                valid_replication_keys=self.replication_keys, # Add replication key in the metadata of catalog
                 replication_method = self.replication_method
             )
         )
@@ -134,7 +136,8 @@ def get_available_metrics(api_key):
                         stream=EVENT_MAPPINGS[metric['name']],
                         tap_stream_id=metric['id'],
                         key_properties="id",
-                        replication_method='INCREMENTAL'
+                        replication_method='INCREMENTAL',
+                        replication_keys=["timestamp"]
                     )
                 )
 
