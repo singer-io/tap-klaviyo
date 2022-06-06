@@ -75,6 +75,10 @@ class TestKlaviyoAllFields(KlaviyoBaseTest):
                             set(message["data"].keys())
                         )
 
+                # As we can't generate following field by Klaviyo APIs and UI, so removed it form expectation list.
+                if stream == "campaigns":
+                    expected_all_keys = expected_all_keys - {'list_id', "template"}
+
                 # verify all fields for each stream are replicated
                 self.assertSetEqual(
                     expected_all_keys,

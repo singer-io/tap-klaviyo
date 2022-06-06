@@ -17,6 +17,9 @@ logger = singer.get_logger()
 class KlaviyoError(Exception):
     pass
 
+class KlaviyoBackoffError(KlaviyoError):
+    pass
+
 class KlaviyoNotFoundError(KlaviyoError):
     pass
 
@@ -29,7 +32,28 @@ class KlaviyoUnauthorizedError(KlaviyoError):
 class KlaviyoForbiddenError(KlaviyoError):
     pass
 
-class KlaviyoInternalServiceError(KlaviyoError):
+class KlaviyoConflictError(KlaviyoError):
+    pass
+
+class KlaviyoRateLimitError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoInternalServiceError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoNotImplementedError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoBadGatewayError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoServiceUnavailableError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoGatewayTimeoutError(KlaviyoBackoffError):
+    pass
+
+class KlaviyoServerTimeoutError(KlaviyoBackoffError):
     pass
 
 ERROR_CODE_EXCEPTION_MAPPING = {
@@ -49,10 +73,38 @@ ERROR_CODE_EXCEPTION_MAPPING = {
         "raise_exception": KlaviyoNotFoundError,
         "message": "The requested resource doesn't exist."
     },
+    409: {
+        "raise_exception": KlaviyoConflictError,
+        "message": "The API request cannot be completed because the requested operation would conflict with an existing item."
+    },
+    429: {
+        "raise_exception": KlaviyoRateLimitError,
+        "message": "The API rate limit for your organization/application pairing has been exceeded."
+    },
     500: {
         "raise_exception": KlaviyoInternalServiceError,
         "message": "Internal Service Error from Klaviyo."
-    }
+    },
+    501: {
+        "raise_exception": KlaviyoNotImplementedError,
+        "message": "The server does not support the functionality required to fulfill the request."
+    },
+    502: {
+        "raise_exception": KlaviyoBadGatewayError,
+        "message": "Server received an invalid response from another server."
+    },
+    503: {
+        "raise_exception": KlaviyoServiceUnavailableError,
+        "message": "API service is currently unavailable."
+    },
+    504: {
+        "raise_exception": KlaviyoGatewayTimeoutError,
+        "message": "Server did not return a response from another server."
+    },
+    524: {
+        "raise_exception": KlaviyoServerTimeoutError,
+        "message": "Server took too long to respond to the request."
+    },
 }
 
 def raise_for_error(response):   
@@ -106,13 +158,16 @@ def get_starting_point(stream, state, start_date):
         return None
 
 
+# Decrease timestamp(maximum replication key value) by 1 second.
+# Because API returns records in which the replication key value is greater than the last saved bookmark value.
+# So, sometimes records with the same bookmark value may be lost.
 def get_latest_event_time(events):
-    return ts_to_dt(int(events[-1]['timestamp'])) if len(events) else None
+    return ts_to_dt(int(events[-1]['timestamp']) - 1) if len(events) else None
 
 # during 'Timeout' error there is also possibility of 'ConnectionError',
 # hence added backoff for 'ConnectionError' too.
 @backoff.on_exception(backoff.expo, (requests.Timeout, requests.ConnectionError), max_tries=5, factor=2)
-@backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoInternalServiceError), max_tries=3)
+@backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoBackoffError), max_tries=3)
 def authed_get(source, url, params):
     with metrics.http_request_timer(source) as timer:
         resp = session.request(method='get', url=url, params=params, timeout=get_request_timeout())

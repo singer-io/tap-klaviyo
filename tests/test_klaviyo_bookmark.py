@@ -109,9 +109,13 @@ class BookmarkTest(KlaviyoBaseTest):
                     first_bookmark_value = first_bookmark_key_value.get(replication_key)
                     second_bookmark_value = second_bookmark_key_value.get(replication_key)
                     
-                    first_bookmark_value_ts = self.dt_to_ts(first_bookmark_value)
+                    # We are writing bookmark value 1 second less than the maximum bookmark value.
+                    # Because API returns records in which the replication key value is greater than the last saved bookmark value.
+                    # So, sometimes records with the same bookmark value may be lost.
+                    # That's why here we are adding 1 second to both bookmark values.
+                    first_bookmark_value_ts = self.dt_to_ts(first_bookmark_value) + 1
                     
-                    second_bookmark_value_ts = self.dt_to_ts(second_bookmark_value)
+                    second_bookmark_value_ts = self.dt_to_ts(second_bookmark_value) + 1
                     
                     simulated_bookmark_value = self.dt_to_ts(new_states['bookmarks'][stream][replication_key])
 
