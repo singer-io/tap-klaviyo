@@ -20,7 +20,7 @@ class KlaviyoBaseTest(unittest.TestCase):
     INCREMENTAL = "INCREMENTAL"
     FULL_TABLE = "FULL_TABLE"
     BOOKMARK = "bookmark"
-    REPLICATION_KEYS = "REPLICATION_KEYS"
+    REPLICATION_KEYS = "valid-replication-keys"
     START_DATE_FORMAT = "%Y-%m-%dT00:00:00Z"
     DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
     start_date = ""
@@ -136,6 +136,54 @@ class KlaviyoBaseTest(unittest.TestCase):
             "campaigns": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE
+            },
+            'clicked_sms': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'unsubscribed_from_sms': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'consented_to_receive': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'received_sms': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'sent_sms': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'failed_to_deliver': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'failed_to_deliver_automated_response': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            'received_automated_response': {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
             }
         }
 
