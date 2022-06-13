@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+  * Add missing tap tester tests [#52](https://github.com/singer-io/tap-klaviyo/pull/52)
+  * Backoff Error Handling [#51](https://github.com/singer-io/tap-klaviyo/pull/51)
+  * Added missing fields in schema [#54](https://github.com/singer-io/tap-klaviyo/pull/54)
+  * Add SMS Events stream [#54](https://github.com/singer-io/tap-klaviyo/pull/55)
+  * Add Replication Key in metadata [#53](https://github.com/singer-io/tap-klaviyo/pull/53)
+  * Add null to schema types [#58](https://github.com/singer-io/tap-klaviyo/pull/58)
+  * Change query parameter to prevent data loss [#57](https://github.com/singer-io/tap-klaviyo/pull/57)
+
 ## 0.2.1
   * Added Request Timeout [#47](https://github.com/singer-io/tap-klaviyo/pull/47)
 
