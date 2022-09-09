@@ -1,0 +1,492 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v1/lists?page=0&api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"object": "$list", "data": [{"object": "list", "id": "RtwWvE", "name":
+        "Unengaged (3 Months)", "list_type": "segment", "folder": null, "created":
+        "2021-08-12 09:04:24", "updated": "2021-08-12 09:04:32", "person_count": 0},
+        {"object": "list", "id": "S6xZ8h", "name": "New Subscribers", "list_type":
+        "segment", "folder": null, "created": "2021-08-12 09:04:24", "updated": "2021-08-12
+        09:04:32", "person_count": 0}, {"object": "list", "id": "TfWQ29", "name":
+        "Unengaged (1 Year)", "list_type": "segment", "folder": null, "created": "2021-08-12
+        09:04:24", "updated": "2021-08-12 09:04:32", "person_count": 0}, {"object":
+        "list", "id": "V4nHwC", "name": "Engaged (3 Months)", "list_type": "segment",
+        "folder": null, "created": "2021-08-12 09:04:24", "updated": "2021-08-12 09:04:32",
+        "person_count": 0}, {"object": "list", "id": "WiqNKS", "name": "Newsletter",
+        "list_type": "list", "folder": null, "created": "2021-08-12 09:04:24", "updated":
+        "2021-08-12 09:04:24", "person_count": 1}, {"object": "list", "id": "Y6QGgm",
+        "name": "Preview List", "list_type": "list", "folder": null, "created": "2021-08-12
+        09:04:24", "updated": "2021-08-12 09:04:24", "person_count": 1}, {"object":
+        "list", "id": "YpfteQ", "name": "test", "list_type": "list", "folder": null,
+        "created": "2021-08-12 10:50:26", "updated": "2021-08-12 10:50:26", "person_count":
+        99}, {"object": "list", "id": "Y9pVMZ", "name": "testSeg", "list_type": "segment",
+        "folder": null, "created": "2021-08-12 13:15:08", "updated": "2021-08-12 13:15:12",
+        "person_count": 99}, {"object": "list", "id": "UzYaQF", "name": "testlist2",
+        "list_type": "list", "folder": null, "created": "2021-08-12 13:27:38", "updated":
+        "2021-08-12 13:27:38", "person_count": 50}, {"object": "list", "id": "ULrbCb",
+        "name": "testSegment2", "list_type": "segment", "folder": null, "created":
+        "2021-08-12 13:29:14", "updated": "2021-08-12 13:32:49", "person_count": 0}],
+        "page": 0, "start": 0, "end": 9, "total": 10, "page_size": 10}'
+    headers:
+      Allow:
+      - GET, OPTIONS, POST
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f222cdef51ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:20 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '1958'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/RtwWvE/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f222e99e51ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:20 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/S6xZ8h/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f22308d901ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:21 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/TfWQ29/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f223208011ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:21 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/V4nHwC/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f2233bad21ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:21 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/WiqNKS/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[{"id":"01FCWSNYTNBMNGT5EQ5Y04C60D","email":"tonimuska1995@gmail.com"}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f22359e241ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:21 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '83'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/Y6QGgm/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[{"id":"01FCWSNYTNBMNGT5EQ5Y04C60D","email":"tonimuska1995@gmail.com"}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f223789b31ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:22 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '83'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/YpfteQ/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[{"id":"01FCX7YJHCR91BJ3C2HCMGATD9","email":"jbutt@gmail.com"},{"id":"01FCX7YJPM09A11XYJM8VQ63NX","email":"josephine_darakjy@darakjy.org"},{"id":"01FCX7YJSB4RCBY1MYN80FETW9","email":"art@venere.org"},{"id":"01FCX7YJW6Q6GDYSX111P1CXDF","email":"lpaprocki@hotmail.com"},{"id":"01FCX7YJYW7BWSW13WSQ13G4BA","email":"donette.foller@cox.net"},{"id":"01FCX7YK1PN7N7T7AFDEJYYPVS","email":"simona@morasca.com"},{"id":"01FCX7YK4EKRRBCTZDZZ9X709R","email":"mitsue_tollner@yahoo.com"},{"id":"01FCX7YK76AEMAJ89KK01B5A2T","email":"leota@hotmail.com"},{"id":"01FCX7YK9ZCCJCASMEAXZ0A7KB","email":"sage_wieser@cox.net"},{"id":"01FCX7YKCQXN7KV3D8KR9KDREE","email":"kris@gmail.com"},{"id":"01FCX7YKFSE4ZJ5EB45PMG6ENV","email":"minna_amigon@yahoo.com"},{"id":"01FCX7YKJN3J2HWGHBX67620FH","email":"amaclead@gmail.com"},{"id":"01FCX7YKND0988P8FM924KNVVG","email":"kiley.caldarera@aol.com"},{"id":"01FCX7YKR4WB6VCNFF17ZQ4FX3","email":"gruta@cox.net"},{"id":"01FCX7YKV028ZHYSSY41T52VP5","email":"calbares@gmail.com"},{"id":"01FCX7YKXS7FJV5EZV9MME8E0B","email":"mattie@aol.com"},{"id":"01FCX7YM0EKXKYHKF9SQDECXKY","email":"meaghan@hotmail.com"},{"id":"01FCX7YM37XEZ8DDNN45G0STAH","email":"gladys.rim@rim.org"},{"id":"01FCX7YM5W4YYZ66N0TSN6WPFR","email":"yuki_whobrey@aol.com"},{"id":"01FCX7YM8NKE8BT4H5EZ6WWETK","email":"fletcher.flosi@yahoo.com"},{"id":"01FCX7YMBE8AEKD39CZ0Z7VFM7","email":"bette_nicka@cox.net"},{"id":"01FCX7YME6P10J0VW4RFPE5CSN","email":"vinouye@aol.com"},{"id":"01FCX7YMH0SG7ZXR5AEDXF2N2C","email":"willard@hotmail.com"},{"id":"01FCX7YMKM6XSE4M2VA6DH2Y0M","email":"mroyster@royster.com"},{"id":"01FCX7YMPBNRWPNNKCX8HJ8BRR","email":"alisha@slusarski.com"},{"id":"01FCX7YMS7820GTSFCTETAJ302","email":"allene_iturbide@cox.net"},{"id":"01FCX7YMW3E7GD64SGR419RQR7","email":"chanel.caudy@caudy.org"},{"id":"01FCX7YMYTSKQN3VVE4RYB8J9Y","email":"ezekiel@chui.com"},{"id":"01FCX7YN1JA9Q46258KBS22C73","email":"wkusko@yahoo.com"},{"id":"01FCX7YN4AFAW05SZ0K74EBHQX","email":"bfigeroa@aol.com"},{"id":"01FCX7YN7254FTDRFXPBX6R0SD","email":"ammie@corrio.com"},{"id":"01FCX7YN9V7SCG5JEJBS1EKWT2","email":"francine_vocelka@vocelka.com"},{"id":"01FCX7YNDYJ5XVHRBRXNPY978N","email":"ernie_stenseth@aol.com"},{"id":"01FCX7YNHEBK575E8T2H80QNPD","email":"albina@glick.com"},{"id":"01FCX7YNMAPMPBE5BW6F7ZYFMS","email":"asergi@gmail.com"},{"id":"01FCX7YNQ4FBACT64RQE3G3VG3","email":"solange@shinko.com"},{"id":"01FCX7YNT2P7R8RQTP1TFHHM51","email":"jose@yahoo.com"},{"id":"01FCX7YNWQD40TMXSJDY4BD9BR","email":"rozella.ostrosky@ostrosky.com"},{"id":"01FCX7YNZG5ZEWD1WW9SEF3BH5","email":"valentine_gillian@gmail.com"},{"id":"01FCX7YP26Z0XC272Y5AZQN26G","email":"kati.rulapaugh@hotmail.com"},{"id":"01FCX7YP4ZT06H0Y3Z5XJFEFP5","email":"youlanda@aol.com"},{"id":"01FCX7YP7P3FB22WN3R2K729HT","email":"doldroyd@aol.com"},{"id":"01FCX7YPAKQBG504CMTE4KEN3Q","email":"roxane@hotmail.com"},{"id":"01FCX7YPDA3K7F6AWHFMKEVBB7","email":"lperin@perin.org"},{"id":"01FCX7YPG15DVNA57Z9JEQZYR5","email":"erick.ferencz@aol.com"},{"id":"01FCX7YPJSDKGPRX21ES6V3J5R","email":"fsaylors@saylors.org"},{"id":"01FCX7YPNEJBRW9MXXZRBGH7BJ","email":"jina_briddick@briddick.com"},{"id":"01FCX7YPREKSXDVNK324FV22V3","email":"kanisha_waycott@yahoo.com"},{"id":"01FCX7YPV5YCR1VAM2EVHTDDHH","email":"emerson.bowley@bowley.org"},{"id":"01FCX7YPXXVKN18GBDPS7HB9Z9","email":"bmalet@yahoo.com"},{"id":"01FCX7YQ0PX74A2GD0AMDE29Y4","email":"bbolognia@yahoo.com"},{"id":"01FCX7YQ3N0CQMGZRKNQZ7QYYC","email":"lnestle@hotmail.com"},{"id":"01FCX7YQ6QVCD956YF6E6S6MDY","email":"sabra@uyetake.org"},{"id":"01FCX7YQ9PCG5JTGFWN3DFMY8Q","email":"mmastella@mastella.com"},{"id":"01FCX7YQCK4R9D41TQ4BQNYHNS","email":"karl_klonowski@yahoo.com"},{"id":"01FCX7YQFBKSGHNSWP5XT79MVH","email":"twenner@aol.com"},{"id":"01FCX7YQJ3WJXV64WN3SZV9WX7","email":"amber_monarrez@monarrez.org"},{"id":"01FCX7YQMRBFCPKZ2BSTSKJJ3D","email":"shenika@gmail.com"},{"id":"01FCX7YQQGPXMR7A4NPCPZMSRZ","email":"delmy.ahle@hotmail.com"},{"id":"01FCX7YQTE5D7VZWSRP3FV2BBN","email":"deeanna_juhas@gmail.com"},{"id":"01FCX7YQX8TG5SMDEEHVKDTN8B","email":"bpugh@aol.com"},{"id":"01FCX7YQZY88GZKTYPS7B89QBP","email":"jamal@vanausdal.org"},{"id":"01FCX7YR2NQ6C0G97XGT424MWN","email":"cecily@hollack.org"},{"id":"01FCX7YR5DWRZQCASZ3AN3HYPH","email":"carmelina_lindall@lindall.com"},{"id":"01FCX7YR86DP6MSER60XZ48C0A","email":"maurine_yglesias@yglesias.com"},{"id":"01FCX7YRB24D4ZKYBD0BYXF3E3","email":"tawna@gmail.com"},{"id":"01FCX7YRDY6VDBXZD65KQ7EC45","email":"penney_weight@aol.com"},{"id":"01FCX7YRGMT7H2FVTZ9WR9MRSJ","email":"elly_morocco@gmail.com"},{"id":"01FCX7YRKEWA4RYGS9BF7X89K2","email":"ilene.eroman@hotmail.com"},{"id":"01FCX7YRPENKDTB9PEHEP2K82K","email":"vmondella@mondella.com"},{"id":"01FCX7YRS6C9KBDN246GQ9YC8Q","email":"kallie.blackwood@gmail.com"},{"id":"01FCX7YRVT97ZWJ16HGBX72W2C","email":"johnetta_abdallah@aol.com"},{"id":"01FCX7YRYZ1K727X57PQ3MMVTZ","email":"brhym@rhym.com"},{"id":"01FCX7YS1M8323MF08NTHNQDB7","email":"micaela_rhymes@gmail.com"},{"id":"01FCX7YS4CGYK0J6DZ346MDAER","email":"tamar@hotmail.com"},{"id":"01FCX7YS719DEZTX48QDDEPBHN","email":"moon@yahoo.com"},{"id":"01FCX7YS9REQJGYD0XPH44KBTE","email":"laurel_reitler@reitler.com"},{"id":"01FCX7YSCXETYRFVV1VP2QTB42","email":"delisa.crupi@crupi.com"},{"id":"01FCX7YSFVJQ7V3C4RF88W743Y","email":"viva.toelkes@gmail.com"},{"id":"01FCX7YSJN2H2CP6XCFTQYZR4A","email":"elza@yahoo.com"},{"id":"01FCX7YSNJJY3GWP72VXF8DPR5","email":"devorah@hotmail.com"},{"id":"01FCX7YSR92GZCZP9GAE9JJHKX","email":"timothy_mulqueen@mulqueen.org"},{"id":"01FCX7YSV41F7B61JHSN7SX02P","email":"ahoneywell@honeywell.com"},{"id":"01FCX7YSY44ZNZKH5KXNMGWCGN","email":"dominque.dickerson@dickerson.org"},{"id":"01FCX7YT10WFJ92B9D5VS82PH5","email":"lettie_isenhower@yahoo.com"},{"id":"01FCX7YT3PY0B47RBXF9Y3BCXQ","email":"mmunns@cox.net"},{"id":"01FCX7YT6JSBM5N5ZBZJBVNEWP","email":"stephaine@barfield.com"},{"id":"01FCX7YT9ED421CS9WBCJ70BMS","email":"lai.gato@gato.org"},{"id":"01FCX7YTCE65K6P2JAX6GGRP4W","email":"stephen_emigh@hotmail.com"},{"id":"01FCX7YTFJV1E47TB8ZZAQN62Y","email":"tshields@gmail.com"},{"id":"01FCX7YTJ9NMQ0MPBMGE1RM9FF","email":"twardrip@cox.net"},{"id":"01FCX7YTN20F09BT69PEZ5Z5J5","email":"cory.gibes@gmail.com"},{"id":"01FCX7YTQZ50C2CB133VEP8V7P","email":"danica_bruschke@gmail.com"},{"id":"01FCX7YTV1Q22TCTYB2TB0CZ8B","email":"wilda@cox.net"},{"id":"01FCX7YTXSAMWW59HA1E17S0JZ","email":"elvera.benimadho@cox.net"},{"id":"01FCX7YV0XCNSBHN0Q2D5Y9221","email":"carma@cox.net"},{"id":"01FCX7YV3KEXG87BMDXCEHRARF","email":"malinda.hochard@yahoo.com"},{"id":"01FCX7YV6DND1KNA072N4GQFK2","email":"natalie.fern@hotmail.com"},{"id":"01FCX7YV96A38DQ71WC44QD6TH","email":"lisha@centini.org"}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f22393cf41ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:22 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '6669'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/Y9pVMZ/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[{"id":"01FCX7YJHCR91BJ3C2HCMGATD9","email":"jbutt@gmail.com"},{"id":"01FCX7YJPM09A11XYJM8VQ63NX","email":"josephine_darakjy@darakjy.org"},{"id":"01FCX7YJSB4RCBY1MYN80FETW9","email":"art@venere.org"},{"id":"01FCX7YJW6Q6GDYSX111P1CXDF","email":"lpaprocki@hotmail.com"},{"id":"01FCX7YJYW7BWSW13WSQ13G4BA","email":"donette.foller@cox.net"},{"id":"01FCX7YK1PN7N7T7AFDEJYYPVS","email":"simona@morasca.com"},{"id":"01FCX7YK4EKRRBCTZDZZ9X709R","email":"mitsue_tollner@yahoo.com"},{"id":"01FCX7YK76AEMAJ89KK01B5A2T","email":"leota@hotmail.com"},{"id":"01FCX7YK9ZCCJCASMEAXZ0A7KB","email":"sage_wieser@cox.net"},{"id":"01FCX7YKCQXN7KV3D8KR9KDREE","email":"kris@gmail.com"},{"id":"01FCX7YKFSE4ZJ5EB45PMG6ENV","email":"minna_amigon@yahoo.com"},{"id":"01FCX7YKJN3J2HWGHBX67620FH","email":"amaclead@gmail.com"},{"id":"01FCX7YKND0988P8FM924KNVVG","email":"kiley.caldarera@aol.com"},{"id":"01FCX7YKR4WB6VCNFF17ZQ4FX3","email":"gruta@cox.net"},{"id":"01FCX7YKV028ZHYSSY41T52VP5","email":"calbares@gmail.com"},{"id":"01FCX7YKXS7FJV5EZV9MME8E0B","email":"mattie@aol.com"},{"id":"01FCX7YM0EKXKYHKF9SQDECXKY","email":"meaghan@hotmail.com"},{"id":"01FCX7YM37XEZ8DDNN45G0STAH","email":"gladys.rim@rim.org"},{"id":"01FCX7YM5W4YYZ66N0TSN6WPFR","email":"yuki_whobrey@aol.com"},{"id":"01FCX7YM8NKE8BT4H5EZ6WWETK","email":"fletcher.flosi@yahoo.com"},{"id":"01FCX7YMBE8AEKD39CZ0Z7VFM7","email":"bette_nicka@cox.net"},{"id":"01FCX7YME6P10J0VW4RFPE5CSN","email":"vinouye@aol.com"},{"id":"01FCX7YMH0SG7ZXR5AEDXF2N2C","email":"willard@hotmail.com"},{"id":"01FCX7YMKM6XSE4M2VA6DH2Y0M","email":"mroyster@royster.com"},{"id":"01FCX7YMPBNRWPNNKCX8HJ8BRR","email":"alisha@slusarski.com"},{"id":"01FCX7YMS7820GTSFCTETAJ302","email":"allene_iturbide@cox.net"},{"id":"01FCX7YMW3E7GD64SGR419RQR7","email":"chanel.caudy@caudy.org"},{"id":"01FCX7YMYTSKQN3VVE4RYB8J9Y","email":"ezekiel@chui.com"},{"id":"01FCX7YN1JA9Q46258KBS22C73","email":"wkusko@yahoo.com"},{"id":"01FCX7YN4AFAW05SZ0K74EBHQX","email":"bfigeroa@aol.com"},{"id":"01FCX7YN7254FTDRFXPBX6R0SD","email":"ammie@corrio.com"},{"id":"01FCX7YN9V7SCG5JEJBS1EKWT2","email":"francine_vocelka@vocelka.com"},{"id":"01FCX7YNDYJ5XVHRBRXNPY978N","email":"ernie_stenseth@aol.com"},{"id":"01FCX7YNHEBK575E8T2H80QNPD","email":"albina@glick.com"},{"id":"01FCX7YNMAPMPBE5BW6F7ZYFMS","email":"asergi@gmail.com"},{"id":"01FCX7YNQ4FBACT64RQE3G3VG3","email":"solange@shinko.com"},{"id":"01FCX7YNT2P7R8RQTP1TFHHM51","email":"jose@yahoo.com"},{"id":"01FCX7YNWQD40TMXSJDY4BD9BR","email":"rozella.ostrosky@ostrosky.com"},{"id":"01FCX7YNZG5ZEWD1WW9SEF3BH5","email":"valentine_gillian@gmail.com"},{"id":"01FCX7YP26Z0XC272Y5AZQN26G","email":"kati.rulapaugh@hotmail.com"},{"id":"01FCX7YP4ZT06H0Y3Z5XJFEFP5","email":"youlanda@aol.com"},{"id":"01FCX7YP7P3FB22WN3R2K729HT","email":"doldroyd@aol.com"},{"id":"01FCX7YPAKQBG504CMTE4KEN3Q","email":"roxane@hotmail.com"},{"id":"01FCX7YPDA3K7F6AWHFMKEVBB7","email":"lperin@perin.org"},{"id":"01FCX7YPG15DVNA57Z9JEQZYR5","email":"erick.ferencz@aol.com"},{"id":"01FCX7YPJSDKGPRX21ES6V3J5R","email":"fsaylors@saylors.org"},{"id":"01FCX7YPNEJBRW9MXXZRBGH7BJ","email":"jina_briddick@briddick.com"},{"id":"01FCX7YPREKSXDVNK324FV22V3","email":"kanisha_waycott@yahoo.com"},{"id":"01FCX7YPV5YCR1VAM2EVHTDDHH","email":"emerson.bowley@bowley.org"},{"id":"01FCX7YPXXVKN18GBDPS7HB9Z9","email":"bmalet@yahoo.com"},{"id":"01FCX7YQ0PX74A2GD0AMDE29Y4","email":"bbolognia@yahoo.com"},{"id":"01FCX7YQ3N0CQMGZRKNQZ7QYYC","email":"lnestle@hotmail.com"},{"id":"01FCX7YQ6QVCD956YF6E6S6MDY","email":"sabra@uyetake.org"},{"id":"01FCX7YQ9PCG5JTGFWN3DFMY8Q","email":"mmastella@mastella.com"},{"id":"01FCX7YQCK4R9D41TQ4BQNYHNS","email":"karl_klonowski@yahoo.com"},{"id":"01FCX7YQFBKSGHNSWP5XT79MVH","email":"twenner@aol.com"},{"id":"01FCX7YQJ3WJXV64WN3SZV9WX7","email":"amber_monarrez@monarrez.org"},{"id":"01FCX7YQMRBFCPKZ2BSTSKJJ3D","email":"shenika@gmail.com"},{"id":"01FCX7YQQGPXMR7A4NPCPZMSRZ","email":"delmy.ahle@hotmail.com"},{"id":"01FCX7YQTE5D7VZWSRP3FV2BBN","email":"deeanna_juhas@gmail.com"},{"id":"01FCX7YQX8TG5SMDEEHVKDTN8B","email":"bpugh@aol.com"},{"id":"01FCX7YQZY88GZKTYPS7B89QBP","email":"jamal@vanausdal.org"},{"id":"01FCX7YR2NQ6C0G97XGT424MWN","email":"cecily@hollack.org"},{"id":"01FCX7YR5DWRZQCASZ3AN3HYPH","email":"carmelina_lindall@lindall.com"},{"id":"01FCX7YR86DP6MSER60XZ48C0A","email":"maurine_yglesias@yglesias.com"},{"id":"01FCX7YRB24D4ZKYBD0BYXF3E3","email":"tawna@gmail.com"},{"id":"01FCX7YRDY6VDBXZD65KQ7EC45","email":"penney_weight@aol.com"},{"id":"01FCX7YRGMT7H2FVTZ9WR9MRSJ","email":"elly_morocco@gmail.com"},{"id":"01FCX7YRKEWA4RYGS9BF7X89K2","email":"ilene.eroman@hotmail.com"},{"id":"01FCX7YRPENKDTB9PEHEP2K82K","email":"vmondella@mondella.com"},{"id":"01FCX7YRS6C9KBDN246GQ9YC8Q","email":"kallie.blackwood@gmail.com"},{"id":"01FCX7YRVT97ZWJ16HGBX72W2C","email":"johnetta_abdallah@aol.com"},{"id":"01FCX7YRYZ1K727X57PQ3MMVTZ","email":"brhym@rhym.com"},{"id":"01FCX7YS1M8323MF08NTHNQDB7","email":"micaela_rhymes@gmail.com"},{"id":"01FCX7YS4CGYK0J6DZ346MDAER","email":"tamar@hotmail.com"},{"id":"01FCX7YS719DEZTX48QDDEPBHN","email":"moon@yahoo.com"},{"id":"01FCX7YS9REQJGYD0XPH44KBTE","email":"laurel_reitler@reitler.com"},{"id":"01FCX7YSCXETYRFVV1VP2QTB42","email":"delisa.crupi@crupi.com"},{"id":"01FCX7YSFVJQ7V3C4RF88W743Y","email":"viva.toelkes@gmail.com"},{"id":"01FCX7YSJN2H2CP6XCFTQYZR4A","email":"elza@yahoo.com"},{"id":"01FCX7YSNJJY3GWP72VXF8DPR5","email":"devorah@hotmail.com"},{"id":"01FCX7YSR92GZCZP9GAE9JJHKX","email":"timothy_mulqueen@mulqueen.org"},{"id":"01FCX7YSV41F7B61JHSN7SX02P","email":"ahoneywell@honeywell.com"},{"id":"01FCX7YSY44ZNZKH5KXNMGWCGN","email":"dominque.dickerson@dickerson.org"},{"id":"01FCX7YT10WFJ92B9D5VS82PH5","email":"lettie_isenhower@yahoo.com"},{"id":"01FCX7YT3PY0B47RBXF9Y3BCXQ","email":"mmunns@cox.net"},{"id":"01FCX7YT6JSBM5N5ZBZJBVNEWP","email":"stephaine@barfield.com"},{"id":"01FCX7YT9ED421CS9WBCJ70BMS","email":"lai.gato@gato.org"},{"id":"01FCX7YTCE65K6P2JAX6GGRP4W","email":"stephen_emigh@hotmail.com"},{"id":"01FCX7YTFJV1E47TB8ZZAQN62Y","email":"tshields@gmail.com"},{"id":"01FCX7YTJ9NMQ0MPBMGE1RM9FF","email":"twardrip@cox.net"},{"id":"01FCX7YTN20F09BT69PEZ5Z5J5","email":"cory.gibes@gmail.com"},{"id":"01FCX7YTQZ50C2CB133VEP8V7P","email":"danica_bruschke@gmail.com"},{"id":"01FCX7YTV1Q22TCTYB2TB0CZ8B","email":"wilda@cox.net"},{"id":"01FCX7YTXSAMWW59HA1E17S0JZ","email":"elvera.benimadho@cox.net"},{"id":"01FCX7YV0XCNSBHN0Q2D5Y9221","email":"carma@cox.net"},{"id":"01FCX7YV3KEXG87BMDXCEHRARF","email":"malinda.hochard@yahoo.com"},{"id":"01FCX7YV6DND1KNA072N4GQFK2","email":"natalie.fern@hotmail.com"},{"id":"01FCX7YV96A38DQ71WC44QD6TH","email":"lisha@centini.org"}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f223b69e31ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:22 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '6669'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/UzYaQF/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[{"id":"01FCX7YJHCR91BJ3C2HCMGATD9","email":"jbutt@gmail.com"},{"id":"01FCX7YJPM09A11XYJM8VQ63NX","email":"josephine_darakjy@darakjy.org"},{"id":"01FCX7YJSB4RCBY1MYN80FETW9","email":"art@venere.org"},{"id":"01FCX7YJW6Q6GDYSX111P1CXDF","email":"lpaprocki@hotmail.com"},{"id":"01FCX7YJYW7BWSW13WSQ13G4BA","email":"donette.foller@cox.net"},{"id":"01FCX7YK1PN7N7T7AFDEJYYPVS","email":"simona@morasca.com"},{"id":"01FCX7YK4EKRRBCTZDZZ9X709R","email":"mitsue_tollner@yahoo.com"},{"id":"01FCX7YK76AEMAJ89KK01B5A2T","email":"leota@hotmail.com"},{"id":"01FCX7YK9ZCCJCASMEAXZ0A7KB","email":"sage_wieser@cox.net"},{"id":"01FCX7YKCQXN7KV3D8KR9KDREE","email":"kris@gmail.com"},{"id":"01FCX7YKFSE4ZJ5EB45PMG6ENV","email":"minna_amigon@yahoo.com"},{"id":"01FCX7YKJN3J2HWGHBX67620FH","email":"amaclead@gmail.com"},{"id":"01FCX7YKND0988P8FM924KNVVG","email":"kiley.caldarera@aol.com"},{"id":"01FCX7YKR4WB6VCNFF17ZQ4FX3","email":"gruta@cox.net"},{"id":"01FCX7YKV028ZHYSSY41T52VP5","email":"calbares@gmail.com"},{"id":"01FCX7YKXS7FJV5EZV9MME8E0B","email":"mattie@aol.com"},{"id":"01FCX7YM0EKXKYHKF9SQDECXKY","email":"meaghan@hotmail.com"},{"id":"01FCX7YM37XEZ8DDNN45G0STAH","email":"gladys.rim@rim.org"},{"id":"01FCX7YM5W4YYZ66N0TSN6WPFR","email":"yuki_whobrey@aol.com"},{"id":"01FCX7YM8NKE8BT4H5EZ6WWETK","email":"fletcher.flosi@yahoo.com"},{"id":"01FCX7YMBE8AEKD39CZ0Z7VFM7","email":"bette_nicka@cox.net"},{"id":"01FCX7YME6P10J0VW4RFPE5CSN","email":"vinouye@aol.com"},{"id":"01FCX7YMH0SG7ZXR5AEDXF2N2C","email":"willard@hotmail.com"},{"id":"01FCX7YMKM6XSE4M2VA6DH2Y0M","email":"mroyster@royster.com"},{"id":"01FCX7YMPBNRWPNNKCX8HJ8BRR","email":"alisha@slusarski.com"},{"id":"01FCX7YMS7820GTSFCTETAJ302","email":"allene_iturbide@cox.net"},{"id":"01FCX7YMW3E7GD64SGR419RQR7","email":"chanel.caudy@caudy.org"},{"id":"01FCX7YMYTSKQN3VVE4RYB8J9Y","email":"ezekiel@chui.com"},{"id":"01FCX7YN1JA9Q46258KBS22C73","email":"wkusko@yahoo.com"},{"id":"01FCX7YN4AFAW05SZ0K74EBHQX","email":"bfigeroa@aol.com"},{"id":"01FCX7YN7254FTDRFXPBX6R0SD","email":"ammie@corrio.com"},{"id":"01FCX7YN9V7SCG5JEJBS1EKWT2","email":"francine_vocelka@vocelka.com"},{"id":"01FCX7YNDYJ5XVHRBRXNPY978N","email":"ernie_stenseth@aol.com"},{"id":"01FCX7YNHEBK575E8T2H80QNPD","email":"albina@glick.com"},{"id":"01FCX7YNMAPMPBE5BW6F7ZYFMS","email":"asergi@gmail.com"},{"id":"01FCX7YNQ4FBACT64RQE3G3VG3","email":"solange@shinko.com"},{"id":"01FCX7YNT2P7R8RQTP1TFHHM51","email":"jose@yahoo.com"},{"id":"01FCX7YNWQD40TMXSJDY4BD9BR","email":"rozella.ostrosky@ostrosky.com"},{"id":"01FCX7YNZG5ZEWD1WW9SEF3BH5","email":"valentine_gillian@gmail.com"},{"id":"01FCX7YP26Z0XC272Y5AZQN26G","email":"kati.rulapaugh@hotmail.com"},{"id":"01FCX7YP4ZT06H0Y3Z5XJFEFP5","email":"youlanda@aol.com"},{"id":"01FCX7YP7P3FB22WN3R2K729HT","email":"doldroyd@aol.com"},{"id":"01FCX7YPAKQBG504CMTE4KEN3Q","email":"roxane@hotmail.com"},{"id":"01FCX7YPDA3K7F6AWHFMKEVBB7","email":"lperin@perin.org"},{"id":"01FCX7YPG15DVNA57Z9JEQZYR5","email":"erick.ferencz@aol.com"},{"id":"01FCX7YPJSDKGPRX21ES6V3J5R","email":"fsaylors@saylors.org"},{"id":"01FCX7YPNEJBRW9MXXZRBGH7BJ","email":"jina_briddick@briddick.com"},{"id":"01FCX7YPREKSXDVNK324FV22V3","email":"kanisha_waycott@yahoo.com"},{"id":"01FCX7YPV5YCR1VAM2EVHTDDHH","email":"emerson.bowley@bowley.org"},{"id":"01FCX7YPXXVKN18GBDPS7HB9Z9","email":"bmalet@yahoo.com"}]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f223d4dd81ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:23 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '3342'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v2/group/ULrbCb/members/all?api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"records":[]}'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f223f39691ca8-SOF
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:23 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+    status:
+      code: 200
+      message: OK
+version: 1

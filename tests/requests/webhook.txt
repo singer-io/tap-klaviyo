@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v1/lists?page=0&api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"object": "$list", "data": [{"object": "list", "id": "RtwWvE", "name":
+        "Unengaged (3 Months)", "list_type": "segment", "folder": null, "created":
+        "2021-08-12 09:04:24", "updated": "2021-08-12 09:04:32", "person_count": 0},
+        {"object": "list", "id": "S6xZ8h", "name": "New Subscribers", "list_type":
+        "segment", "folder": null, "created": "2021-08-12 09:04:24", "updated": "2021-08-12
+        09:04:32", "person_count": 0}, {"object": "list", "id": "TfWQ29", "name":
+        "Unengaged (1 Year)", "list_type": "segment", "folder": null, "created": "2021-08-12
+        09:04:24", "updated": "2021-08-12 09:04:32", "person_count": 0}, {"object":
+        "list", "id": "V4nHwC", "name": "Engaged (3 Months)", "list_type": "segment",
+        "folder": null, "created": "2021-08-12 09:04:24", "updated": "2021-08-12 09:04:32",
+        "person_count": 0}, {"object": "list", "id": "WiqNKS", "name": "Newsletter",
+        "list_type": "list", "folder": null, "created": "2021-08-12 09:04:24", "updated":
+        "2021-08-12 09:04:24", "person_count": 1}, {"object": "list", "id": "Y6QGgm",
+        "name": "Preview List", "list_type": "list", "folder": null, "created": "2021-08-12
+        09:04:24", "updated": "2021-08-12 09:04:24", "person_count": 1}, {"object":
+        "list", "id": "YpfteQ", "name": "test", "list_type": "list", "folder": null,
+        "created": "2021-08-12 10:50:26", "updated": "2021-08-12 10:50:26", "person_count":
+        99}, {"object": "list", "id": "Y9pVMZ", "name": "testSeg", "list_type": "segment",
+        "folder": null, "created": "2021-08-12 13:15:08", "updated": "2021-08-12 13:15:12",
+        "person_count": 99}, {"object": "list", "id": "UzYaQF", "name": "testlist2",
+        "list_type": "list", "folder": null, "created": "2021-08-12 13:27:38", "updated":
+        "2021-08-12 13:27:38", "person_count": 50}, {"object": "list", "id": "ULrbCb",
+        "name": "testSegment2", "list_type": "segment", "folder": null, "created":
+        "2021-08-12 13:29:14", "updated": "2021-08-12 13:32:49", "person_count": 0}],
+        "page": 0, "start": 0, "end": 9, "total": 10, "page_size": 10}'
+    headers:
+      Allow:
+      - GET, POST, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f222a8bc20c6b-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:20 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '1958'
+    status:
+      code: 200
+      message: OK
+version: 1

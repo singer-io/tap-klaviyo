@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - __cf_bm=gjvKJnPsc6eEuPJNtmud84DVDbKIuCjkEMZAGsJ_anE-1662718217-0-AbCwb2AaYa/+YqzW/rn1e72QcCBkSJ99Oo8sQIJ5p6QAy0f670QLxbW3PDyYFAu4gTUOYVQoh/qNk9HDO6JxWAo=
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v1/campaigns?page=0&api_key=pk_b06e6b34d1f242e71dbbfd831351c9c9b0
+  response:
+    body:
+      string: '{"object": "$list", "data": [{"object": "campaign", "id": "SJ5R4d",
+        "name": "Email Campaign 2021-09-27 06:36:15", "subject": "tantanc", "from_email":
+        "tonimuskshpk@myself.com", "from_name": "tonimuskshpk", "lists": [{"object":
+        "list", "id": "UzYaQF", "name": "testlist2", "list_type": "list", "folder":
+        null, "created": "2021-08-12 13:27:38", "updated": "2021-08-12 13:27:38",
+        "person_count": 50}], "excluded_lists": [{"object": "list", "id": "Y9pVMZ",
+        "name": "testSeg", "list_type": "segment", "folder": null, "created": "2021-08-12
+        13:15:08", "updated": "2021-08-12 13:15:12", "person_count": 99}], "status":
+        "cancelled_no_recipients_scheduling", "status_id": 11, "status_label": "Cancelled:
+        No Recipients", "sent_at": null, "send_time": "2021-09-27 20:15:00", "created":
+        "2021-09-27 10:36:16", "updated": "2021-09-27 20:15:05", "num_recipients":
+        0, "campaign_type": "Regular", "is_segmented": false, "message_type": "email",
+        "template_id": "Tsjq4A"}], "page": 0, "start": 0, "end": 0, "total": 1, "page_size":
+        1}'
+    headers:
+      Allow:
+      - GET, POST, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 747f2241c98f1c23-SOF
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 09 Sep 2022 10:10:23 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Accept-Encoding
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '1016'
+    status:
+      code: 200
+      message: OK
+version: 1

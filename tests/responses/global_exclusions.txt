@@ -1,0 +1,1 @@
+{"type": "SCHEMA", "stream": "global_exclusions", "schema": {"properties": {"timestamp": {"type": "string"}, "reason": {"type": "string"}, "object": {"type": "string"}, "email": {"type": "string"}}, "type": "object"}, "key_properties": ["email"]}

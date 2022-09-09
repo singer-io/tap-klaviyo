@@ -1,0 +1,35 @@
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = "E203"
+[tool.poetry]
+name='tap-klaviyo'
+version='0.1.1'
+description='Singer.io tap for extracting data from the Klaviyo API'
+authors = ['Stitch']
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "2.20.0"
+singer-python= "ˆ5.8.1"
+
+[tool.poetry.dev-dependencies]
+integrations-testing-framework = {git = "git@github.com:goes-funky/integrations-testing-framework.git"}
+pdoc3 = "0.10.0"
+mypy = "0.910"
+pylint = "2.11.1"
+pytest = "6.2.4"
+coverage = "^6.4.2"
+
+[tool.poetry.scripts]
+tap-jira = "tap_klaviyo:main"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+[build-system]
+requires = ["poetry-core>=1.0.4"]
+build-backend = "poetry.core.masonry.api"
