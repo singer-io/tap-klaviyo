@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "flow_id": {
+      "type": "string"
+    },
+    "message_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "from_email": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    }
+  }
+}

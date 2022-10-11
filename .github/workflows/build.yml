@@ -2,17 +2,18 @@ name: Build
 on:
   - push
   - pull_request
-  - workflow_dispatch
 
 jobs:
   build-python:
     uses: goes-funky/workflows/.github/workflows/build-python.yaml@master
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     with:
       python-version: "3.9"
+      is-repo-public: true
       skip-mypy: true
       skip-tests: false
       skip-isort: true
       skip-format: true
       skip-lint: true
-#    secrets:
-#      codecov-token: ${{ secrets.CODECOV_TOKEN }}
+      skip-sonar: false

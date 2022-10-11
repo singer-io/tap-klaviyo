@@ -4,7 +4,7 @@ import json
 import os
 import singer
 from singer import metadata
-from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_pages, get_list_members_pull
+from tap_klaviyo.utils import *
 
 ENDPOINTS = {
     'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
@@ -133,7 +133,14 @@ FLOWS = Stream(
     'FULL_TABLE'
 )
 
-FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS, PROFILES, FLOWS ]
+FLOW_EMAILS = Stream(
+    'flow_emails',
+    'flow_emails',
+    'flow_id',
+    'FULL_TABLE'
+)
+
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, LIST_MEMBERS, CAMPAIGNS, PROFILES, FLOWS, FLOW_EMAILS]
 
 
 def get_abs_path(path):
@@ -169,6 +176,8 @@ def do_sync(config, state, catalog):
             if stream['tap_stream_id'] in EVENT_MAPPINGS.values():
                 get_incremental_pull(stream, ENDPOINTS['metric'], state,
                                      api_key, start_date)
+            elif stream['tap_stream_id'] == 'flow_emails':
+                get_flow_emails(stream, api_key)
             else:
                 get_full_pulls(stream, ENDPOINTS[stream['tap_stream_id']], api_key)
 

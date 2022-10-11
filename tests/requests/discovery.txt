@@ -1,0 +1,162 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.20.0
+    method: GET
+    uri: https://a.klaviyo.com/api/v1/metrics?page=0&api_key=pk_123
+  response:
+    body:
+      string: '{"object": "$list", "data": [{"object": "metric", "id": "TmTAms", "name":
+        "Active on Site", "integration": {"object": "integration", "id": "7FtS4J",
+        "name": "API", "category": "API"}, "created": "2021-10-15 11:30:59", "updated":
+        "2021-10-15 11:30:59"}, {"object": "metric", "id": "T2iyHs", "name": "Bounced
+        Email", "integration": {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo",
+        "category": "Internal"}, "created": "2021-10-08 06:31:47", "updated": "2021-10-08
+        06:31:47"}, {"object": "metric", "id": "W3H5WY", "name": "Bounced Email (MailChimp)",
+        "integration": {"object": "integration", "id": "4Eerst", "name": "Mailchimp",
+        "category": "Email"}, "created": "2022-01-21 14:10:53", "updated": "2022-01-21
+        14:10:53"}, {"object": "metric", "id": "UBVFAG", "name": "Cancelled Order",
+        "integration": {"object": "integration", "id": "0eMvjm", "name": "Shopify",
+        "category": "eCommerce"}, "created": "2021-10-15 11:30:59", "updated": "2021-10-15
+        11:30:59"}, {"object": "metric", "id": "TYUCY5", "name": "Checkout Started",
+        "integration": {"object": "integration", "id": "0eMvjm", "name": "Shopify",
+        "category": "eCommerce"}, "created": "2021-10-15 11:30:59", "updated": "2021-10-15
+        11:30:59"}, {"object": "metric", "id": "VrKuQy", "name": "Clicked Email",
+        "integration": {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo",
+        "category": "Internal"}, "created": "2021-10-08 06:31:47", "updated": "2021-10-08
+        06:31:47"}, {"object": "metric", "id": "Ufhcsv", "name": "Clicked Email (MailChimp)",
+        "integration": {"object": "integration", "id": "4Eerst", "name": "Mailchimp",
+        "category": "Email"}, "created": "2022-01-21 14:10:53", "updated": "2022-01-21
+        14:10:53"}, {"object": "metric", "id": "WpgJVN", "name": "Clicked SMS", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-03-02 13:10:05", "updated": "2022-03-02 13:10:05"}, {"object":
+        "metric", "id": "VJNZwx", "name": "Consented to Receive SMS", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-06-18 10:41:40", "updated": "2022-06-18 10:41:40"}, {"object":
+        "metric", "id": "UNJsdV", "name": "Dropped Email", "integration": {"object":
+        "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2021-10-08 06:31:47", "updated": "2021-10-08 06:31:47"}, {"object":
+        "metric", "id": "Tjn5pr", "name": "Failed to deliver Automated Response SMS",
+        "integration": {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo",
+        "category": "Internal"}, "created": "2022-06-18 10:41:40", "updated": "2022-06-18
+        10:41:40"}, {"object": "metric", "id": "ShLwk5", "name": "Failed to Deliver
+        SMS", "integration": {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo",
+        "category": "Internal"}, "created": "2022-02-25 10:59:39", "updated": "2022-02-25
+        10:59:39"}, {"object": "metric", "id": "XGwaFf", "name": "Filled Out Form",
+        "integration": {"object": "integration", "id": "cmmgGs", "name": "Unbounce",
+        "category": "Landing Pages & Forms"}, "created": "2021-12-07 11:41:18", "updated":
+        "2021-12-07 11:41:18"}, {"object": "metric", "id": "YcMsBE", "name": "Fulfilled
+        Order", "integration": {"object": "integration", "id": "0eMvjm", "name": "Shopify",
+        "category": "eCommerce"}, "created": "2021-10-15 11:30:59", "updated": "2021-10-15
+        11:30:59"}, {"object": "metric", "id": "Riit5M", "name": "Fulfilled Partial
+        Order", "integration": {"object": "integration", "id": "0eMvjm", "name": "Shopify",
+        "category": "eCommerce"}, "created": "2022-05-18 23:38:51", "updated": "2022-05-18
+        23:38:51"}, {"object": "metric", "id": "RdSFcX", "name": "Marked Email as
+        Spam", "integration": {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo",
+        "category": "Internal"}, "created": "2021-10-08 06:31:47", "updated": "2021-10-08
+        06:31:47"}, {"object": "metric", "id": "TDjBk5", "name": "Opened Email", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2021-10-08 06:31:47", "updated": "2021-10-08 06:31:47"}, {"object":
+        "metric", "id": "SsRiW2", "name": "Opened Email (MailChimp)", "integration":
+        {"object": "integration", "id": "4Eerst", "name": "Mailchimp", "category":
+        "Email"}, "created": "2022-01-21 14:10:53", "updated": "2022-01-21 14:10:53"},
+        {"object": "metric", "id": "XyeQ8c", "name": "Opened Push", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-10-04 08:46:38", "updated": "2022-10-04 08:46:38"}, {"object":
+        "metric", "id": "WAxk3D", "name": "Order upcoming on ReCharge", "integration":
+        {"object": "integration", "id": "7FtS4J", "name": "API", "category": "API"},
+        "created": "2022-04-27 17:26:43", "updated": "2022-04-27 17:26:43"}, {"object":
+        "metric", "id": "VeWJdj", "name": "Ordered Product", "integration": {"object":
+        "integration", "id": "0eMvjm", "name": "Shopify", "category": "eCommerce"},
+        "created": "2021-10-15 11:30:59", "updated": "2021-10-15 11:30:59"}, {"object":
+        "metric", "id": "SPvN6d", "name": "Placed Order", "integration": {"object":
+        "integration", "id": "0eMvjm", "name": "Shopify", "category": "eCommerce"},
+        "created": "2021-10-15 11:30:59", "updated": "2021-10-15 11:30:59"}, {"object":
+        "metric", "id": "RwWbSW", "name": "Received Automated Response SMS", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-06-18 10:41:40", "updated": "2022-06-18 10:41:40"}, {"object":
+        "metric", "id": "RQTHPA", "name": "Received Email", "integration": {"object":
+        "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2021-10-08 06:31:47", "updated": "2021-10-08 06:31:47"}, {"object":
+        "metric", "id": "Yta266", "name": "Received Email (MailChimp)", "integration":
+        {"object": "integration", "id": "4Eerst", "name": "Mailchimp", "category":
+        "Email"}, "created": "2022-01-21 14:10:53", "updated": "2022-01-21 14:10:53"},
+        {"object": "metric", "id": "REKtHs", "name": "Received Push", "integration":
+        {"object": "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-02-25 10:59:40", "updated": "2022-02-25 10:59:40"}, {"object":
+        "metric", "id": "VSChm3", "name": "Received SMS", "integration": {"object":
+        "integration", "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"},
+        "created": "2022-02-25 10:59:40", "updated": "2022-02-25 10:59:40"}, {"object":
+        "metric", "id": "Yp4iSG", "name": "Recharge subscription reactivated", "integration":
+        {"object": "integration", "id": "7FtS4J", "name": "API", "category": "API"},
+        "created": "2022-05-03 19:49:24", "updated": "2022-05-03 19:49:24"}, {"object":
+        "metric", "id": "ScuKtA", "name": "Refunded Order", "integration": {"object":
+        "integration", "id": "0eMvjm", "name": "Shopify", "category": "eCommerce"},
+        "created": "2021-10-15 11:30:59", "updated": "2021-10-15 11:30:59"}, {"object":
+        "metric", "id": "XxeT32", "name": "Sent SMS", "integration": {"object": "integration",
+        "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"}, "created": "2022-06-18
+        10:41:40", "updated": "2022-06-18 10:41:40"}, {"object": "metric", "id": "VMkwuy",
+        "name": "Subscribed to Back in Stock", "integration": {"object": "integration",
+        "id": "0rG4eQ", "name": "Klaviyo", "category": "Internal"}, "created": "2021-10-15
+        11:30:59", "updated": "2021-10-15 11:30:59"}, {"object": "metric", "id": "VHe5Q7",
+        "name": "Subscribed to List", "integration": {"object": "integration", "id":
+        "0rG4eQ", "name": "Klaviyo", "category": "Internal"}, "created": "2022-02-04
+        12:05:06", "updated": "2022-02-04 12:05:06"}, {"object": "metric", "id": "Rpaemf",
+        "name": "Subscribed to List (MailChimp)", "integration": {"object": "integration",
+        "id": "4Eerst", "name": "Mailchimp", "category": "Email"}, "created": "2022-01-21
+        14:39:19", "updated": "2022-01-21 14:39:19"}, {"object": "metric", "id": "SVayKM",
+        "name": "Subscription cancelled on ReCharge", "integration": {"object": "integration",
+        "id": "7FtS4J", "name": "API", "category": "API"}, "created": "2022-04-27
+        17:09:28", "updated": "2022-04-27 17:09:28"}, {"object": "metric", "id": "SYBgBz",
+        "name": "Subscription started on ReCharge", "integration": {"object": "integration",
+        "id": "7FtS4J", "name": "API", "category": "API"}, "created": "2022-04-28
+        07:11:15", "updated": "2022-04-28 07:11:15"}, {"object": "metric", "id": "Xebnm3",
+        "name": "Unsubscribed", "integration": {"object": "integration", "id": "0rG4eQ",
+        "name": "Klaviyo", "category": "Internal"}, "created": "2021-10-08 06:31:47",
+        "updated": "2021-10-08 06:31:47"}, {"object": "metric", "id": "XcYFzv", "name":
+        "Unsubscribed from List", "integration": {"object": "integration", "id": "0rG4eQ",
+        "name": "Klaviyo", "category": "Internal"}, "created": "2022-02-11 14:58:11",
+        "updated": "2022-02-11 14:58:11"}, {"object": "metric", "id": "XPfWBD", "name":
+        "Unsubscribed from SMS", "integration": {"object": "integration", "id": "0rG4eQ",
+        "name": "Klaviyo", "category": "Internal"}, "created": "2022-03-22 09:56:52",
+        "updated": "2022-03-22 09:56:52"}, {"object": "metric", "id": "RHe36b", "name":
+        "Updated Email Preferences", "integration": {"object": "integration", "id":
+        "0rG4eQ", "name": "Klaviyo", "category": "Internal"}, "created": "2022-02-04
+        12:05:23", "updated": "2022-02-04 12:05:23"}, {"object": "metric", "id": "VajtRV",
+        "name": "Viewed Product", "integration": {"object": "integration", "id": "7FtS4J",
+        "name": "API", "category": "API"}, "created": "2021-10-15 11:30:59", "updated":
+        "2021-10-15 11:30:59"}], "page": 0, "start": 0, "end": 39, "total": 40, "page_size":
+        40}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 757eaea059ca0c5f-SOF
+      CID:
+      - WKVade
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 10 Oct 2022 10:30:42 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding, Cookie
+      X-Robots-Tag:
+      - noindex, nofollow
+      content-length:
+      - '9604'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -4,4 +4,4 @@
 /venv
 .idea
 catalog.json
-config.json
+tap_klaviyo/config.json

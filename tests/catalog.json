@@ -1,7 +1,7 @@
 {
   "streams": [
     {
-      "stream": "UrmETZ",
+      "stream": "T2iyHs",
       "tap_stream_id": "bounce",
       "key_properties": [
         [
@@ -144,7 +144,7 @@
       "group": null
     },
     {
-      "stream": "XtPDDJ",
+      "stream": "VrKuQy",
       "tap_stream_id": "click",
       "key_properties": [
         [
@@ -287,7 +287,7 @@
       "group": null
     },
     {
-      "stream": "WdMyqu",
+      "stream": "UNJsdV",
       "tap_stream_id": "dropped_email",
       "key_properties": [
         [
@@ -430,7 +430,7 @@
       "group": null
     },
     {
-      "stream": "SCVMpw",
+      "stream": "RdSFcX",
       "tap_stream_id": "mark_as_spam",
       "key_properties": [
         [
@@ -573,7 +573,7 @@
       "group": null
     },
     {
-      "stream": "VFpL9f",
+      "stream": "TDjBk5",
       "tap_stream_id": "open",
       "key_properties": [
         [
@@ -716,7 +716,7 @@
       "group": null
     },
     {
-      "stream": "TSXSCL",
+      "stream": "RQTHPA",
       "tap_stream_id": "receive",
       "key_properties": [
         [
@@ -859,7 +859,157 @@
       "group": null
     },
     {
-      "stream": "QQvTT3",
+      "stream": "VHe5Q7",
+      "tap_stream_id": "subscribe_list",
+      "key_properties": [
+        [
+          "id"
+        ]
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "object": {
+            "type": "string"
+          },
+          "datetime": {
+            "type": "string"
+          },
+          "statistic_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "event_properties": {
+            "type": "object",
+            "properties": {
+              "List": {
+                "type": "string"
+              },
+              "$event_id": {
+                "type": "string"
+              }
+            }
+          },
+          "person": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "valid-replication-keys": [
+              "timestamp"
+            ],
+            "forced-replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "uuid"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "timestamp"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "object"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "datetime"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "statistic_id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_properties"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "person"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        }
+      ],
+      "group": null
+    },
+    {
+      "stream": "Xebnm3",
       "tap_stream_id": "unsubscribe",
       "key_properties": [
         [
@@ -893,6 +1043,306 @@
           "event_properties": {
             "type": "object",
             "properties": {}
+          },
+          "person": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "valid-replication-keys": [
+              "timestamp"
+            ],
+            "forced-replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "uuid"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "timestamp"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "object"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "datetime"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "statistic_id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_properties"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "person"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        }
+      ],
+      "group": null
+    },
+    {
+      "stream": "XcYFzv",
+      "tap_stream_id": "unsub_list",
+      "key_properties": [
+        [
+          "id"
+        ]
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "object": {
+            "type": "string"
+          },
+          "datetime": {
+            "type": "string"
+          },
+          "statistic_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "event_properties": {
+            "type": "object",
+            "properties": {
+              "List": {
+                "type": "string"
+              },
+              "$event_id": {
+                "type": "string"
+              }
+            }
+          },
+          "person": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "valid-replication-keys": [
+              "timestamp"
+            ],
+            "forced-replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "uuid"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "timestamp"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "object"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "datetime"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "statistic_id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "event_properties"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "person"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        }
+      ],
+      "group": null
+    },
+    {
+      "stream": "RHe36b",
+      "tap_stream_id": "update_email_preferences",
+      "key_properties": [
+        [
+          "id"
+        ]
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "object": {
+            "type": "string"
+          },
+          "datetime": {
+            "type": "string"
+          },
+          "statistic_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "event_properties": {
+            "type": "object",
+            "properties": {
+              "List": {
+                "type": "string"
+              },
+              "$event_id": {
+                "type": "string"
+              }
+            }
           },
           "person": {
             "type": "object",
@@ -1659,6 +2109,270 @@
           "breadcrumb": [
             "properties",
             "last_name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        }
+      ],
+      "group": null
+    },
+    {
+      "stream": "flows",
+      "tap_stream_id": "flows",
+      "key_properties": [
+        "id"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "trigger": {
+            "type": "object",
+            "properties": {
+              "filter": {
+                "type": "string"
+              },
+              "metric": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "customer_filter": {
+            "type": "object",
+            "properties": {
+              "stanzas": {
+                "type": "string",
+                "criteria": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "sent_at": {
+            "type": "datetime"
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "forced-replication-method": "FULL_TABLE"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "object"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "status"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "trigger"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "customer_filter"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "sent_at"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        }
+      ],
+      "group": null
+    },
+    {
+      "stream": "flow_emails",
+      "tap_stream_id": "flow_emails",
+      "key_properties": [
+        "flow_id"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "flow_id": {
+            "type": "string"
+          },
+          "message_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "from_email": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "string"
+          }
+        }
+      },
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "table-key-properties": [
+              "flow_id"
+            ],
+            "forced-replication-method": "FULL_TABLE"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "flow_id"
+          ],
+          "metadata": {
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "message_id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "name"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "from_email"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "subject"
           ],
           "metadata": {
             "inclusion": "available"

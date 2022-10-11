@@ -138,10 +138,6 @@ def request_with_retry(endpoint, params):
             continue
         return r.json()
 
-# def get_data(endpoint, params):
-#     data = request_with_retry(endpoint, params)
-#     return data
-
 
 def get_list_members_pull(resource, api_key):
     with metrics.record_counter(resource['stream']) as counter:
@@ -179,6 +175,54 @@ def get_list_members_pull(resource, api_key):
                         singer.write_records(resource['stream'], records)
                     if "marker" in data:
                         marker = data['marker']
+                        next_marker = True
+                    else:
+                        break
+
+
+def get_flow_emails(resource, api_key):
+    with metrics.record_counter(resource['stream']) as counter:
+        for response in get_all_pages('lists', 'https://a.klaviyo.com/api/v1/flows', api_key):
+            flows = response and response["data"]
+            total_flows = len(flows)
+            current_flow = 0
+            for flow in flows:
+                current_flow += 1
+                logger.info("Syncing flow " + flow['id'] + ": " + str(current_flow) + " of " + str(total_flows))
+
+                # only one action of type "SEND_MESSAGE" is associated with flow
+                action_endpoint = 'https://a.klaviyo.com/api/v1/flow/' + flow['id'] + '/actions'
+                actions = request_with_retry(action_endpoint, params={'api_key': api_key})
+                # fill action_id with 'send emails' actions
+                actions = actions and [action["id"] for action in actions if action["type"] == "SEND_MESSAGE"] or []
+                if not actions:
+                    continue
+
+                action_id = actions[0]
+                email_endpoint = 'https://a.klaviyo.com/api/v1/flow/' + flow['id'] + '/action/' + str(
+                    action_id) + '/email'
+
+                next_marker = True
+                marker = None
+                while next_marker:
+                    flow_emails = request_with_retry(email_endpoint, params={'api_key': api_key, 'marker': marker})
+                    if not flow_emails:
+                        continue
+
+                    if isinstance(flow_emails, list):
+                        for email in flow_emails:
+                            flow_emails[email]["flow_id"] = flow["id"]
+                            flow_emails[email]["message_id"] = email["id"]
+                            counter.increment()
+                    else:
+                        flow_emails["flow_id"] = flow["id"]
+                        flow_emails["message_id"] = flow_emails["id"]
+
+                    datas = singer.transform(flow_emails, resource['schema'])
+                    singer.write_records(resource['stream'], [datas])
+
+                    if "marker" in flow_emails:
+                        marker = flow_emails['marker']
                         next_marker = True
                     else:
                         break
