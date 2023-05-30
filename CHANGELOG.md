@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1
+  * Dependabot update [#62](https://github.com/singer-io/tap-klaviyo/pull/62)
+
 ## 0.3.0
   * Add missing tap tester tests [#52](https://github.com/singer-io/tap-klaviyo/pull/52)
   * Backoff Error Handling [#51](https://github.com/singer-io/tap-klaviyo/pull/51)
