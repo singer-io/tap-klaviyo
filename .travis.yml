@@ -1,0 +1,13 @@
+script:
+  - ./build.sh --test
+
+deploy:
+  provider: script
+  script: ./build.sh --deploy
+  skip_cleanup: true
+  on:
+    branch: main
+
+notifications:
+  slack:
+    secure: "UQehIof+/udN7Vjk89QpqYyTJk24SC6pKB3aP2biwe9YKum+mGn1Om5Y8b3kk7X/46c8zxemky8Sm0KhxV3jZZQ3gPfG53HclssEyma7vMNPbyArcf91khD85GiNHp9htTANFcQ+R+xwr3BRxqh4qBWdTzu9cjL/I+arJAVP/rhdaKDU6b2HXHZzTw7X7MoiVzbwX5s/OudrJag0TrtB24C1+eTPElIcFbEmS0ZIot0nxYzzNgLM9TMgwEl3g6uLsseRI8mzFZvQPvNbo+FGq7l3xmOunaGJJjvoNcDrSRgnYkMAIcogUlJddFbZ2SFYnzQCPc+Q2sOynnJoo8FPNRoNRwWS+iOIVjtfUvsl+PnhUITnnV3Vu6Myh+JgyJOJW07mPyQkDVLGl9FS5O5CfR8It34gJ7XRsWNMNBp7gFoClBh5ObAfUfAQi2G3i4Q23TobhUAj6Agun3s6J6p5T43l/9+1oLP7tD8Ag32DvgMdQR5IeOfwSMEPDxP/gqU26UHOs10TqS8UX+QmJxBZw2/QGOO9ABjrS6t9rQm3V0qcm+Fk6c2qeqHzNJRGLmbrkQF3MwTYWYMsqf9H/tUWPUffDluHhbu0DXHCVOunwoBn3lu4e4+gAr1dHfkU0OJfPLMtotFgh7mSpUDh6M5MxCry3M3rB3pTH+zuoOSdJXM="
