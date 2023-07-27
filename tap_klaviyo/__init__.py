@@ -29,13 +29,13 @@ EVENT_MAPPINGS = {
     "Updated Email Preferences": "update_email_preferences",
     "Dropped Email": "dropped_email",
     "Clicked SMS": "clicked_sms",
-    "Consented to Receive SMS": "consented_to_receive",
+    "Subscribed to SMS Marketing": "consented_to_receive",
     "Failed to Deliver SMS": "failed_to_deliver",
     "Failed to deliver Automated Response SMS": "failed_to_deliver_automated_response",
     "Received Automated Response SMS": "received_automated_response",
     "Received SMS": "received_sms",
     "Sent SMS": "sent_sms",
-    "Unsubscribed from SMS": "unsubscribed_from_sms"
+    "Unsubscribed from SMS Marketing": "unsubscribed_from_sms"
 }
 
 
