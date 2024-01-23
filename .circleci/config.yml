@@ -20,7 +20,7 @@ jobs:
       - run:
           name: 'Pylint'
           command: |
-            source ~/.virtualenvs/tap-klaviyo/bin/activate
+            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
             pylint tap_klaviyo -d C,R,'unspecified-encoding'
       - run:
           name: 'Unit Tests'
