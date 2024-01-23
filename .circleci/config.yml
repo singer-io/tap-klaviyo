@@ -8,7 +8,8 @@ jobs:
       - run:
           name: 'Setup'
           command: |
-            python3 -mvenv /usr/local/share/virtualenvs/tap-klaviyo
+            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox /usr/local/share/virtualenvs/dev_env.sh
+            python3 -m venv /usr/local/share/virtualenvs/tap-klaviyo
             source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
             pip install -U pip 'setuptools<51.0.0'
             pip install .
@@ -37,10 +38,9 @@ jobs:
       - run:
           name: 'Integration Tests'
           command: |
-            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox dev_env.sh
-            source dev_env.sh
+            source /usr/local/share/virtualenvs/dev_env.sh
             source /usr/local/share/virtualenvs/tap-tester/bin/activate
-            run-test --tap=tap-pipedrive \
+            run-test --tap=tap-klaviyo \
                        tests
 
 
