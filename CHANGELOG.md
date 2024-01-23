@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.0
+  * Updates for python 3.11 [#65](https://github.com/singer-io/tap-klaviyo/pull/65)
+
 ## 0.3.0
   * Add missing tap tester tests [#52](https://github.com/singer-io/tap-klaviyo/pull/52)
   * Backoff Error Handling [#51](https://github.com/singer-io/tap-klaviyo/pull/51)
