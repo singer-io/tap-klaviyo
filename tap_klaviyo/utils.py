@@ -168,9 +168,9 @@ def get_latest_event_time(events):
 # hence added backoff for 'ConnectionError' too.
 @backoff.on_exception(backoff.expo, (requests.Timeout, requests.ConnectionError), max_tries=5, factor=2)
 @backoff.on_exception(backoff.expo, (simplejson.scanner.JSONDecodeError, KlaviyoBackoffError), max_tries=3)
-def authed_get(source, url, params):
+def authed_get(source, url, params, headers):
     with metrics.http_request_timer(source) as timer:
-        resp = session.request(method='get', url=url, params=params, timeout=get_request_timeout())
+        resp = requests.get(url=url, params=params, headers=headers, timeout=get_request_timeout())
         
         if resp.status_code != 200:
             raise_for_error(resp)
@@ -180,11 +180,9 @@ def authed_get(source, url, params):
             return resp
 
 
-def get_all_using_next(stream, url, api_key, since=None):
+def get_all_using_next(stream, url, headers, params={}):
     while True:
-        r = authed_get(stream, url, {'api_key': api_key,
-                                     'since': since,
-                                     'sort': 'asc'})
+        r = authed_get(stream, url, params, headers)
         yield r
         if 'next' in r.json() and r.json()['next']:
             since = r.json()['next']
@@ -192,55 +190,68 @@ def get_all_using_next(stream, url, api_key, since=None):
             break
 
 
-def get_all_pages(source, url, api_key):
+def get_all_pages(source, url, headers):
     page = 0
     while True:
-        r = authed_get(source, url, {'page': page, 'api_key': api_key})
+        r = authed_get(source, url, {'page': page}, headers)
         yield r
         if r.json()['end'] < r.json()['total'] - 1:
             page += 1
         else:
             break
 
-def get_incremental_pull(stream, endpoint, state, api_key, start_date):
+def get_incremental_pull(stream, endpoint, state, headers, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)
 
     with metrics.record_counter(stream['stream']) as counter:
-        url = '{}{}/timeline'.format(
-            endpoint,
-            stream['tap_stream_id']
-        )
-        for response in get_all_using_next(
-                stream['stream'], url, api_key,
-                latest_event_time):
+        params = {
+            "filter": f"equals(metric_id,\"{stream['tap_stream_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
+            "include": "profile,metric",
+            "sort": "datetime"
+        }
+        for response in get_all_using_next(stream['stream'], endpoint, headers, params):
             events = response.json().get('data')
 
             if events:
+                included = response.json().get('included')
                 counter.increment(len(events))
-                transfrom_and_write_records(events, stream)
+                transfrom_and_write_records(events, stream, included)
                 update_state(state, stream['stream'], get_latest_event_time(events))
                 singer.write_state(state)
 
     return state
 
-def get_full_pulls(resource, endpoint, api_key):
+def get_full_pulls(resource, endpoint, headers):
 
     with metrics.record_counter(resource['stream']) as counter:
-
-        for response in get_all_pages(resource['stream'], endpoint, api_key):
-            
+        for response in get_all_pages(resource['stream'], endpoint, headers):
             records = response.json().get('data')
             counter.increment(len(records))
             transfrom_and_write_records(records, resource)
 
 
-def transfrom_and_write_records(events, stream):
+def transfrom_and_write_records(events, stream, included=[]):
     event_stream = stream['stream']
     event_schema = stream['schema']
     event_mdata = metadata.to_map(stream['metadata'])
 
     with Transformer() as transformer:
         for event in events:
+            # flatten the event dict with attributes
+            event.update(event['attributes'])
+            for relationship_key, relationship_value in event.get('relationships',{}).items():
+                # flatten the relationship_value dict with data
+                relationship_value.update(relationship_value['data'])
+                relationship_id_param = relationship_value['id']
+                for included_relationship in included:
+                    # break out of the loop if included relationship is found
+                    if relationship_id_param == included_relationship['id']:
+                        # flatten the included_relationship dict with attributes
+                        included_relationship.update(included_relationship['attributes'])
+                        relationship_value.update(included_relationship)
+                        break
+                event.update({relationship_key: relationship_value})
+            # write record
             singer.write_record(
                 event_stream, 
                 transformer.transform(
