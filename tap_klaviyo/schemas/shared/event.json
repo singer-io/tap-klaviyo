@@ -1,65 +1,59 @@
 {
-    "type": [
-      "null",
-      "object"
-    ],
-    "properties": {
-      "uuid": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "event_name": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "timestamp": {
-        "type": [
-          "null",
-          "integer"
-        ]
-      },
-      "object": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "datetime": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "statistic_id": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "id": {
-        "type": [
-          "null",
-          "string"
-        ]
-      },
-      "event_properties": {
-        "type": [
-          "null",
-          "object"
-        ],
-        "properties": {}
-      },
-      "person": {
-        "type": [
-          "null",
-          "object"
-        ],
-        "properties": {}
-      }
+  "type": [
+    "null",
+    "object"
+  ],
+  "properties": {
+    "type": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "uuid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "timestamp": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "datetime": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "event_properties": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {}
+    },
+    "profile": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {}
+    },
+    "metric": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {}
     }
   }
-  
+}
