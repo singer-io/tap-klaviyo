@@ -44,16 +44,28 @@
     "profile": {
       "type": [
         "null",
-        "object"
+        "array"
       ],
-      "properties": {}
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {}
+      }
     },
     "metric": {
       "type": [
         "null",
-        "object"
+        "array"
       ],
-      "properties": {}
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {}
+      }
     }
   }
 }

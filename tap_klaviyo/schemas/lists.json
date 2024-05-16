@@ -33,9 +33,15 @@
     "tags": {
       "type": [
         "null",
-        "object"
+        "array"
       ],
-      "properties": {}
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {}
+      }
     },
     "id": {
       "type": [
