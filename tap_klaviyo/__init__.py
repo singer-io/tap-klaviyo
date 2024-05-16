@@ -12,11 +12,11 @@ LOGGER = singer.get_logger()
 API_VERSION = "2024-02-15"
 
 ENDPOINTS = {
-    'global_exclusions': 'https://a.klaviyo.com/api/v1/people/exclusions',
-    'lists': 'https://a.klaviyo.com/api/v1/lists',
+    'global_exclusions': 'https://a.klaviyo.com/api/profiles',
+    'lists': 'https://a.klaviyo.com/api/lists',
     'metrics': 'https://a.klaviyo.com/api/metrics',
     'events': 'https://a.klaviyo.com/api/events',
-    'campaigns': 'https://a.klaviyo.com/api/v1/campaigns'
+    'campaigns': 'https://a.klaviyo.com/api/campaigns'
 }
 
 EVENT_MAPPINGS = {
