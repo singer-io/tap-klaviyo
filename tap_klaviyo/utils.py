@@ -180,13 +180,13 @@ def authed_get(source, url, params, headers):
             return resp
 
 
-def get_all_using_next(stream, url, headers, params={}):
+def get_all_using_next(stream, url, headers, params=None):
+    if params is None:
+        params = {}
     while True:
         r = authed_get(stream, url, params, headers)
         yield r
-        if 'next' in r.json() and r.json()['next']:
-            since = r.json()['next']
-        else:
+        if not 'next' in r.json() or not r.json()['next']:
             break
 
 
@@ -230,7 +230,9 @@ def get_full_pulls(resource, endpoint, headers):
             transfrom_and_write_records(records, resource)
 
 
-def transfrom_and_write_records(events, stream, included=[]):
+def transfrom_and_write_records(events, stream, included=None):
+    if included is None:
+        included = []
     event_stream = stream['stream']
     event_schema = stream['schema']
     event_mdata = metadata.to_map(stream['metadata'])
