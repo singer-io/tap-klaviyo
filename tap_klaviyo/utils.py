@@ -179,26 +179,14 @@ def authed_get(source, url, params, headers):
             timer.tags[metrics.Tag.http_status_code] = resp.status_code
             return resp
 
-
-def get_all_using_next(stream, url, headers, params=None):
-    if params is None:
-        params = {}
-    while True:
+def get_all_using_next(stream, url, headers, params):
+    # Paginate till there is a url or next url.
+    while url:
         r = authed_get(stream, url, params, headers)
+        # Re-initializing params to {} as next url contains all necessary params.
+        params = {}
         yield r
-        if not 'next' in r.json() or not r.json()['next']:
-            break
-
-
-def get_all_pages(source, url, headers):
-    page = 0
-    while True:
-        r = authed_get(source, url, {'page': page}, headers)
-        yield r
-        if r.json()['end'] < r.json()['total'] - 1:
-            page += 1
-        else:
-            break
+        url = r.json().['links'].get('next', None)
 
 def get_incremental_pull(stream, endpoint, state, headers, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)
@@ -213,9 +201,9 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
             events = response.json().get('data')
 
             if events:
-                included = response.json().get('included')
+                included = response.json().get('included', [])
                 counter.increment(len(events))
-                transfrom_and_write_records(events, stream, included)
+                transfrom_and_write_records(events, stream, included, params.get("include","").split(","))
                 update_state(state, stream['stream'], get_latest_event_time(events))
                 singer.write_state(state)
 
@@ -224,35 +212,60 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 def get_full_pulls(resource, endpoint, headers):
 
     with metrics.record_counter(resource['stream']) as counter:
-        for response in get_all_pages(resource['stream'], endpoint, headers):
+        if resource['stream'] == 'campaigns':
+            # campaigns params
+            params = {
+                "filter": "equals(messages.channel,'email')",
+                "include": "tags,campaign-messages"
+            }
+        elif resource['stream'] == 'global_exclusions':
+            # global_exclusions params
+            params = {
+                "filter": "equals(subscriptions.email.marketing.suppression.reason,'UNSUBSCRIBE')",
+                "additional-fields[profile]": "subscriptions"
+            }
+        else:
+            # lists params
+            params = {
+                "include": "tags"
+            }
+
+        for response in get_all_using_next(resource['stream'], endpoint, headers, params):
             records = response.json().get('data')
+            included = response.json().get('included', [])
             counter.increment(len(records))
-            transfrom_and_write_records(records, resource)
+            transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
 
 
-def transfrom_and_write_records(events, stream, included=None):
-    if included is None:
-        included = []
+def transfrom_and_write_records(events, stream, included, valid_relationships):
     event_stream = stream['stream']
     event_schema = stream['schema']
     event_mdata = metadata.to_map(stream['metadata'])
 
     with Transformer() as transformer:
         for event in events:
-            # flatten the event dict with attributes
+            # Flatten the event dict with attributes
             event.update(event['attributes'])
             for relationship_key, relationship_value in event.get('relationships',{}).items():
-                # flatten the relationship_value dict with data
-                relationship_value.update(relationship_value['data'])
-                relationship_id_param = relationship_value['id']
-                for included_relationship in included:
-                    # break out of the loop if included relationship is found
-                    if relationship_id_param == included_relationship['id']:
-                        # flatten the included_relationship dict with attributes
-                        included_relationship.update(included_relationship['attributes'])
-                        relationship_value.update(included_relationship)
-                        break
-                event.update({relationship_key: relationship_value})
+                if not relationship_key in valid_relationships:
+                    continue
+                relationship_data = relationship_value['data']
+                # Generalizing relationship data to list of dicts for all streams
+                # This is due to the fact that, for Full table streams, data is returned as a list
+                # And, for incremental streams, data is return as a dict in API response
+                if isinstance(relationship_data, dict):
+                    relationship_data = [relationship_data]
+                for relationship in relationship_data:
+                    # Flatten the relationship dict with data
+                    relationship_id = relationship['id']
+                    for included_relationship in included:
+                        # Break out of the loop if included relationship is found
+                        if relationship_id == included_relationship['id']:
+                            # Flatten the included_relationship dict with attributes
+                            included_relationship.update(included_relationship['attributes'])
+                            relationship.update(included_relationship)
+                            break
+                event.update({relationship_key: relationship_data})
             # write record
             singer.write_record(
                 event_stream, 
