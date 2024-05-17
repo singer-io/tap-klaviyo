@@ -101,7 +101,7 @@
             ],
             "properties": {}
         },
-        "campaign_messages": {
+        "campaign-messages": {
             "type": [
                 "null",
                 "array"
