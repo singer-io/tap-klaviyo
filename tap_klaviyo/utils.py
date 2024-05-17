@@ -186,7 +186,7 @@ def get_all_using_next(stream, url, headers, params):
         # Re-initializing params to {} as next url contains all necessary params.
         params = {}
         yield r
-        url = r.json().['links'].get('next', None)
+        url = r.json()['links'].get('next', None)
 
 def get_incremental_pull(stream, endpoint, state, headers, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)

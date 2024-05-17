@@ -157,7 +157,7 @@ def do_sync(config, state, catalog, headers):
 def get_available_metrics(headers):
     metric_streams = []
     for response in get_all_using_next('metric_list',
-                                  ENDPOINTS['metrics'], headers):
+                                  ENDPOINTS['metrics'], headers, {}):
         for metric in response.json().get('data'):
             if metric['attributes']['name'] in EVENT_MAPPINGS:
                 metric_streams.append(
