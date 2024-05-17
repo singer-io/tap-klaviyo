@@ -1,8 +1,6 @@
-import tap_klaviyo
 import unittest
 from unittest import mock
 import singer
-from singer import metrics, metadata, Transformer
 from tap_klaviyo.utils import transfrom_and_write_records
 from tap_klaviyo import discover
 
@@ -14,7 +12,7 @@ class MockResponse:
         self.content = content
         self.headers = headers
         self.raise_error = raise_error
-    
+
     def json(self):
         return self.json_data
 
@@ -22,7 +20,7 @@ class MockResponse:
         raise requests.HTTPError
 
 def successful_200_request(*args, **kwargs):
-    json_str = {"data": [{'object': 'metric', 'id': 'dummy_id', 'name': 'Fulfilled Order', 'integration': {'object': 'integration', 'id': '0eMvjm', 'name': 'Shopify', 'category': 'eCommerce'}, 'created': '2021-09-15 09:54:46', 'updated': '2021-09-15 09:54:46'}], 'page': 0, 'start': 0, 'end': 28, 'total': 29, 'page_size': 29}
+    json_str = {"data": [{"type": "metric", "id": "abc", "attributes": {"name": "abc", "created": "2019-09-09T19:06:57+00:00", "updated": "2019-09-09T19:06:57+00:00", "integration": {"object": "integration", "id": "abc"}}}],"links": {"self": "abc", "next": None, "previous": None}}
 
     return MockResponse(200, json_str)
 
@@ -44,9 +42,9 @@ class TestNullValuesInSchema(unittest.TestCase):
         config = {}
         mock_parse_args.return_value = MockParseArgs(state = {}, discover = True, config=config)
         # record with null values
-        records = [{'object': 'campaign', 'id': None, 'name': None, 'subject': None, 'from_email': None, 'from_name': None, 'lists': None, 'excluded_lists': [], 'status': None, 'status_id': None, 'status_label': None, 'sent_at': None, 'send_time': None, 'created': None, 'updated': None, 'num_recipients': None, 'campaign_type': None, 'is_segmented': None, 'message_type': None, 'template_id': None}]
+        records = [{'type': 'campaign', 'id': None, 'attributes': {'name': None, 'status': None, 'archived': None, 'audiences': {'included': [None], 'excluded': [None]}, 'send_options': {'use_smart_sending': None, 'ignore_unsubscribes': None}, 'tracking_options': {'is_add_utm': None, 'utm_params': [], 'is_tracking_clicks': None, 'is_tracking_opens': None}, 'send_strategy': {'method': None, 'options_static': None, 'options_throttled': None, 'options_sto': None}, 'created_at': None, 'scheduled_at': None, 'updated_at': None, 'send_time': None}, 'relationships': {'campaign-messages': {'data': [{'type': 'campaign-message', 'id': None}], 'links': {'self': None, 'related': None}}, 'tags': {'data': [], 'links': {'self': None, 'related': None}}}, 'links': {'self': None}}]
         catalog = discover("dummy_key")
         stream = None
         stream = [each for each in catalog['streams'] if each['stream'] == 'campaigns']
         # Verify by calling `transfrom_and_write_records` that it doesn't throw any exception while transform
-        transfrom_and_write_records(records, stream[0])
+        transfrom_and_write_records(records, stream[0], included=[], valid_relationships=[])

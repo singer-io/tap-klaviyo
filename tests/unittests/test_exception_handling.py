@@ -2,8 +2,7 @@ import tap_klaviyo.utils as utils_
 import unittest
 from unittest import mock
 import requests
-import singer
-import json
+
 
 class Mockresponse:
     def __init__(self, status_code, resp={}, content=None, headers=None, raise_error=False):
@@ -93,16 +92,16 @@ class TestBackoff(unittest.TestCase):
     def test_200(self, successful_200_request, mocked_get_request_timeout):
         test_data = {"tap": "klaviyo", "code": 200}
 
-        actual_data = utils_.authed_get("", "", "").json()
+        actual_data = utils_.authed_get("", "", "", "").json()
         self.assertEquals(actual_data, test_data)
-    
+
     @mock.patch('requests.Session.request', side_effect=klaviyo_400_error)
     def test_400_error(self, klaviyo_400_error, mocked_get_request_timeout):
         """
         Test that `authed_get` raise 400 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoBadRequestError as e:
             self.assertEquals(str(e), "HTTP-error-code: 400, Error: Request is missing or has a bad parameter.")
 
@@ -112,7 +111,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 401 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoUnauthorizedError as e:
             self.assertEquals(str(e), "HTTP-error-code: 401, Error: Invalid authorization credentials.")
 
@@ -122,7 +121,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 403 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
 
@@ -132,7 +131,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 403 error with proper message for wrong api key
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: The API key specified is invalid.")
 
@@ -142,7 +141,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 403 error with proper message for empty api key
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
             self.assertEquals(str(e), "HTTP-error-code: 403, Error: You must specify an API key to make requests.")
 
@@ -152,7 +151,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 404 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoNotFoundError as e:
             self.assertEquals(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
 
@@ -162,7 +161,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 409 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoConflictError as e:
             self.assertEquals(str(e), "HTTP-error-code: 409, Error: The API request cannot be completed because the requested operation would conflict with an existing item.")
 
@@ -173,7 +172,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 500 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoInternalServiceError as e:
             self.assertEquals(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")
 
@@ -184,7 +183,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 429 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoRateLimitError as e:
             self.assertEquals(str(e), "HTTP-error-code: 429, Error: The API rate limit for your organization/application pairing has been exceeded.")
 
@@ -195,7 +194,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 501 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoNotImplementedError as e:
             self.assertEquals(str(e), "HTTP-error-code: 501, Error: The server does not support the functionality required to fulfill the request.")
 
@@ -206,7 +205,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 502 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoBadGatewayError as e:
             self.assertEquals(str(e), "HTTP-error-code: 502, Error: Server received an invalid response from another server.")
 
@@ -217,7 +216,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 503 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoServiceUnavailableError as e:
             self.assertEquals(str(e), "HTTP-error-code: 503, Error: API service is currently unavailable.")
 
@@ -228,7 +227,7 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 504 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoGatewayTimeoutError as e:
             self.assertEquals(str(e), "HTTP-error-code: 504, Error: Server did not return a response from another server.")
 
@@ -239,6 +238,6 @@ class TestBackoff(unittest.TestCase):
         Test that `authed_get` raise 524 error with proper message
         """
         try:
-            utils_.authed_get("", "", "")
+            utils_.authed_get("", "", "", "")
         except utils_.KlaviyoServerTimeoutError as e:
             self.assertEquals(str(e), "HTTP-error-code: 524, Error: Server took too long to respond to the request.")
