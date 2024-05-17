@@ -40,7 +40,26 @@
           "null",
           "object"
         ],
-        "properties": {}
+        "properties": {
+          "type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
       }
     },
     "id": {

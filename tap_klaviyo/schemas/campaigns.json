@@ -53,7 +53,32 @@
                 "null",
                 "object"
             ],
-            "properties": {}
+            "properties": {
+                "included": {
+                    "type": [
+                        "null",
+                        "array"
+                    ],
+                    "items": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                },
+                "excluded": {
+                    "type": [
+                        "null",
+                        "array"
+                    ],
+                    "items": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                }
+            }
         },
         "send_options": {
             "type": [
@@ -86,7 +111,73 @@
                     "null",
                     "object"
                 ],
-                "properties": {}
+                "properties": {
+                    "type": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "id": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "label": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "channel": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "content": {
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "properties": {}
+                    },
+                    "send_times": {
+                        "type": [
+                            "null",
+                            "array"
+                        ],
+                        "items": {
+                            "type": [
+                                "null",
+                                "object"
+                            ],
+                            "properties": {}
+                        }
+                    },
+                    "render_options": {
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "properties": {}
+                    },
+                    "created_at": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    }
+                }
             }
         },
         "tags": {
@@ -99,7 +190,26 @@
                     "null",
                     "object"
                 ],
-                "properties": {}
+                "properties": {
+                    "type": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "id": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "name": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                }
             }
         },
         "scheduled_at": {
