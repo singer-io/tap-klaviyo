@@ -213,28 +213,47 @@ def get_full_pulls(resource, endpoint, headers):
 
     with metrics.record_counter(resource['stream']) as counter:
         if resource['stream'] == 'campaigns':
-            # campaigns params
-            params = {
-                "filter": "equals(messages.channel,'email')",
-                "include": "tags,campaign-messages"
-            }
+            # params list campaigns stream
+            params_list = [
+                {
+                    "filter": "equals(messages.channel,'email')",
+                    "include": "tags,campaign-messages"
+                }
+            ]
         elif resource['stream'] == 'global_exclusions':
-            # global_exclusions params
-            params = {
-                "filter": "equals(subscriptions.email.marketing.suppression.reason,'UNSUBSCRIBE')",
-                "additional-fields[profile]": "subscriptions"
-            }
+            # params list for global_exclusions stream
+            params_list = [
+                {
+                    "filter": "equals(subscriptions.email.marketing.suppression.reason,'HARD_BOUNCE')",
+                    "additional-fields[profile]": "subscriptions"
+                },
+                {
+                    "filter": "equals(subscriptions.email.marketing.suppression.reason,'USER_SUPPRESSED')",
+                    "additional-fields[profile]": "subscriptions"
+                },
+                {
+                    "filter": "equals(subscriptions.email.marketing.suppression.reason,'UNSUBSCRIBE')",
+                    "additional-fields[profile]": "subscriptions"
+                },
+                {
+                    "filter": "equals(subscriptions.email.marketing.suppression.reason,'INVALID_EMAIL')",
+                    "additional-fields[profile]": "subscriptions"
+                }
+            ]
         else:
-            # lists params
-            params = {
-                "include": "tags"
-            }
+            # params list for lists stream 
+            params_list = [
+                {
+                    "include": "tags"
+                }
+            ]
 
-        for response in get_all_using_next(resource['stream'], endpoint, headers, params):
-            records = response.json().get('data')
-            included = response.json().get('included', [])
-            counter.increment(len(records))
-            transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
+        for params in params_list:
+            for response in get_all_using_next(resource['stream'], endpoint, headers, params):
+                records = response.json().get('data')
+                included = response.json().get('included', [])
+                counter.increment(len(records))
+                transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):
