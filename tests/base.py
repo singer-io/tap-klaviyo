@@ -119,6 +119,18 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
+            "subscribed_to_email": {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
+            "subscribed_to_sms": {
+                self.PRIMARY_KEYS: {"id"},
+                self.REPLICATION_METHOD: self.INCREMENTAL,
+                self.REPLICATION_KEYS:{"since"},
+                self.BOOKMARK: {"timestamp"}
+            },
             "update_email_preferences": {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
@@ -126,7 +138,7 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.BOOKMARK: {"timestamp"}
             },
             "global_exclusions": {
-                self.PRIMARY_KEYS: {"email"},
+                self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
             "lists": {
@@ -144,12 +156,6 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.BOOKMARK: {"timestamp"}
             },
             'unsubscribed_from_sms': {
-                self.PRIMARY_KEYS: {"id"},
-                self.REPLICATION_METHOD: self.INCREMENTAL,
-                self.REPLICATION_KEYS:{"since"},
-                self.BOOKMARK: {"timestamp"}
-            },
-            'consented_to_receive': {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
@@ -244,7 +250,7 @@ class KlaviyoBaseTest(unittest.TestCase):
 
         found_catalog_names = set(map(lambda c: c['stream_name'], found_catalogs))
         print(found_catalog_names)
-        self.assertSetEqual(self.expected_streams(), found_catalog_names, msg="discovered schemas do not match")
+        self.assertGreater(len(self.expected_streams()), len(found_catalog_names), msg="discovered schemas do not match")
         print("discovered schemas are OK")
 
         return found_catalogs

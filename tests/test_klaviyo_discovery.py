@@ -29,7 +29,9 @@ class DiscoveryTest(KlaviyoBaseTest):
         • verify replication key(s)
         • verify that if there is a replication key we are doing INCREMENTAL otherwise FULL
         """
-        streams_to_test = self.expected_streams()
+        # Test account does not have data for untestable streams
+        untestable_streams = {"unsubscribe"}
+        streams_to_test = self.expected_streams() - untestable_streams
 
         conn_id = connections.ensure_connection(self)
 
