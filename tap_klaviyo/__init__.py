@@ -24,20 +24,21 @@ EVENT_MAPPINGS = {
     "Clicked Email": "click",
     "Opened Email": "open",
     "Bounced Email": "bounce",
-    "Unsubscribed": "unsubscribe",
+    "Unsubscribed from Email Marketing": "unsubscribe",
     "Marked Email as Spam": "mark_as_spam",
     "Unsubscribed from List": "unsub_list",
+    "Subscribed to Email Marketing": "subscribed_to_email",
     "Subscribed to List": "subscribe_list",
     "Updated Email Preferences": "update_email_preferences",
     "Dropped Email": "dropped_email",
     "Clicked SMS": "clicked_sms",
-    "Consented to Receive SMS": "consented_to_receive",
+    "Subscribed to SMS Marketing": "subscribed_to_sms",
     "Failed to Deliver SMS": "failed_to_deliver",
     "Failed to deliver Automated Response SMS": "failed_to_deliver_automated_response",
     "Received Automated Response SMS": "received_automated_response",
     "Received SMS": "received_sms",
     "Sent SMS": "sent_sms",
-    "Unsubscribed from SMS": "unsubscribed_from_sms"
+    "Unsubscribed from SMS Marketing": "unsubscribed_from_sms"
 }
 
 
@@ -85,7 +86,7 @@ REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
     'global_exclusions',
-    'email',
+    'id',
     'FULL_TABLE'
 )
 
