@@ -19,7 +19,9 @@ class AutomaticFieldsTest(KlaviyoBaseTest):
         • Verify that all replicated records have unique primary key values.
         """
         # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
-        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
+        # Test account does not have data for untestable streams
+        untestable_streams = {"unsubscribe", "mark_as_spam", "dropped_email"}
+        expected_streams = self.expected_streams() - untestable_streams
         
         conn_id = connections.ensure_connection(self)
 
