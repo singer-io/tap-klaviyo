@@ -225,19 +225,19 @@ def get_full_pulls(resource, endpoint, headers):
             params_list = [
                 {
                     "filter": "equals(subscriptions.email.marketing.suppression.reason,'HARD_BOUNCE')",
-                    "additional-fields[profile]": "subscriptions"
+                    "additional-fields[profile]": "subscriptions,predictive_analytics"
                 },
                 {
                     "filter": "equals(subscriptions.email.marketing.suppression.reason,'USER_SUPPRESSED')",
-                    "additional-fields[profile]": "subscriptions"
+                    "additional-fields[profile]": "subscriptions,predictive_analytics"
                 },
                 {
                     "filter": "equals(subscriptions.email.marketing.suppression.reason,'UNSUBSCRIBE')",
-                    "additional-fields[profile]": "subscriptions"
+                    "additional-fields[profile]": "subscriptions,predictive_analytics"
                 },
                 {
                     "filter": "equals(subscriptions.email.marketing.suppression.reason,'INVALID_EMAIL')",
-                    "additional-fields[profile]": "subscriptions"
+                    "additional-fields[profile]": "subscriptions,predictive_analytics"
                 }
             ]
         else:
