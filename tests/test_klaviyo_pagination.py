@@ -22,9 +22,18 @@ class PaginationTest(KlaviyoBaseTest):
         page_size = 100 # Page size for opened emails
         conn_id = connections.ensure_connection(self)
 
-        # Skipped the below streams as we are not able to generate enough records to pass pagination test cases.
-        # It shows the message as - You have reached 100% of your monthly sending limit
-        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email","received_sms","failed_to_deliver","failed_to_deliver_automated_response"}
+        # Test account does not have data for untestable streams
+        untestable_streams = {"unsubscribe", "mark_as_spam", "dropped_email"}
+        expected_streams = self.expected_streams() - untestable_streams
+        stream_page_size = {}
+        for stream in expected_streams:
+            stream_page_size[stream] = page_size
+        # Page size for streams are set based on available data in test account
+        stream_page_size["received_sms"] = 50
+        stream_page_size["failed_to_deliver_automated_response"] = 20
+        stream_page_size["subscribed_to_email"] = 1
+        stream_page_size["failed_to_deliver"] = 1
+
         found_catalogs = self.run_and_verify_check_mode(conn_id)
 
         # table and field selection
@@ -49,7 +58,7 @@ class PaginationTest(KlaviyoBaseTest):
                                        if message.get('action') == 'upsert']
 
                 # verify records are more than page size so multiple page is working
-                self.assertGreater(record_count_sync, page_size)
+                self.assertGreater(record_count_sync, stream_page_size[stream])
 
                 if record_count_sync > page_size:
                     primary_keys_list_1 = primary_keys_list[:page_size]
