@@ -11,6 +11,7 @@ LOGGER = singer.get_logger()
 
 API_VERSION = "2024-02-15"
 
+# For stream global_exclusions, data related to suppressed users can be found in the /api/profiles endpoint
 ENDPOINTS = {
     'global_exclusions': 'https://a.klaviyo.com/api/profiles',
     'lists': 'https://a.klaviyo.com/api/lists',
