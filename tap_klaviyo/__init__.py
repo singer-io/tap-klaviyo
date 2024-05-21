@@ -189,7 +189,7 @@ def main():
     args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
     headers = {
         "Authorization": f"Klaviyo-API-Key {args.config.get('api_key')}",
-        "revision": f"{args.config.get('api_version', API_VERSION)}"
+        "revision": API_VERSION
     }
 
     if args.discover:
