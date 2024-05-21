@@ -29,7 +29,6 @@ Singer taps function in two modes: [discovery mode](https://github.com/singer-io
     ```json
     {
         "api_key": "pk_XYZ",
-        "api_version": "2024-02-15",
         "start_date": "2017-01-01T00:00:00Z",
         "user_agent": "email_address",
         "request_timeout": 300
