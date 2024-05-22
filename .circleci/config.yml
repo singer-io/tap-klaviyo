@@ -8,11 +8,10 @@ jobs:
       - run:
           name: 'Setup'
           command: |
-            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox /usr/local/share/virtualenvs/dev_env.sh
-            python3 -m venv /usr/local/share/virtualenvs/tap-klaviyo
-            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
-            pip install -U pip 'setuptools<51.0.0'
+            virtualenv -p python3 ~/.virtualenvs/tap-klaviyo
+            source ~/.virtualenvs/tap-klaviyo/bin/activate
             pip install .
+            pip install pylint
       - run:
           name: 'JSON Validator'
           command: |
@@ -21,13 +20,12 @@ jobs:
       - run:
           name: 'Pylint'
           command: |
-            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
-            pip install pylint
+            source ~/.virtualenvs/tap-klaviyo/bin/activate
             pylint tap_klaviyo -d C,R,'unspecified-encoding'
       - run:
           name: 'Unit Tests'
           command: |
-            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
+            source ~/.virtualenvs/tap-klaviyo/bin/activate
             pip install nose coverage
             nosetests --with-coverage --cover-erase --cover-package=tap_klaviyo --cover-html-dir=htmlcov tests/unittests
             coverage html
@@ -39,10 +37,10 @@ jobs:
       - run:
           name: 'Integration Tests'
           command: |
-            source /usr/local/share/virtualenvs/dev_env.sh
+            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox dev_env.sh
+            source dev_env.sh
             source /usr/local/share/virtualenvs/tap-tester/bin/activate
             run-test --tap=tap-klaviyo tests
-
 
 workflows:
   version: 2
