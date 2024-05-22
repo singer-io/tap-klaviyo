@@ -10,74 +10,17 @@
                 "string"
             ]
         },
-        "updated": {
+        "updated_at": {
             "type": [
                 "null",
                 "string"
             ],
             "format": "date-time"
         },
-        "from_name": {
+        "type": {
             "type": [
                 "null",
                 "string"
-            ]
-        },
-        "list_id": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "template": {
-            "type": [
-                "null",
-                "object"
-            ],
-            "properties": {
-                "object": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
-                },
-                "id": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
-                },
-                "html": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
-                }
-            }
-        },
-        "status_id": {
-            "type": [
-                "null",
-                "integer"
-            ]
-        },
-        "object": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "num_recipients": {
-            "type": [
-                "null",
-                "integer"
-            ]
-        },
-        "lists": {},
-        "is_segmented": {
-            "type": [
-                "null",
-                "boolean"
             ]
         },
         "send_time": {
@@ -87,21 +30,7 @@
             ],
             "format": "date-time"
         },
-        "excluded_lists": {},
         "id": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "sent_at": {
-            "type": [
-                "null",
-                "string"
-            ],
-            "format": "date-time"
-        },
-        "campaign_type": {
             "type": [
                 "null",
                 "string"
@@ -113,42 +42,189 @@
                 "string"
             ]
         },
-        "created": {
+        "archived": {
+            "type": [
+                "null",
+                "boolean"
+            ]
+        },
+        "audiences": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {
+                "included": {
+                    "type": [
+                        "null",
+                        "array"
+                    ],
+                    "items": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                },
+                "excluded": {
+                    "type": [
+                        "null",
+                        "array"
+                    ],
+                    "items": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                }
+            }
+        },
+        "send_options": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {}
+        },
+        "tracking_options": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {}
+        },
+        "send_strategy": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {}
+        },
+        "campaign-messages": {
+            "type": [
+                "null",
+                "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "object"
+                ],
+                "properties": {
+                    "type": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "id": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "label": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "channel": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "content": {
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "properties": {}
+                    },
+                    "send_times": {
+                        "type": [
+                            "null",
+                            "array"
+                        ],
+                        "items": {
+                            "type": [
+                                "null",
+                                "object"
+                            ],
+                            "properties": {}
+                        }
+                    },
+                    "render_options": {
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "properties": {}
+                    },
+                    "created_at": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    }
+                }
+            }
+        },
+        "tags": {
+            "type": [
+                "null",
+                "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "object"
+                ],
+                "properties": {
+                    "type": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "id": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "name": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                }
+            }
+        },
+        "scheduled_at": {
             "type": [
                 "null",
                 "string"
             ],
             "format": "date-time"
         },
-        "status_label": {
+        "created_at": {
             "type": [
                 "null",
                 "string"
-            ]
-        },
-        "from_email": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "subject": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "message_type": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "template_id": {
-            "type": [
-                "null",
-                "string"
-            ]
+            ],
+            "format": "date-time"
         }
     }
 }

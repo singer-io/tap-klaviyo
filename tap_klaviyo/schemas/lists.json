@@ -8,21 +8,17 @@
       "type": [
         "null",
         "string"
-      ]
+      ],
+      "format": "date-time"
     },
     "updated": {
       "type": [
-          "null",
-          "string"
-      ]
-    },
-    "person_count": {
-      "type": [
         "null",
-        "integer"
-      ]
+        "string"
+      ],
+      "format": "date-time"
     },
-    "object": {
+    "type": {
       "type": [
         "null",
         "string"
@@ -34,11 +30,37 @@
         "string"
       ]
     },
-    "list_type": {
+    "tags": {
       "type": [
         "null",
-        "string"
-      ]
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
     },
     "id": {
       "type": [
@@ -46,7 +68,7 @@
         "string"
       ]
     },
-    "folder": {
+    "opt_in_process": {
       "type": [
         "null",
         "string"

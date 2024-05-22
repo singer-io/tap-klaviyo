@@ -5,7 +5,7 @@ data from the Klaviyo API following the [Singer
 spec](https://github.com/singer-io/getting-started/blob/master/SPEC.md).
 
 This tap:
-- Pulls raw data from the [Klaviyo metrics API](https://www.klaviyo.com/docs/api/metrics)
+- Pulls raw data from the [Klaviyo metrics API](https://developers.klaviyo.com/en/reference/api_overview)
 - Outputs the schema for each resource
 - Incrementally pulls data based on the input state for incremental endpoints
 - Updates full tables for global exclusions and lists endpoints
