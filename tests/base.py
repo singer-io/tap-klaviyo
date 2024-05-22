@@ -250,7 +250,9 @@ class KlaviyoBaseTest(unittest.TestCase):
 
         found_catalog_names = set(map(lambda c: c['stream_name'], found_catalogs))
         print(found_catalog_names)
-        self.assertGreater(len(self.expected_streams()), len(found_catalog_names), msg="discovered schemas do not match")
+        # In klaviyo, on the metrics api endpoint data, we finalize the catalog
+        # And, it is not necessary that all schemas defined in /schemas will be part of catalog.
+        self.assertTrue(set(found_catalog_names).issubset(set(self.expected_streams())), msg="discovered schemas do not match")
         print("discovered schemas are OK")
 
         return found_catalogs
