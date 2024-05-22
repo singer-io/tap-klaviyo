@@ -8,7 +8,7 @@ jobs:
       - run:
           name: 'Setup'
           command: |
-            virtualenv -p python3 ~/.virtualenvs/tap-klaviyo
+            virtualenv -p python3 /usr/local/share/virtualenvs/tap-klaviyo
             source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
             pip install -U pip 'setuptools<51.0.0'
             pip install .
