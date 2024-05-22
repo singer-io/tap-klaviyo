@@ -32,7 +32,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(100.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0)
 
     def test_timeout_value_not_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -48,7 +48,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=300.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=300.0)
 
     def test_timeout_string_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -64,7 +64,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(100.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0)
 
     def test_timeout_empty_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -80,7 +80,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
     def test_timeout_0_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -96,7 +96,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
     def test_timeout_string_0_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -112,7 +112,7 @@ class TestTimeoutValue(unittest.TestCase):
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0, allow_redirects=True)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
 @mock.patch("time.sleep")
 @mock.patch("requests.Session.request")

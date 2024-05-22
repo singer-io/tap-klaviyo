@@ -2,14 +2,15 @@ version: 2
 jobs:
   build:
     docker:
-      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:stitch-tap-tester
+      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:stitch-tap-tester-3-11-dev
     steps:
       - checkout
       - run:
           name: 'Setup'
           command: |
-            virtualenv -p python3 ~/.virtualenvs/tap-klaviyo
-            source ~/.virtualenvs/tap-klaviyo/bin/activate
+            virtualenv -p python3 /usr/local/share/virtualenvs/tap-klaviyo
+            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
+            pip install -U pip 'setuptools<51.0.0'
             pip install .
             pip install pylint
       - run:
@@ -20,15 +21,14 @@ jobs:
       - run:
           name: 'Pylint'
           command: |
-            source ~/.virtualenvs/tap-klaviyo/bin/activate
-            pylint tap_klaviyo -d C,R,'unspecified-encoding'
+            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
+            pylint tap_klaviyo -d C,R,W
       - run:
           name: 'Unit Tests'
           command: |
-            source ~/.virtualenvs/tap-klaviyo/bin/activate
-            pip install nose coverage
-            nosetests --with-coverage --cover-erase --cover-package=tap_klaviyo --cover-html-dir=htmlcov tests/unittests
-            coverage html
+            source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
+            pip install nose2 parameterized nose2[coverage_plugin]>=0.6.5
+            nose2 --with-coverage -v -s tests/unittests
       - store_test_results:
           path: test_output/report.xml
       - store_artifacts:
