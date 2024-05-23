@@ -16,15 +16,14 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
 
     def test_run(self):
 
-        # We are not able to generate test data so skipping two streams(mark_as_spam, dropped_email)
-        # Skipping given streams due to data available only on a single date -  failed_to_deliver_automated_response, failed_to_deliver
+        # Test account does not have data for untestable streams
+        untestable_streams = {"unsubscribe", "mark_as_spam", "dropped_email"}
         
-        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email", "failed_to_deliver_automated_response", 
-                                                      "failed_to_deliver"}
+        expected_streams = self.expected_streams() - untestable_streams
         
         # running start_date_test for old streams
-        expected_streams_1 = {"receive", "click", "open", "bounce", "unsubscribe", "unsub_list", "subscribe_list",
-                              "update_email_preferences","global_exclusions","lists","campaigns"}
+        expected_streams_1 = {"receive", "click", "open", "bounce", "unsub_list", "subscribe_list",
+            "update_email_preferences", "global_exclusions", "lists", "campaigns"}
         self.run_start_date(expected_streams_1, days = 3)
         
         # running start_date_test for newly added streams
@@ -132,9 +131,15 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
                     for bookmark_key_value in bookmark_key_sync_2:
                         self.assertGreaterEqual(bookmark_key_value, start_date_2_epoch)
 
-                    # Verify the number of records replicated in sync 1 is greater than the number
-                    # of records replicated in sync 2 for stream
-                    self.assertGreater(record_count_sync_1, record_count_sync_2)
+                    if stream in ['failed_to_deliver_automated_response', 'failed_to_deliver', 'subscribed_to_email']:
+                        # Verify the number of records replicated in sync 1 is greater than or equal to
+                        # the number of records replicated in sync 2 for mentioned streams as
+                        # the data is available for only 1 day for these streams
+                        self.assertGreaterEqual(record_count_sync_1, record_count_sync_2)
+                    else:
+                        # Verify the number of records replicated in sync 1 is greater than the number
+                        # of records replicated in sync 2 for stream
+                        self.assertGreater(record_count_sync_1, record_count_sync_2)
 
                     # Verify the records replicated in sync 2 were also replicated in sync 1
                     self.assertTrue(primary_keys_sync_2.issubset(primary_keys_sync_1))

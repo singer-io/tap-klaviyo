@@ -17,28 +17,28 @@ class TestFieldsInclusionInMetadata(unittest.TestCase):
     """
     Test cases to verify inclusion value is available for fields in metadata and automatic for key_property
     """
-    
-    @mock.patch("tap_klaviyo.get_all_pages")
-    def test_fields_inclusion_in_metadata(self, mock_get_all_pages):
-        api_key = "abc"
-        streams = [{"name": "Received Email", "id": "UfdfRD"},
-                   {"name": "Clicked Email", "id": "UrdfRD"},
-                   {"name": "Opened Email", "id": "UfdfRu"},
-                   {"name": "Bounced Email", "id": "RfdfRD"},
-                   {"name": "Unsubscribed", "id": "UddfRD"},
-                   {"name": "Marked Email as Spam", "id": "UffgbD"},
-                   {"name": "Unsubscribed from List", "id": "UsfewD"},
-                   {"name": "Subscribed to List", "id": "UrDfwD"},
-                   {"name": "Updated Email Preferences", "id": "AdfDfD"},
-                   {"name": "Dropped Email", "id": "AfdfdD"}]
+
+    @mock.patch("tap_klaviyo.get_all_using_next")
+    def test_fields_inclusion_in_metadata(self, mock_get_all_using_next):
+        header = "abc"
+        streams = [{"attributes": {"name": "Received Email"}, "id": "UfdfRD"},
+                   {"attributes": {"name": "Clicked Email"}, "id": "UrdfRD"},
+                   {"attributes": {"name": "Opened Email"}, "id": "UfdfRu"},
+                   {"attributes": {"name": "Bounced Email"}, "id": "RfdfRD"},
+                   {"attributes": {"name": "Unsubscribed"}, "id": "UddfRD"},
+                   {"attributes": {"name": "Marked Email as Spam"}, "id": "UffgbD"},
+                   {"attributes": {"name": "Unsubscribed from List"}, "id": "UsfewD"},
+                   {"attributes": {"name": "Subscribed to List"}, "id": "UrDfwD"},
+                   {"attributes": {"name": "Updated Email Preferences"}, "id": "AdfDfD"},
+                   {"attributes": {"name": "Dropped Email"}, "id": "AfdfdD"}]
         full_table_stream = ["global_exclusions", "lists", "campaigns"]
         bookmark_key = 'timestamp'
 
-        mock_get_all_pages.return_value = [get_mock_http_response(
+        mock_get_all_using_next.return_value = [get_mock_http_response(
             200, {"data": streams})]
 
         # Get catalog
-        catalog = tap_klaviyo.discover(api_key)
+        catalog = tap_klaviyo.discover(header)
         catalog = catalog['streams']
 
         for catalog_entry in catalog:

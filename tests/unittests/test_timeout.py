@@ -27,12 +27,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "", "")
 
         # verify that we got expected timeout value
         self.assertEquals(100.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=100.0)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0)
 
     def test_timeout_value_not_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -43,12 +43,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "","")
 
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=300.0)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=300.0)
 
     def test_timeout_string_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -59,12 +59,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "","")
 
         # verify that we got expected timeout value
         self.assertEquals(100.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=100.0)
+        mocked_request.assert_called_with(method='get', url='', params='', headers='', timeout=100.0)
 
     def test_timeout_empty_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -75,12 +75,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "","")
 
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=300.0)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
     def test_timeout_0_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -91,12 +91,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "","")
 
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=300.0)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
     def test_timeout_string_0_value_in_config(self, mocked_parse_args, mocked_request, mocked_sleep):
 
@@ -107,12 +107,12 @@ class TestTimeoutValue(unittest.TestCase):
         # get the timeout value for assertion
         timeout = utils.get_request_timeout()
         # function call
-        utils.authed_get("test_source", "", "")
+        utils.authed_get("test_source", "", "","")
 
         # verify that we got expected timeout value
         self.assertEquals(300.0, timeout)
         # verify that the request was called with expected timeout value
-        mocked_request.assert_called_with(method='get', url='', params='', timeout=300.0)
+        mocked_request.assert_called_with(method='get', url='', params='',  headers='', timeout=300.0)
 
 @mock.patch("time.sleep")
 @mock.patch("requests.Session.request")
@@ -130,7 +130,7 @@ class TestTimeoutAndConnectionErrorBackoff(unittest.TestCase):
 
         try:
             # function call
-            utils.authed_get("test_source", "", "")
+            utils.authed_get("test_source", "", "","")
         except requests.Timeout:
             pass
 
@@ -148,7 +148,7 @@ class TestTimeoutAndConnectionErrorBackoff(unittest.TestCase):
 
         try:
             # function call
-            utils.authed_get("test_source", "", "")
+            utils.authed_get("test_source", "", "","")
         except requests.ConnectionError:
             pass
 

@@ -19,8 +19,9 @@ class TestKlaviyoAllFields(KlaviyoBaseTest):
 
         """
 
-        # Streams to verify all fields tests
-        expected_streams = self.expected_streams() - {"mark_as_spam", "dropped_email"}
+        # Test account does not have data for untestable streams
+        untestable_streams = {"unsubscribe", "mark_as_spam", "dropped_email"}
+        expected_streams = self.expected_streams() - untestable_streams
         
         expected_automatic_fields = self.expected_automatic_fields()
         conn_id = connections.ensure_connection(self)
