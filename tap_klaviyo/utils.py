@@ -201,7 +201,11 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
             events = response.json().get('data')
 
             if events:
-                included = response.json().get('included', [])
+                included_list = response.json().get('included', [])
+                # Creating a dict/map of included relationships to optimize computations
+                included = {}
+                for included_relationship in included_list:
+                    included[included_relationship['id']] = included_relationship
                 counter.increment(len(events))
                 transfrom_and_write_records(events, stream, included, params.get("include","").split(","))
                 update_state(state, stream['stream'], get_latest_event_time(events))
@@ -251,7 +255,11 @@ def get_full_pulls(resource, endpoint, headers):
         for params in params_list:
             for response in get_all_using_next(resource['stream'], endpoint, headers, params):
                 records = response.json().get('data')
-                included = response.json().get('included', [])
+                included_list = response.json().get('included', [])
+                # Creating a dict/map of included relationships to optimize computations
+                included = {}
+                for included_relationship in included_list:
+                    included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
                 transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
 
@@ -275,15 +283,12 @@ def transfrom_and_write_records(events, stream, included, valid_relationships):
                 if isinstance(relationship_data, dict):
                     relationship_data = [relationship_data]
                 for relationship in relationship_data:
-                    # Flatten the relationship dict with data
-                    relationship_id = relationship['id']
-                    for included_relationship in included:
-                        # Break out of the loop if included relationship is found
-                        if relationship_id == included_relationship['id']:
-                            # Flatten the included_relationship dict with attributes
-                            included_relationship.update(included_relationship['attributes'])
-                            relationship.update(included_relationship)
-                            break
+                    included_relationship = included.get(relationship['id'], None)
+                    # Check if current relationship is present in included relationship dict
+                    if included_relationship is not None:
+                        # Flatten the included_relationship dict with attributes
+                        included_relationship.update(included_relationship['attributes'])
+                        relationship.update(included_relationship)
                 event.update({relationship_key: relationship_data})
             # write record
             singer.write_record(
