@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+  * Bump requests from 2.31.0 to 2.32.3 [#73](https://github.com/singer-io/tap-klaviyo/pull/73)
+
 ## 1.0.0
   * Klaviyo API version upgrade to v2024-02-15 [#67](https://github.com/singer-io/tap-klaviyo/pull/67)
   * Updates for python 3.11.7 [#66](https://github.com/singer-io/tap-klaviyo/pull/66)
