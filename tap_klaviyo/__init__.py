@@ -9,7 +9,7 @@ from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_usin
 
 LOGGER = singer.get_logger()
 
-API_VERSION = "2024-02-15"
+API_VERSION = "2024-10-15"
 
 # For stream global_exclusions, data related to suppressed users can be found in the /api/profiles endpoint
 ENDPOINTS = {
