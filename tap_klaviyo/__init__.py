@@ -87,21 +87,21 @@ REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
     'global_exclusions',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
 LISTS = Stream(
     'lists',
     'lists',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
 CAMPAIGNS = Stream(
     'campaigns',
     'campaigns',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
@@ -166,7 +166,7 @@ def get_available_metrics(headers):
                     Stream(
                         stream=EVENT_MAPPINGS[metric['attributes']['name']],
                         tap_stream_id=metric['id'],
-                        key_properties="id",
+                        key_properties=["id"],
                         replication_method='INCREMENTAL',
                         replication_keys=["timestamp"]
                     )
