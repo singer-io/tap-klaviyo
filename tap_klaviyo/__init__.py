@@ -48,8 +48,8 @@ class Stream(object):
         self.stream = stream
         self.key_properties = key_properties
         self.replication_method = replication_method
-        self.metadata = []
         self.replication_keys = replication_keys
+        self.metadata = []
 
     def to_catalog_dict(self):
         stream_schema = load_schema(self.stream)
@@ -166,7 +166,6 @@ def discover(headers):
     metric_streams = [
         Stream(
             stream=metric,
-            tap_stream_id=metric,
             key_properties=['id'],
             replication_method='INCREMENTAL',
             replication_keys=['timestamp']
