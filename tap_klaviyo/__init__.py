@@ -85,20 +85,17 @@ REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 
 GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
-    'global_exclusions',
     ['id'],
     'FULL_TABLE'
 )
 
 LISTS = Stream(
     'lists',
-    'lists',
     ['id'],
     'FULL_TABLE'
 )
 
 CAMPAIGNS = Stream(
-    'campaigns',
     'campaigns',
     ['id'],
     'FULL_TABLE'
