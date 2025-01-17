@@ -221,12 +221,12 @@ def get_all_using_next(stream, url, headers, params):
         yield r
         url = r.json()['links'].get('next', None)
 
-def get_incremental_pull(stream, endpoint, state, headers, start_date):
+def get_incremental_pull(stream, metric_id, endpoint, state, headers, start_date):
     latest_event_time = get_starting_point(stream, state, start_date)
 
     with metrics.record_counter(stream['stream']) as counter:
         params = {
-            "filter": f"equals(metric_id,\"{stream['tap_stream_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
+            "filter": f"equals(metric_id,\"{metric_id}\"),greater-or-equal(timestamp,{latest_event_time})",
             "include": "profile,metric",
             "sort": "datetime"
         }
