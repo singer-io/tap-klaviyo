@@ -66,127 +66,127 @@ class KlaviyoBaseTest(unittest.TestCase):
         # field which is different from the bookmark key.
         return{
             "receive": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "click": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "open": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "bounce": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsubscribe": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "mark_as_spam": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "dropped_email": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "unsub_list": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "subscribe_list": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "subscribed_to_email": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "subscribed_to_sms": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "update_email_preferences": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             "global_exclusions": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
             "lists": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
             "campaigns": {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
             'clicked_sms': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'unsubscribed_from_sms': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'received_sms': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'sent_sms': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'failed_to_deliver': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'failed_to_deliver_automated_response': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
             'received_automated_response': {
-                self.PRIMARY_KEYS: {"id"},
+                self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
