@@ -219,7 +219,7 @@ class KlaviyoBaseTest(unittest.TestCase):
         """return a dictionary with key of table name and set of value of automatic(primary key and bookmark field) fields"""
         auto_fields = {}
         for k, v in self.expected_metadata().items():
-            auto_fields[k] = v.get(self.PRIMARY_KEYS, set()) |  v.get(self.BOOKMARK, set())
+            auto_fields[k] = set(v.get(self.PRIMARY_KEYS, [])) | set(v.get(self.BOOKMARK, []))
         return auto_fields
 
     def expected_replication_method(self):
