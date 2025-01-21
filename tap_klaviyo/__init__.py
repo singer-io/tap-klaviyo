@@ -76,7 +76,7 @@ class Stream(object):
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
-            'key_properties': [self.key_properties],
+            'key_properties': self.key_properties,
             'schema': resolved_schema,
             'metadata': self.metadata
         }
