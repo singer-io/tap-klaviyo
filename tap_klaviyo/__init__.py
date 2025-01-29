@@ -76,7 +76,7 @@ class Stream(object):
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
-            'key_properties': [self.key_properties],
+            'key_properties': self.key_properties,
             'schema': resolved_schema,
             'metadata': self.metadata
         }
@@ -87,21 +87,21 @@ REQUIRED_CONFIG_KEYS = ["start_date"] + CREDENTIALS_KEYS
 GLOBAL_EXCLUSIONS = Stream(
     'global_exclusions',
     'global_exclusions',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
 LISTS = Stream(
     'lists',
     'lists',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
 CAMPAIGNS = Stream(
     'campaigns',
     'campaigns',
-    'id',
+    ['id'],
     'FULL_TABLE'
 )
 
@@ -133,27 +133,20 @@ def load_shared_schema_refs():
 def do_sync(config, state, catalog, headers):
     start_date = config['start_date'] if 'start_date' in config else None
 
-    stream_ids_to_sync = set()
-
     for stream in catalog.get('streams'):
         mdata = metadata.to_map(stream['metadata'])
         if metadata.get(mdata, (), 'selected'):
-            stream_ids_to_sync.add(stream['tap_stream_id'])
+            singer.write_schema(
+                stream['stream'],
+                stream['schema'],
+                stream['key_properties']
+            )
 
-    for stream in catalog['streams']:
-        if stream['tap_stream_id'] not in stream_ids_to_sync:
-            continue
-        singer.write_schema(
-            stream['stream'],
-            stream['schema'],
-            stream['key_properties']
-        )
-
-        if stream['stream'] in EVENT_MAPPINGS.values():
-            get_incremental_pull(stream, ENDPOINTS['events'], state,
-                                 headers, start_date)
-        else:
-            get_full_pulls(stream, ENDPOINTS[stream['stream']], headers)
+            if stream['stream'] in EVENT_MAPPINGS.values():
+                get_incremental_pull(stream, ENDPOINTS['events'], state,
+                                    headers, start_date)
+            else:
+                get_full_pulls(stream, ENDPOINTS[stream['stream']], headers)
 
 
 def get_available_metrics(headers):
@@ -166,7 +159,7 @@ def get_available_metrics(headers):
                     Stream(
                         stream=EVENT_MAPPINGS[metric['attributes']['name']],
                         tap_stream_id=metric['id'],
-                        key_properties="id",
+                        key_properties=["id"],
                         replication_method='INCREMENTAL',
                         replication_keys=["timestamp"]
                     )
