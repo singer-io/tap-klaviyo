@@ -1,7 +1,11 @@
 # Changelog
 
-## 1.0.2
+
+## 1.1.1
   * Set key_properties to a list [#75](https://github.com/singer-io/tap-klaviyo/pull/73)
+
+## 1.1.0
+  * Klaviyo API version upgrade to v2024-10-15 [#74](https://github.com/singer-io/tap-klaviyo/pull/74)
 
 ## 1.0.1
   * Bump requests from 2.31.0 to 2.32.3 [#73](https://github.com/singer-io/tap-klaviyo/pull/73)
