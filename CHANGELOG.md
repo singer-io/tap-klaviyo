@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.1.2
+  * Bump dependency versions for twistlock compliance [#77](https://github.com/singer-io/tap-klaviyo/pull/77)
 
 ## 1.1.1
   * Set key_properties to a list [#75](https://github.com/singer-io/tap-klaviyo/pull/73)
