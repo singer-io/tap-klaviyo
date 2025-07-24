@@ -8,7 +8,7 @@ jobs:
       - run:
           name: 'Setup'
           command: |
-            uv pip venv --python 3.11 /usr/local/share/virtualenvs/tap-klaviyo
+            uv venv --python 3.11 /usr/local/share/virtualenvs/tap-klaviyo
             source /usr/local/share/virtualenvs/tap-klaviyo/bin/activate
             uv pip install -U pip 'setuptools<51.0.0'
             uv pip install .
