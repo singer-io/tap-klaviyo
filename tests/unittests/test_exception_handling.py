@@ -93,7 +93,7 @@ class TestBackoff(unittest.TestCase):
         test_data = {"tap": "klaviyo", "code": 200}
 
         actual_data = utils_.authed_get("", "", "", "").json()
-        self.assertEquals(actual_data, test_data)
+        self.assertEqual(actual_data, test_data)
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_400_error)
     def test_400_error(self, klaviyo_400_error, mocked_get_request_timeout):
@@ -103,7 +103,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoBadRequestError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 400, Error: Request is missing or has a bad parameter.")
+            self.assertEqual(str(e), "HTTP-error-code: 400, Error: Request is missing or has a bad parameter.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_401_error)
     def test_401_error(self, klaviyo_401_error, mocked_get_request_timeout):
@@ -113,7 +113,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoUnauthorizedError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 401, Error: Invalid authorization credentials.")
+            self.assertEqual(str(e), "HTTP-error-code: 401, Error: Invalid authorization credentials.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error)
     def test_403_error(self, klaviyo_403_error, mocked_get_request_timeout):
@@ -123,7 +123,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
+            self.assertEqual(str(e), "HTTP-error-code: 403, Error: Invalid authorization credentials or permissions.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_wrong_api_key)
     def test_403_error_wrong_api_key(self, klaviyo_403_error_wrong_api_key, mocked_get_request_timeout):
@@ -133,7 +133,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 403, Error: The API key specified is invalid.")
+            self.assertEqual(str(e), "HTTP-error-code: 403, Error: The API key specified is invalid.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_403_error_missing_api_key)
     def test_403_error_missing_api_key(self, klaviyo_403_error_missing_api_key, mocked_get_request_timeout):
@@ -143,7 +143,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoForbiddenError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 403, Error: You must specify an API key to make requests.")
+            self.assertEqual(str(e), "HTTP-error-code: 403, Error: You must specify an API key to make requests.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_404_error)
     def test_404_error(self, klaviyo_404_error, mocked_get_request_timeout):
@@ -153,7 +153,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoNotFoundError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
+            self.assertEqual(str(e), "HTTP-error-code: 404, Error: The requested resource doesn't exist.")
 
     @mock.patch('requests.Session.request', side_effect=klaviyo_409_error)
     def test_409_error(self, klaviyo_409_error, mocked_get_request_timeout):
@@ -163,7 +163,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoConflictError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 409, Error: The API request cannot be completed because the requested operation would conflict with an existing item.")
+            self.assertEqual(str(e), "HTTP-error-code: 409, Error: The API request cannot be completed because the requested operation would conflict with an existing item.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_500_error)
@@ -174,7 +174,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoInternalServiceError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")
+            self.assertEqual(str(e), "HTTP-error-code: 500, Error: Internal Service Error from Klaviyo.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_429_error)
@@ -185,7 +185,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoRateLimitError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 429, Error: The API rate limit for your organization/application pairing has been exceeded.")
+            self.assertEqual(str(e), "HTTP-error-code: 429, Error: The API rate limit for your organization/application pairing has been exceeded.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_501_error)
@@ -196,7 +196,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoNotImplementedError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 501, Error: The server does not support the functionality required to fulfill the request.")
+            self.assertEqual(str(e), "HTTP-error-code: 501, Error: The server does not support the functionality required to fulfill the request.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_502_error)
@@ -207,7 +207,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoBadGatewayError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 502, Error: Server received an invalid response from another server.")
+            self.assertEqual(str(e), "HTTP-error-code: 502, Error: Server received an invalid response from another server.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_503_error)
@@ -218,7 +218,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoServiceUnavailableError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 503, Error: API service is currently unavailable.")
+            self.assertEqual(str(e), "HTTP-error-code: 503, Error: API service is currently unavailable.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_504_error)
@@ -229,7 +229,7 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoGatewayTimeoutError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 504, Error: Server did not return a response from another server.")
+            self.assertEqual(str(e), "HTTP-error-code: 504, Error: Server did not return a response from another server.")
 
     @mock.patch('time.sleep')
     @mock.patch('requests.Session.request', side_effect=klaviyo_524_error)
@@ -240,4 +240,4 @@ class TestBackoff(unittest.TestCase):
         try:
             utils_.authed_get("", "", "", "")
         except utils_.KlaviyoServerTimeoutError as e:
-            self.assertEquals(str(e), "HTTP-error-code: 524, Error: Server took too long to respond to the request.")
+            self.assertEqual(str(e), "HTTP-error-code: 524, Error: Server took too long to respond to the request.")
