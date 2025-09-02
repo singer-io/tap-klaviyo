@@ -33,7 +33,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
     def test_jsondecode(self, mocked_request, mocked_get_request_timeout, mocked_sleep):
         """
@@ -52,7 +52,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_request.call_count, 3)
+        self.assertEqual(mocked_request.call_count, 3)
 
     def test_not_implemented_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
@@ -75,7 +75,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
     def test_bad_gateway_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
@@ -98,7 +98,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
     def test_service_unavailable_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
@@ -121,7 +121,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
     def test_gateway_timeout_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
@@ -144,7 +144,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
     def test_server_timeout_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
         """
@@ -167,7 +167,7 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
 
 
     def test_rate_limit_error(self, mocked_session, mocked_get_request_timeout, mocked_sleep):
@@ -191,4 +191,4 @@ class TestBackoff(unittest.TestCase):
             pass
 
         # verify that we backoff for 3 times
-        self.assertEquals(mocked_session.call_count, 3)
+        self.assertEqual(mocked_session.call_count, 3)
