@@ -17,30 +17,36 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
+            "id":0,
             "filter": "equals(messages.channel,'email')",
             "include": "tags,campaign-messages"
         }
     ],
     "global_exclusions": [
         {
+            "id":0,
             "filter": "equals(subscriptions.email.marketing.suppression.reason,'HARD_BOUNCE')",
             "additional-fields[profile]": "subscriptions,predictive_analytics"
         },
         {
+            "id":1,
             "filter": "equals(subscriptions.email.marketing.suppression.reason,'USER_SUPPRESSED')",
             "additional-fields[profile]": "subscriptions,predictive_analytics"
         },
         {
+            "id":2,
             "filter": "equals(subscriptions.email.marketing.suppression.reason,'UNSUBSCRIBE')",
             "additional-fields[profile]": "subscriptions,predictive_analytics"
         },
         {
+            "id":3,
             "filter": "equals(subscriptions.email.marketing.suppression.reason,'INVALID_EMAIL')",
             "additional-fields[profile]": "subscriptions,predictive_analytics"
         }
     ],
     "lists": [
         {
+            "id":0,
             "include": "tags"
         }
     ]
@@ -246,10 +252,27 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 
     return state
 
-def get_full_pulls(resource, endpoint, headers):
+def get_last_interupted(state, resource_name):
+    if resource_name not in state['bookmarks']:
+        return 0
+    else:
+        return state['bookmarks'][resource_name].get("filter_id") or 0
 
+def update_filter_id(state, resource_name, filter_id=None):
+    if resource_name not in state['bookmarks']:
+        state['bookmarks'][resource_name] = {}
+    state['bookmarks'][resource_name]["filter_id"] = filter_id
+    singer.write_state(state)
+
+def get_full_pulls(resource, endpoint, headers, state):
+    filter_id = get_last_interupted(state, resource['stream'])
     with metrics.record_counter(resource['stream']) as counter:
         for params in STREAM_PARAMS_MAP.get(resource['stream'],[]):
+            if params["id"] < filter_id:
+                logger.info("Skipping Filter %s, already synced", params["id"])
+                continue
+            update_filter_id(state, resource['stream'], params["id"])
+            del params["id"]
             for response in get_all_using_next(resource['stream'], endpoint, headers, params):
                 records = response.json().get('data')
                 included_list = response.json().get('included', [])
@@ -259,6 +282,7 @@ def get_full_pulls(resource, endpoint, headers):
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
                 transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
+    update_filter_id(state, resource['stream'])
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):
