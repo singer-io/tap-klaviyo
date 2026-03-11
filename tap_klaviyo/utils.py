@@ -2,6 +2,7 @@ import datetime
 import time
 import singer
 from singer import metrics, metadata, Transformer
+from singer import state as st
 import requests
 import backoff
 import simplejson
@@ -139,11 +140,11 @@ def update_state(state, entity, dt):
     if isinstance(dt, int):
         dt = ts_to_dt(dt)
 
-    if entity not in state:
-        state['bookmarks'][entity] = {'since': dt}
+    if entity not in state.get("bookmarks", {}):
+        st.set_bookmark(state, entity, 'since', dt)
 
-    if dt >= state['bookmarks'][entity]['since']:
-        state['bookmarks'][entity] = {'since': dt}
+    if dt >= st.get_bookmark(state, entity, 'since'):
+        st.set_bookmark(state, entity, 'since', dt)
 
     logger.info("Replicated %s up to %s", entity, state['bookmarks'][entity])
 
@@ -151,7 +152,7 @@ def update_state(state, entity, dt):
 def get_starting_point(stream, state, start_date):
     if stream.get('stream') in state.get('bookmarks', {}) and \
                     state.get('bookmarks',{}).get(stream['stream']) is not None:
-        return dt_to_ts(state['bookmarks'][stream['stream']]['since'])
+        return dt_to_ts(st.get_bookmark(state, stream['stream'], 'since'))
     elif start_date:
         return dt_to_ts(start_date)
     else:
