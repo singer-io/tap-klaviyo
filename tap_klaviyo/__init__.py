@@ -198,7 +198,6 @@ def main():
 
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(headers)
-
         state = args.state if args.state else {"bookmarks": {}}
         do_sync(args.config, state, catalog, headers)
 

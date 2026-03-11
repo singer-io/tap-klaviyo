@@ -10,7 +10,7 @@ setup(name='tap-klaviyo',
       classifiers=['Programming Language :: Python :: 3 :: Only'],
       py_modules=['tap_klaviyo'],
       install_requires=['singer-python==6.7.0',
-                        'requests==2.31.0'],
+                        'requests==2.32.5'],
       entry_points='''
           [console_scripts]
           tap-klaviyo=tap_klaviyo:main

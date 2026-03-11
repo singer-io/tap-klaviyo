@@ -108,7 +108,7 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     },
 }
 
-def raise_for_error(response):   
+def raise_for_error(response):
     try:
         response.raise_for_status()
     except requests.HTTPError:
@@ -172,7 +172,7 @@ def get_latest_event_time(events):
 def authed_get(source, url, params, headers):
     with metrics.http_request_timer(source) as timer:
         resp = requests.get(url=url, params=params, headers=headers, timeout=get_request_timeout())
-        
+
         if resp.status_code != 200:
             raise_for_error(resp)
         else:
@@ -242,7 +242,7 @@ def get_full_pulls(resource, endpoint, headers):
                 }
             ]
         else:
-            # params list for lists stream 
+            # params list for lists stream
             params_list = [
                 {
                     "include": "tags"
@@ -288,7 +288,7 @@ def transfrom_and_write_records(events, stream, included, valid_relationships):
                 event.update({relationship_key: relationship_data})
             # write record
             singer.write_record(
-                event_stream, 
+                event_stream,
                 transformer.transform(
                     event, event_schema, event_mdata
             ))
