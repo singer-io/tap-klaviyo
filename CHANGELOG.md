@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.3
+  * Use safe gets in python dictonarys [#82](https://github.com/singer-io/tap-klaviyo/pull/82)
+
 ## 1.1.2
   * Bump dependency versions for twistlock compliance [#77](https://github.com/singer-io/tap-klaviyo/pull/77)
 
