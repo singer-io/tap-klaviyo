@@ -1,8 +1,7 @@
 import datetime
 import time
 import singer
-from singer import metrics, metadata, Transformer
-from singer import state as st
+from singer import metrics, metadata, Transformer, state as st
 import requests
 import backoff
 import simplejson
