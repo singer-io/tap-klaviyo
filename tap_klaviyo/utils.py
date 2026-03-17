@@ -248,7 +248,7 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 
     return state
 
-def get_full_pulls(resource, endpoint, headers):
+def get_full_pulls(resource, endpoint, state, headers):
 
     with metrics.record_counter(resource['stream']) as counter:
         for params in STREAM_PARAMS_MAP.get(resource['stream'],[]):
@@ -260,10 +260,10 @@ def get_full_pulls(resource, endpoint, headers):
                 for included_relationship in included_list:
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
-                transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
+                transfrom_and_write_records(records, resource, included, params.get("include","").split(","), state)
 
 
-def transfrom_and_write_records(events, stream, included, valid_relationships):
+def transfrom_and_write_records(events, stream, included, valid_relationships, state):
     event_stream = stream['stream']
     event_schema = stream['schema']
     event_mdata = metadata.to_map(stream['metadata'])
@@ -294,7 +294,9 @@ def transfrom_and_write_records(events, stream, included, valid_relationships):
                 event_stream, 
                 transformer.transform(
                     event, event_schema, event_mdata
-            ))
+            )
+            update_state(state, event_stream, singer.utils.strftime(singer.utils.now()))
+            singer.write_state())
 
 # return the 'timeout'
 def get_request_timeout():
