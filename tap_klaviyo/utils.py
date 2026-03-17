@@ -243,7 +243,7 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
                 transfrom_and_write_records(events, stream, included, params.get("include","").split(","))
                 update_state(state, stream['stream'], get_latest_event_time(events))
             else:
-                update_state(state, stream['stream'], singer.utils.now())
+                update_state(state, stream['stream'], singer.utils.strftime(singer.utils.now()))
             singer.write_state(state)
 
     return state
