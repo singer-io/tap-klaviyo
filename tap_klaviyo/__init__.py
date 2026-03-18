@@ -44,14 +44,13 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, key_properties, replication_method, replication_keys=None, metric_id=None):
+    def __init__(self, stream, tap_stream_id, key_properties, replication_method, replication_keys=None):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
         self.key_properties = key_properties
         self.replication_method = replication_method
         self.metadata = []
         self.replication_keys = replication_keys
-        self.metric_id = metric_id
 
     def to_catalog_dict(self):
         stream_schema = load_schema(self.stream)
@@ -79,8 +78,7 @@ class Stream(object):
             'tap_stream_id': self.tap_stream_id,
             'key_properties': self.key_properties,
             'schema': resolved_schema,
-            'metadata': self.metadata,
-            'metric_id': self.metric_id
+            'metadata': self.metadata
         }
 
 CREDENTIALS_KEYS = ["api_key"]
@@ -148,7 +146,7 @@ def do_sync(config, state, catalog, headers):
                 get_incremental_pull(stream, ENDPOINTS['events'], state,
                                     headers, start_date)
             else:
-                get_full_pulls(stream, ENDPOINTS[stream['stream']], state, headers)
+                get_full_pulls(stream, ENDPOINTS[stream['stream']], headers)
 
 
 def get_available_metrics(headers):
@@ -161,11 +159,10 @@ def get_available_metrics(headers):
                 metric_streams.append(
                     Stream(
                         stream=EVENT_MAPPINGS[metric_name],
-                        tap_stream_id=EVENT_MAPPINGS[metric_name],
+                        tap_stream_id=matric['id'],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
-                        replication_keys=["timestamp"],
-                        metric_id=metric['id']
+                        replication_keys=["timestamp"]
                     )
                 )
 

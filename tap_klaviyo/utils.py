@@ -226,12 +226,10 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 
     with metrics.record_counter(stream['stream']) as counter:
         params = {
-            "filter": f"equals(metric_id,\"{stream['metric_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
+            "filter": f"equals(metric_id,\"{stream['tap_stream_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
             "include": "profile,metric",
             "sort": "datetime"
         }
-        # TODO delete
-        logger.info("!!!!!!!! PARAMS for counter %s", params)
         for response in get_all_using_next(stream['stream'], endpoint, headers, params):
             events = response.json().get('data')
 
@@ -243,14 +241,12 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(events))
                 transfrom_and_write_records(events, stream, included, params.get("include","").split(","))
-                update_state(state, stream['stream'], get_latest_event_time(events))
-            else:
-                update_state(state, stream['stream'], singer.utils.strftime(singer.utils.now()))
-            singer.write_state(state)
+                update_state(state, stream['tap_stream_id'], get_latest_event_time(events))
+                singer.write_state(state)
 
     return state
 
-def get_full_pulls(resource, endpoint, state, headers):
+def get_full_pulls(resource, endpoint, headers):
 
     with metrics.record_counter(resource['stream']) as counter:
         for params in STREAM_PARAMS_MAP.get(resource['stream'],[]):
@@ -262,10 +258,10 @@ def get_full_pulls(resource, endpoint, state, headers):
                 for included_relationship in included_list:
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
-                transfrom_and_write_records(records, resource, included, params.get("include","").split(","), state)
+                transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
 
 
-def transfrom_and_write_records(events, stream, included, valid_relationships, state):
+def transfrom_and_write_records(events, stream, included, valid_relationships):
     event_stream = stream['stream']
     event_schema = stream['schema']
     event_mdata = metadata.to_map(stream['metadata'])
@@ -297,8 +293,6 @@ def transfrom_and_write_records(events, stream, included, valid_relationships, s
                 transformer.transform(
                     event, event_schema, event_mdata
             ))
-        update_state(state, event_stream, singer.utils.strftime(singer.utils.now()))
-        singer.write_state(state)
 
 # return the 'timeout'
 def get_request_timeout():
