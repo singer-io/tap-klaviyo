@@ -294,9 +294,9 @@ def transfrom_and_write_records(events, stream, included, valid_relationships, s
                 event_stream, 
                 transformer.transform(
                     event, event_schema, event_mdata
-            )
+            ))
             update_state(state, event_stream, singer.utils.strftime(singer.utils.now()))
-            singer.write_state())
+            singer.write_state()
 
 # return the 'timeout'
 def get_request_timeout():
