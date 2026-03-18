@@ -226,7 +226,7 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 
     with metrics.record_counter(stream['stream']) as counter:
         params = {
-            "filter": f"equals(metric_id,\"{stream['tap_stream_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
+            "filter": f"equals(metric_id,\"{stream['metric_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
             "include": "profile,metric",
             "sort": "datetime"
         }
@@ -295,8 +295,8 @@ def transfrom_and_write_records(events, stream, included, valid_relationships, s
                 transformer.transform(
                     event, event_schema, event_mdata
             ))
-            update_state(state, event_stream, singer.utils.strftime(singer.utils.now()))
-            singer.write_state(state)
+        update_state(state, event_stream, singer.utils.strftime(singer.utils.now()))
+        singer.write_state(state)
 
 # return the 'timeout'
 def get_request_timeout():

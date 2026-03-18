@@ -44,9 +44,10 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, key_properties, replication_method, replication_keys=None):
+    def __init__(self, stream, tap_stream_id, metric_id=None, key_properties, replication_method, replication_keys=None):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
+        self.metric_id = metric_id
         self.key_properties = key_properties
         self.replication_method = replication_method
         self.metadata = []
@@ -76,6 +77,7 @@ class Stream(object):
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
+            'metric_id': self.metric_id
             'key_properties': self.key_properties,
             'schema': resolved_schema,
             'metadata': self.metadata
@@ -160,6 +162,7 @@ def get_available_metrics(headers):
                     Stream(
                         stream=EVENT_MAPPINGS[metric_name],
                         tap_stream_id=EVENT_MAPPINGS[metric_name],
+                        metric_id=metric['id'],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
                         replication_keys=["timestamp"]
