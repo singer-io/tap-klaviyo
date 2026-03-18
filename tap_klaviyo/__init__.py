@@ -44,14 +44,14 @@ EVENT_MAPPINGS = {
 
 
 class Stream(object):
-    def __init__(self, stream, tap_stream_id, metric_id=None, key_properties, replication_method, replication_keys=None):
+    def __init__(self, stream, tap_stream_id, key_properties, replication_method, replication_keys=None, metric_id=None):
         self.stream = stream
         self.tap_stream_id = tap_stream_id
-        self.metric_id = metric_id
         self.key_properties = key_properties
         self.replication_method = replication_method
         self.metadata = []
         self.replication_keys = replication_keys
+        self.metric_id = metric_id
 
     def to_catalog_dict(self):
         stream_schema = load_schema(self.stream)
@@ -70,6 +70,9 @@ class Stream(object):
             )
         )
 
+        if self.metric_id is not None:
+            mdata = metadata.write(mdata, 'properties', 'metric-id', self.metric_id)
+
         if self.replication_method == 'INCREMENTAL':
             mdata = metadata.write(mdata, ('properties', 'timestamp'), 'inclusion', 'automatic')
         self.metadata = metadata.to_list(mdata)
@@ -77,7 +80,6 @@ class Stream(object):
         return {
             'stream': self.stream,
             'tap_stream_id': self.tap_stream_id,
-            'metric_id': self.metric_id
             'key_properties': self.key_properties,
             'schema': resolved_schema,
             'metadata': self.metadata
@@ -162,10 +164,10 @@ def get_available_metrics(headers):
                     Stream(
                         stream=EVENT_MAPPINGS[metric_name],
                         tap_stream_id=EVENT_MAPPINGS[metric_name],
-                        metric_id=metric['id'],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
-                        replication_keys=["timestamp"]
+                        replication_keys=["timestamp"],
+                        metric_id=metric['id']
                     )
                 )
 

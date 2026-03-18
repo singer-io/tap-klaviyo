@@ -226,10 +226,12 @@ def get_incremental_pull(stream, endpoint, state, headers, start_date):
 
     with metrics.record_counter(stream['stream']) as counter:
         params = {
-            "filter": f"equals(metric_id,\"{stream['metric_id']}\"),greater-or-equal(timestamp,{latest_event_time})",
+            "filter": f"equals(metric_id,\"{stream['metadata']['properties']['metric-id']}\"),greater-or-equal(timestamp,{latest_event_time})",
             "include": "profile,metric",
             "sort": "datetime"
         }
+        # TODO delete
+        logger.info("!!!!!!!! PARAMS for counter %s", params)
         for response in get_all_using_next(stream['stream'], endpoint, headers, params):
             events = response.json().get('data')
 
