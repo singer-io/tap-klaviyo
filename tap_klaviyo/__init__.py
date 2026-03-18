@@ -154,11 +154,12 @@ def get_available_metrics(headers):
     for response in get_all_using_next('metric_list',
                                   ENDPOINTS['metrics'], headers, {}):
         for metric in response.json().get('data'):
-            if metric['attributes']['name'] in EVENT_MAPPINGS:
+            metric_name = metric['attributes']['name']
+            if metric_name in EVENT_MAPPINGS:
                 metric_streams.append(
                     Stream(
-                        stream=EVENT_MAPPINGS[metric['attributes']['name']],
-                        tap_stream_id=metric['id'],
+                        stream=EVENT_MAPPINGS[metric_name],
+                        tap_stream_id=EVENT_MAPPINGS[metric_name],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
                         replication_keys=["timestamp"]
