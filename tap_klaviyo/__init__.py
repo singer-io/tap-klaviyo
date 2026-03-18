@@ -70,9 +70,6 @@ class Stream(object):
             )
         )
 
-        if self.metric_id is not None:
-            mdata = metadata.write(mdata, 'properties', 'metric-id', self.metric_id)
-
         if self.replication_method == 'INCREMENTAL':
             mdata = metadata.write(mdata, ('properties', 'timestamp'), 'inclusion', 'automatic')
         self.metadata = metadata.to_list(mdata)
@@ -82,7 +79,8 @@ class Stream(object):
             'tap_stream_id': self.tap_stream_id,
             'key_properties': self.key_properties,
             'schema': resolved_schema,
-            'metadata': self.metadata
+            'metadata': self.metadata,
+            'metric_id': self.metric_id
         }
 
 CREDENTIALS_KEYS = ["api_key"]
