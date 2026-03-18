@@ -146,7 +146,7 @@ def do_sync(config, state, catalog, headers):
                 get_incremental_pull(stream, ENDPOINTS['events'], state,
                                     headers, start_date)
             else:
-                get_full_pulls(stream, ENDPOINTS[stream['stream']], headers)
+                get_full_pulls(stream, ENDPOINTS[stream['stream']], state, headers)
 
 
 def get_available_metrics(headers):
