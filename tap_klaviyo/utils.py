@@ -182,9 +182,9 @@ def update_state(state, entity, dt):
 
 
 def get_starting_point(stream, state, start_date):
-    if stream.get('stream') in state.get('bookmarks', {}) and \
-                    state.get('bookmarks',{}).get(stream['stream']) is not None:
-        return dt_to_ts(st.get_bookmark(state, stream['stream'], 'since'))
+    if stream.get('tap_stream_id') in state.get('bookmarks', {}) and \
+                    state.get('bookmarks',{}).get(stream['tap_stream_id']) is not None:
+        return dt_to_ts(st.get_bookmark(state, stream['tap_stream_id'], 'since'))
     elif start_date:
         return dt_to_ts(start_date)
     else:

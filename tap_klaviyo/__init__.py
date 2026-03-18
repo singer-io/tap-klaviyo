@@ -130,6 +130,22 @@ def load_shared_schema_refs():
 
     return shared_schema_refs
 
+def translate_stream_to_metric_id(state, catalog):
+    stream_to_metric_id_map = {
+        stream['stream']: stream['tap_stream_id']
+        for stream in catalog.get('streams')
+    }
+    bookmarks = state.get('bookmarks', {})
+    new_state = {}
+
+    for stream_name, bookmark_data in bookmarks.items():
+        metric_id = stream_to_metric_id_map.get(stream_name)
+        if metric_id:
+            new_state[metric_id] = bookmark_data
+        else:
+            new_state[stream_name] = bookmark_data
+    return new_state
+
 def do_sync(config, state, catalog, headers):
     start_date = config['start_date'] if 'start_date' in config else None
 
@@ -193,7 +209,10 @@ def main():
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(headers)
 
-        state = args.state if args.state else {"bookmarks": {}}
+        if args.state:
+            state = translate_stream_to_metric_id(args.state, catalog)
+        else:
+            state = {"bookmarks": {}}
         do_sync(args.config, state, catalog, headers)
 
 if __name__ == '__main__':
