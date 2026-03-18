@@ -159,7 +159,7 @@ def get_available_metrics(headers):
                 metric_streams.append(
                     Stream(
                         stream=EVENT_MAPPINGS[metric_name],
-                        tap_stream_id=matric['id'],
+                        tap_stream_id=metric['id'],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
                         replication_keys=["timestamp"]
