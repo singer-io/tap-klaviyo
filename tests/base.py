@@ -208,7 +208,7 @@ class KlaviyoBaseTest(unittest.TestCase):
             "SQsqj3": "dropped_email",
             "Si4C3N": "open",
             "SrU8uS": "received_sms",
-            "TBiXnJ": "unsubscribed_to_sms",
+            "TBiXnJ": "unsubscribed_from_sms",
             "U3MqpH": "subscribe_list",
             "U6uvyh": "click",
             "UejZZm": "clicked_sms",
