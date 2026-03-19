@@ -216,6 +216,7 @@ class KlaviyoBaseTest(unittest.TestCase):
             "VsTGNN",
             "W2KTvQ",
             "WprQcH",
+            "XmL8Md",
             "XPbM2j",
             "YfT9Df",
             "YimjbS",
