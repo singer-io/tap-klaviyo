@@ -197,7 +197,7 @@ class KlaviyoBaseTest(unittest.TestCase):
         """A set of expected stream names"""
         return set(self.expected_metadata().keys())
 
-    def expected_tap_steam_ids(self):
+    def expected_tap_stream_ids(self):
         """A set of expected tap stream ids (metric ids for metric streams)"""
         return set([
             "lists",
