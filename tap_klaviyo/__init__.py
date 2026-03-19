@@ -131,21 +131,25 @@ def load_shared_schema_refs():
     return shared_schema_refs
 
 def translate_stream_to_metric_id(state, catalog):
-    stream_to_metric_id_map = {
-        stream['stream']: stream['tap_stream_id']
-        for stream in catalog.get('streams')
-    }
-    bookmarks = state.get('bookmarks', {})
-    new_state = {}
+    if 'bookmarks' in state:
+        stream_to_metric_id_map = {
+            stream['stream']: stream['tap_stream_id']
+            for stream in catalog.get('streams')
+        }
+        old_bookmarks = state.get('bookmarks', {})
+        new_bookmarks = {"bookmarks": {}}
 
-    for stream_name, bookmark_data in bookmarks.items():
-        metric_id = stream_to_metric_id_map.get(stream_name)
-        if metric_id:
-            new_state['bookmarks'][metric_id] = bookmark_data
-        else:
-            new_state['bookmarks'][stream_name] = bookmark_data
-    LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n catalog: %s", state, new_state, catalog)
-    return new_state
+        for stream_name, bookmark_data in old_bookmarks.items():
+            metric_id = stream_to_metric_id_map.get(stream_name)
+            if metric_id:
+                new_bookmarks['bookmarks'][metric_id] = bookmark_data
+            else:
+                new_bookmarks['bookmarks'][stream_name] = bookmark_data
+        LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n", state, new_state)
+        state['bookmarks'] = new_bookmarks['bookmarks']
+    else:
+        state['bookmarks'] = {}
+    return state
 
 def do_sync(config, state, catalog, headers):
     start_date = config['start_date'] if 'start_date' in config else None
