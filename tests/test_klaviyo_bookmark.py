@@ -97,7 +97,7 @@ class BookmarkTest(KlaviyoBaseTest):
                                         second_sync_records.get(
                                             stream, {}).get('messages', [])
                                         if record.get('action') == 'upsert']
-                expected_stream_to_tap_stream_id = {stream: tap_stream_id for tap_stream_id, stream in self.expected_tap_stream_ids_to_stream_name()}
+                expected_stream_to_tap_stream_id = {stream: tap_stream_id for tap_stream_id, stream in self.expected_tap_stream_ids_to_stream_name().items()}
                 first_bookmark_key_value = first_sync_bookmarks.get('bookmarks', {stream: None}).get(expected_stream_to_tap_stream_id.get(stream))
                 second_bookmark_key_value = second_sync_bookmarks.get('bookmarks', {stream: None}).get(expected_stream_to_tap_stream_id.get(stream))
                 
