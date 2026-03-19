@@ -105,8 +105,8 @@ class BookmarkTest(KlaviyoBaseTest):
                 if expected_replication_method == self.INCREMENTAL:
 
                     # collect information specific to incremental streams from syncs 1 & 2
-                    replication_key = list(expected_replication_keys[expected_stream_to_tap_stream_id.get(stream)])[0] #Key in which state has been saved in state file
-                    record_replication_key = list(expected_bookmark_keys[expected_stream_to_tap_stream_id.get(stream)])[0]
+                    replication_key = list(expected_replication_keys[stream])[0] #Key in which state has been saved in state file
+                    record_replication_key = list(expected_bookmark_keys[stream])[0]
 
                     first_bookmark_value = first_bookmark_key_value.get(replication_key)
                     second_bookmark_value = second_bookmark_key_value.get(replication_key)
