@@ -141,9 +141,10 @@ def translate_stream_to_metric_id(state, catalog):
     for stream_name, bookmark_data in bookmarks.items():
         metric_id = stream_to_metric_id_map.get(stream_name)
         if metric_id:
-            new_state[metric_id] = bookmark_data
+            new_state['bookmarks'][metric_id] = bookmark_data
         else:
-            new_state[stream_name] = bookmark_data
+            new_state['bookmarks'][stream_name] = bookmark_data
+    LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n catalog: %s", state, new_state, catalog)
     return new_state
 
 def do_sync(config, state, catalog, headers):
