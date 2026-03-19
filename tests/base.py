@@ -197,6 +197,31 @@ class KlaviyoBaseTest(unittest.TestCase):
         """A set of expected stream names"""
         return set(self.expected_metadata().keys())
 
+    def expected_tap_steam_ids(self):
+        """A set of expected tap stream ids (metric ids for metric streams)"""
+        return set([
+            "lists",
+            "R42wNy",
+            "RNT5Sf",
+            "Rf2Tbd",
+            "SM3z68",
+            "SQsqj3",
+            "Si4C3N",
+            "SrU8uS",
+            "TBiXnJ",
+            "U3MqpH",
+            "U6uvyh",
+            "UejZZm",
+            "VfTks9",
+            "VsTGNN",
+            "W2KTvQ",
+            "WprQcH",
+            "XPbM2j",
+            "YfT9Df",
+            "YimjbS",
+            "campaigns",
+            "global_exclusions"])
+
     def expected_primary_keys(self):
         """return a dictionary with key of table name and value as a set of primary key fields"""
         return {table: properties.get(self.PRIMARY_KEYS, set())
@@ -357,7 +382,7 @@ class KlaviyoBaseTest(unittest.TestCase):
 
     def calculated_states_by_stream(self, current_state):
         timedelta_by_stream = {stream: [0,0,1]  # {stream_name: [days, hours, minutes], ...}
-                               for stream in self.expected_streams()}
+                               for stream in self.expected_tap_stream_ids()}
         
         stream_to_calculated_state = {stream: "" for stream in current_state['bookmarks'].keys()}
         for stream, state in current_state['bookmarks'].items():

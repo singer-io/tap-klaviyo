@@ -145,7 +145,6 @@ def translate_stream_to_metric_id(state, catalog):
                 new_bookmarks['bookmarks'][metric_id] = bookmark_data
             else:
                 new_bookmarks['bookmarks'][stream_name] = bookmark_data
-        LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n", state, new_bookmarks)
         state['bookmarks'] = new_bookmarks['bookmarks']
     else:
         state['bookmarks'] = {}
