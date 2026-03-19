@@ -137,7 +137,7 @@ def translate_stream_to_metric_id(state, catalog):
             for stream in catalog.get('streams')
         }
         old_bookmarks = state.get('bookmarks', {})
-        new_bookmarks = {"bookmarks": {}}
+        new_bookmarks = {'bookmarks': {}}
 
         for stream_name, bookmark_data in old_bookmarks.items():
             metric_id = stream_to_metric_id_map.get(stream_name)
@@ -145,7 +145,7 @@ def translate_stream_to_metric_id(state, catalog):
                 new_bookmarks['bookmarks'][metric_id] = bookmark_data
             else:
                 new_bookmarks['bookmarks'][stream_name] = bookmark_data
-        LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n", state, new_state)
+        LOGGER.info("!!!!!!!! Old state: %s \n New state: %s \n", state, new_bookmarks)
         state['bookmarks'] = new_bookmarks['bookmarks']
     else:
         state['bookmarks'] = {}
@@ -214,10 +214,8 @@ def main():
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(headers)
 
-        if args.state:
-            state = translate_stream_to_metric_id(args.state, catalog)
-        else:
-            state = {"bookmarks": {}}
+        state = translate_stream_to_metric_id(args.state, catalog)
+
         do_sync(args.config, state, catalog, headers)
 
 if __name__ == '__main__':
