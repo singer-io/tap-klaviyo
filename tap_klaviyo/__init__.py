@@ -4,7 +4,7 @@ import json
 import os
 import sys
 import singer
-from singer import metadata
+from singer import metadata, state as st
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_using_next
 
 LOGGER = singer.get_logger()
@@ -136,16 +136,10 @@ def translate_stream_to_metric_id(state, catalog):
             stream['stream']: stream['tap_stream_id']
             for stream in catalog.get('streams')
         }
-        old_bookmarks = state.get('bookmarks', {})
-        new_bookmarks = {'bookmarks': {}}
-
-        for stream_name, bookmark_data in old_bookmarks.items():
+        for stream_name, bookmark_data in state.get('bookmarks', {}).items():
             metric_id = stream_to_metric_id_map.get(stream_name)
             if metric_id:
-                new_bookmarks['bookmarks'][metric_id] = bookmark_data
-            else:
-                new_bookmarks['bookmarks'][stream_name] = bookmark_data
-        state['bookmarks'] = new_bookmarks['bookmarks']
+                state = st.set_bookmark(state, metric_id, 'since', bookmark_data['since'])
     else:
         state['bookmarks'] = {}
     return state
