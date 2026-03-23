@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.4
+  * Use tap_stream_id for bookmarks instead of stream name [#83](https://github.com/singer-io/tap-klaviyo/pull/83)
+
 ## 1.1.3
   * Use safe gets in python dictonarys [#82](https://github.com/singer-io/tap-klaviyo/pull/82)
 

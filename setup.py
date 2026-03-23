@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='tap-klaviyo',
-      version='1.1.3',
+      version='1.1.4',
       description='Singer.io tap for extracting data from the Klaviyo API',
       author='Stitch',
       url='http://singer.io',
