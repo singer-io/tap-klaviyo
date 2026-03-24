@@ -97,8 +97,9 @@ class BookmarkTest(KlaviyoBaseTest):
                                         second_sync_records.get(
                                             stream, {}).get('messages', [])
                                         if record.get('action') == 'upsert']
-                first_bookmark_key_value = first_sync_bookmarks.get('bookmarks', {stream: None}).get(stream)
-                second_bookmark_key_value = second_sync_bookmarks.get('bookmarks', {stream: None}).get(stream)
+                expected_stream_to_tap_stream_id = {stream: tap_stream_id for tap_stream_id, stream in self.expected_tap_stream_ids_to_stream_name().items()}
+                first_bookmark_key_value = first_sync_bookmarks.get('bookmarks', {stream: None}).get(expected_stream_to_tap_stream_id.get(stream))
+                second_bookmark_key_value = second_sync_bookmarks.get('bookmarks', {stream: None}).get(expected_stream_to_tap_stream_id.get(stream))
                 
 
                 if expected_replication_method == self.INCREMENTAL:
@@ -118,7 +119,7 @@ class BookmarkTest(KlaviyoBaseTest):
                     
                     second_bookmark_value_ts = self.dt_to_ts(second_bookmark_value) + 1
                     
-                    simulated_bookmark_value = self.dt_to_ts(new_states['bookmarks'][stream][replication_key])
+                    simulated_bookmark_value = self.dt_to_ts(new_states['bookmarks'][expected_stream_to_tap_stream_id.get(stream)][replication_key])
 
                     # Verify the first sync sets a bookmark of the expected form
                     self.assertIsNotNone(first_bookmark_key_value)

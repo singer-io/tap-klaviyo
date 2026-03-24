@@ -4,7 +4,7 @@ import json
 import os
 import sys
 import singer
-from singer import metadata
+from singer import metadata, state as st
 from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_using_next
 
 LOGGER = singer.get_logger()
@@ -130,6 +130,21 @@ def load_shared_schema_refs():
 
     return shared_schema_refs
 
+def translate_stream_to_metric_id(state, catalog):
+    if 'bookmarks' in state:
+        stream_to_metric_id_map = {
+            stream['stream']: stream['tap_stream_id']
+            for stream in catalog.get('streams', [])
+        }
+        for stream_name, bookmark_data in list(state.get('bookmarks', {}).items()):
+            metric_id = stream_to_metric_id_map.get(stream_name)
+            if metric_id:
+                state['bookmarks'].pop(stream_name, None)
+                state = st.set_bookmark(state, metric_id, 'since', bookmark_data['since'])
+    else:
+        state['bookmarks'] = {}
+    return state
+
 def do_sync(config, state, catalog, headers):
     start_date = config['start_date'] if 'start_date' in config else None
 
@@ -154,10 +169,11 @@ def get_available_metrics(headers):
     for response in get_all_using_next('metric_list',
                                   ENDPOINTS['metrics'], headers, {}):
         for metric in response.json().get('data'):
-            if metric['attributes']['name'] in EVENT_MAPPINGS:
+            metric_name = metric['attributes']['name']
+            if metric_name in EVENT_MAPPINGS:
                 metric_streams.append(
                     Stream(
-                        stream=EVENT_MAPPINGS[metric['attributes']['name']],
+                        stream=EVENT_MAPPINGS[metric_name],
                         tap_stream_id=metric['id'],
                         key_properties=["id"],
                         replication_method='INCREMENTAL',
@@ -192,7 +208,8 @@ def main():
     else:
         catalog = args.catalog.to_dict() if args.catalog else discover(headers)
 
-        state = args.state if args.state else {"bookmarks": {}}
+        state = translate_stream_to_metric_id(args.state, catalog)
+
         do_sync(args.config, state, catalog, headers)
 
 if __name__ == '__main__':

@@ -197,6 +197,37 @@ class KlaviyoBaseTest(unittest.TestCase):
         """A set of expected stream names"""
         return set(self.expected_metadata().keys())
 
+    def expected_tap_stream_ids_to_stream_name(self):
+        """A map of expected tap stream ids to stream names"""
+        return {
+            "lists": "lists",
+            "R42wNy": "bounce",
+            "RNT5Sf": "failed_to_deliver",
+            "Rf2Tbd": "failed_to_deliver_automated_response",
+            "SM3z68": "unsub_list",
+            "SQsqj3": "dropped_email",
+            "Si4C3N": "open",
+            "SrU8uS": "received_sms",
+            "TBiXnJ": "unsubscribed_from_sms",
+            "U3MqpH": "subscribe_list",
+            "U6uvyh": "click",
+            "UejZZm": "clicked_sms",
+            "VfTks9": "mark_as_spam",
+            "VsTGNN": "received_automated_response",
+            "W2KTvQ": "subscribed_to_sms",
+            "WprQcH": "update_email_preferences",
+            "XmL8Md": "subscribed_to_email",
+            "XPbM2j": "sent_sms",
+            "YfT9Df": "unsubscribe",
+            "YimjbS": "receive",
+            "campaigns": "campaigns",
+            "global_exclusions": "global_exclusions"
+        }
+
+    def expected_tap_stream_ids(self):
+        """A set of expected tap stream ids (metric ids for metric streams)"""
+        return set(self.expected_tap_stream_ids_to_stream_name().keys())
+
     def expected_primary_keys(self):
         """return a dictionary with key of table name and value as a set of primary key fields"""
         return {table: properties.get(self.PRIMARY_KEYS, set())
@@ -357,7 +388,7 @@ class KlaviyoBaseTest(unittest.TestCase):
 
     def calculated_states_by_stream(self, current_state):
         timedelta_by_stream = {stream: [0,0,1]  # {stream_name: [days, hours, minutes], ...}
-                               for stream in self.expected_streams()}
+                               for stream in self.expected_tap_stream_ids()}
         
         stream_to_calculated_state = {stream: "" for stream in current_state['bookmarks'].keys()}
         for stream, state in current_state['bookmarks'].items():
