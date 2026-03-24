@@ -134,11 +134,12 @@ def translate_stream_to_metric_id(state, catalog):
     if 'bookmarks' in state:
         stream_to_metric_id_map = {
             stream['stream']: stream['tap_stream_id']
-            for stream in catalog.get('streams')
+            for stream in catalog.get('streams', [])
         }
-        for stream_name, bookmark_data in state.get('bookmarks', {}).items():
+        for stream_name, bookmark_data in list(state.get('bookmarks', {}).items()):
             metric_id = stream_to_metric_id_map.get(stream_name)
             if metric_id:
+                state['bookmarks'].pop(stream_name, None)
                 state = st.set_bookmark(state, metric_id, 'since', bookmark_data['since'])
     else:
         state['bookmarks'] = {}
