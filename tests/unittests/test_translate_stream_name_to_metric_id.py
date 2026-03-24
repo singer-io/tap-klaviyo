@@ -8,71 +8,73 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
 
     def test_translate_stream_name_to_metric_id(self):
         mock_catalog = {
-            "receive": {
-                "tap_strem_id": "YimjbS"
-            },
-            "click": {
-                "tap_strem_id": "U6uvyh"
-            },
-            "open": {
-                "tap_strem_id": "Si4C3N"
-            },
-            "bounce": {
-                "tap_strem_id": "R42wNy"
-            },
-            "unsubscribe": {
-                "tap_strem_id": "YfT9Df"
-            },
-            "mark_as_spam": {
-                "tap_strem_id": "VfTks9"
-            },
-            "dropped_email": {
-                "tap_strem_id": "SQsqj3"
-            },
-            "unsub_list": {
-                "tap_strem_id": "SM3z68"
-            },
-            "subscribe_list": {
-                "tap_strem_id": "U3MqpH"
-            },
-            "subscribed_to_email": {
-                "tap_strem_id": "XmL8Md"
-            },
-            "subscribed_to_sms": {
-                "tap_strem_id": "W2KTvQ"
-            },
-            "update_email_preferences": {
-                "tap_strem_id": "WprQcH"
-            },
-            "global_exclusions": {
-                "tap_strem_id": "global_exclusions"
-            },
-            "lists": {
-                "tap_strem_id": "lists"
-            },
-            "campaigns": {
-                "tap_strem_id": "campaigns"
-            },
-            'clicked_sms': {
-                "tap_strem_id": "UejZZm"
-            },
-            'unsubscribed_from_sms': {
-                "tap_strem_id": "TBiXnJ"
-            },
-            'received_sms': {
-                "tap_strem_id": "SrU8uS"
-            },
-            'sent_sms': {
-                "tap_strem_id": "XPbM2j"
-            },
-            'failed_to_deliver': {
-                "tap_strem_id": "RNT5Sf"
-            },
-            'failed_to_deliver_automated_response': {
-                "tap_strem_id": "Rf2Tbd"
-            },
-            'received_automated_response': {
-                "tap_strem_id": "VsTGNN"
+            "streams": {
+                "receive": {
+                    "tap_strem_id": "YimjbS"
+                },
+                "click": {
+                    "tap_strem_id": "U6uvyh"
+                },
+                "open": {
+                    "tap_strem_id": "Si4C3N"
+                },
+                "bounce": {
+                    "tap_strem_id": "R42wNy"
+                },
+                "unsubscribe": {
+                    "tap_strem_id": "YfT9Df"
+                },
+                "mark_as_spam": {
+                    "tap_strem_id": "VfTks9"
+                },
+                "dropped_email": {
+                    "tap_strem_id": "SQsqj3"
+                },
+                "unsub_list": {
+                    "tap_strem_id": "SM3z68"
+                },
+                "subscribe_list": {
+                    "tap_strem_id": "U3MqpH"
+                },
+                "subscribed_to_email": {
+                    "tap_strem_id": "XmL8Md"
+                },
+                "subscribed_to_sms": {
+                    "tap_strem_id": "W2KTvQ"
+                },
+                "update_email_preferences": {
+                    "tap_strem_id": "WprQcH"
+                },
+                "global_exclusions": {
+                    "tap_strem_id": "global_exclusions"
+                },
+                "lists": {
+                    "tap_strem_id": "lists"
+                },
+                "campaigns": {
+                    "tap_strem_id": "campaigns"
+                },
+                'clicked_sms': {
+                    "tap_strem_id": "UejZZm"
+                },
+                'unsubscribed_from_sms': {
+                    "tap_strem_id": "TBiXnJ"
+                },
+                'received_sms': {
+                    "tap_strem_id": "SrU8uS"
+                },
+                'sent_sms': {
+                    "tap_strem_id": "XPbM2j"
+                },
+                'failed_to_deliver': {
+                    "tap_strem_id": "RNT5Sf"
+                },
+                'failed_to_deliver_automated_response': {
+                    "tap_strem_id": "Rf2Tbd"
+                },
+                'received_automated_response': {
+                    "tap_strem_id": "VsTGNN"
+                }
             }
         }
         mock_state = {
