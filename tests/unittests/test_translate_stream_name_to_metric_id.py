@@ -8,7 +8,7 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
 
     def test_translate_stream_name_to_metric_id(self):
         mock_catalog = {
-            "streams": {
+            "streams": [
                 {
                     "stream": "receive",
                     "tap_strem_id": "YimjbS"
@@ -97,7 +97,7 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                     "stream": "received_automated_response",
                     "tap_strem_id": "VsTGNN"
                 }
-            }
+            ]
         }
         mock_state = {
             "bookmarks": {
