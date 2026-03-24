@@ -246,4 +246,4 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
         }
         
         actual_state = translate_stream_to_metric_id(mock_state, mock_catalog)
-        self.assertEqual(expected_state, actual_state))
+        self.assertEqual(expected_state, actual_state)
