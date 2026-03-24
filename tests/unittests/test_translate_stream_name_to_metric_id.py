@@ -9,70 +9,92 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
     def test_translate_stream_name_to_metric_id(self):
         mock_catalog = {
             "streams": {
-                "receive": {
+                {
+                    "stream": "receive",
                     "tap_strem_id": "YimjbS"
                 },
-                "click": {
+                {
+                    "stream": "click",
                     "tap_strem_id": "U6uvyh"
                 },
-                "open": {
+                {
+                    "stream": "open",
                     "tap_strem_id": "Si4C3N"
                 },
-                "bounce": {
+                {
+                    "stream": "bounce",
                     "tap_strem_id": "R42wNy"
                 },
-                "unsubscribe": {
+                {
+                    "stream": "unsubscribe",
                     "tap_strem_id": "YfT9Df"
                 },
-                "mark_as_spam": {
+                {
+                    "stream": "mark_as_spam",
                     "tap_strem_id": "VfTks9"
                 },
-                "dropped_email": {
+                {
+                    "stream": "dropped_email",
                     "tap_strem_id": "SQsqj3"
                 },
-                "unsub_list": {
+                {
+                    "stream": "unsub_list",
                     "tap_strem_id": "SM3z68"
                 },
-                "subscribe_list": {
+                {
+                    "stream": "subscribe_list",
                     "tap_strem_id": "U3MqpH"
                 },
-                "subscribed_to_email": {
+                {
+                    "stream": "subscribed_to_email",
                     "tap_strem_id": "XmL8Md"
                 },
-                "subscribed_to_sms": {
+                {
+                    "stream": "subscribed_to_sms",
                     "tap_strem_id": "W2KTvQ"
                 },
-                "update_email_preferences": {
+                {
+                    "stream": "update_email_preferences",
                     "tap_strem_id": "WprQcH"
                 },
-                "global_exclusions": {
+                {
+                    "stream": "global_exclusions",
                     "tap_strem_id": "global_exclusions"
                 },
-                "lists": {
+                {
+                    "stream": "lists",
                     "tap_strem_id": "lists"
                 },
-                "campaigns": {
+                {
+                    "stream": "campaigns",
                     "tap_strem_id": "campaigns"
                 },
-                'clicked_sms': {
+                {
+                    "stream": "clicked_sms",
                     "tap_strem_id": "UejZZm"
                 },
-                'unsubscribed_from_sms': {
+                {
+                    "stream": "unsubscribed_from_sms",
                     "tap_strem_id": "TBiXnJ"
                 },
-                'received_sms': {
+                {
+                    "stream": "received_sms",
                     "tap_strem_id": "SrU8uS"
                 },
-                'sent_sms': {
+                {
+                    "stream": "sent_sms",
                     "tap_strem_id": "XPbM2j"
                 },
-                'failed_to_deliver': {
+                {
+                    "stream":  "failed_to_deliver",
                     "tap_strem_id": "RNT5Sf"
                 },
-                'failed_to_deliver_automated_response': {
+                {
+                    "stream": "failed_to_deliver_automated_response",
                     "tap_strem_id": "Rf2Tbd"
                 },
-                'received_automated_response': {
+                {
+                    "stream": "received_automated_response",
                     "tap_strem_id": "VsTGNN"
                 }
             }
