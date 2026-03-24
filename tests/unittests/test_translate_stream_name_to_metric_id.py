@@ -11,91 +11,91 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
             "streams": [
                 {
                     "stream": "receive",
-                    "tap_strem_id": "YimjbS"
+                    "tap_stream_id": "YimjbS"
                 },
                 {
                     "stream": "click",
-                    "tap_strem_id": "U6uvyh"
+                    "tap_stream_id": "U6uvyh"
                 },
                 {
                     "stream": "open",
-                    "tap_strem_id": "Si4C3N"
+                    "tap_stream_id": "Si4C3N"
                 },
                 {
                     "stream": "bounce",
-                    "tap_strem_id": "R42wNy"
+                    "tap_stream_id": "R42wNy"
                 },
                 {
                     "stream": "unsubscribe",
-                    "tap_strem_id": "YfT9Df"
+                    "tap_stream_id": "YfT9Df"
                 },
                 {
                     "stream": "mark_as_spam",
-                    "tap_strem_id": "VfTks9"
+                    "tap_stream_id": "VfTks9"
                 },
                 {
                     "stream": "dropped_email",
-                    "tap_strem_id": "SQsqj3"
+                    "tap_stream_id": "SQsqj3"
                 },
                 {
                     "stream": "unsub_list",
-                    "tap_strem_id": "SM3z68"
+                    "tap_stream_id": "SM3z68"
                 },
                 {
                     "stream": "subscribe_list",
-                    "tap_strem_id": "U3MqpH"
+                    "tap_stream_id": "U3MqpH"
                 },
                 {
                     "stream": "subscribed_to_email",
-                    "tap_strem_id": "XmL8Md"
+                    "tap_stream_id": "XmL8Md"
                 },
                 {
                     "stream": "subscribed_to_sms",
-                    "tap_strem_id": "W2KTvQ"
+                    "tap_stream_id": "W2KTvQ"
                 },
                 {
                     "stream": "update_email_preferences",
-                    "tap_strem_id": "WprQcH"
+                    "tap_stream_id": "WprQcH"
                 },
                 {
                     "stream": "global_exclusions",
-                    "tap_strem_id": "global_exclusions"
+                    "tap_stream_id": "global_exclusions"
                 },
                 {
                     "stream": "lists",
-                    "tap_strem_id": "lists"
+                    "tap_stream_id": "lists"
                 },
                 {
                     "stream": "campaigns",
-                    "tap_strem_id": "campaigns"
+                    "tap_stream_id": "campaigns"
                 },
                 {
                     "stream": "clicked_sms",
-                    "tap_strem_id": "UejZZm"
+                    "tap_stream_id": "UejZZm"
                 },
                 {
                     "stream": "unsubscribed_from_sms",
-                    "tap_strem_id": "TBiXnJ"
+                    "tap_stream_id": "TBiXnJ"
                 },
                 {
                     "stream": "received_sms",
-                    "tap_strem_id": "SrU8uS"
+                    "tap_stream_id": "SrU8uS"
                 },
                 {
                     "stream": "sent_sms",
-                    "tap_strem_id": "XPbM2j"
+                    "tap_stream_id": "XPbM2j"
                 },
                 {
                     "stream":  "failed_to_deliver",
-                    "tap_strem_id": "RNT5Sf"
+                    "tap_stream_id": "RNT5Sf"
                 },
                 {
                     "stream": "failed_to_deliver_automated_response",
-                    "tap_strem_id": "Rf2Tbd"
+                    "tap_stream_id": "Rf2Tbd"
                 },
                 {
                     "stream": "received_automated_response",
-                    "tap_strem_id": "VsTGNN"
+                    "tap_stream_id": "VsTGNN"
                 }
             ]
         }
