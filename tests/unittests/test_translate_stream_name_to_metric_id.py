@@ -1,17 +1,5 @@
 import tap_klaviyo
 import unittest
-from unittest import mock
-from requests import Response
-import json
-
-
-def get_mock_http_response(status_code, contents):
-    contents = json.dumps(contents)
-    response = Response()
-    response.status_code = status_code
-    response._content = contents.encode()
-    return response
-
 
 class TestTranslateStreamNameToMetricId(unittest.TestCase):
     """
@@ -245,5 +233,5 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
             "target_total_batches": {}
         }
         
-        actual_state = translate_stream_to_metric_id(mock_state, mock_catalog)
+        actual_state = tap_klaviyo.translate_stream_to_metric_id(mock_state, mock_catalog)
         self.assertEqual(expected_state, actual_state)
