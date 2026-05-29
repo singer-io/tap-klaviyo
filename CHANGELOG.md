@@ -1,6 +1,9 @@
 # Changelog
 
 ## 1.1.4
+  * Bump requests version to 2.33.0 [#85](https://github.com/singer-io/tap-klaviyo/pull/85)
+
+## 1.1.4
   * Use tap_stream_id for bookmarks instead of stream name [#83](https://github.com/singer-io/tap-klaviyo/pull/83)
 
 ## 1.1.3
