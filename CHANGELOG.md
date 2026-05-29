@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.4
+## 1.1.5
   * Bump requests version to 2.33.0 [#85](https://github.com/singer-io/tap-klaviyo/pull/85)
 
 ## 1.1.4
