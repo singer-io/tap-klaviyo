@@ -179,7 +179,7 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'failed_to_deliver_text_message_automated_response': {
+            'failed_to_deliver_automated_response_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
