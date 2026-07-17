@@ -35,7 +35,7 @@ EVENT_MAPPINGS = {
     # Text-based metrics (Klaviyo renamed SMS to Text Message, July 2026)
     "Clicked Text Message": "clicked_text_message",
     "Subscribed to Text Messaging Marketing": "subscribed_to_text_message",
-    "Failed to Deliver Text Message": "failed_to_deliver_text_message_text_message",
+    "Failed to Deliver Text Message": "failed_to_deliver_text_message",
     "Failed to Deliver Automated Response Text Message": "failed_to_deliver_text_message_automated_response_text_message",
     "Received Automated Response Text Message": "received_automated_response_text_message",
     "Received Text Message": "received_text_message",
