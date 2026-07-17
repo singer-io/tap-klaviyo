@@ -90,7 +90,7 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                     "tap_stream_id": "RNT5Sf"
                 },
                 {
-                    "stream": "failed_to_deliver_text_message_automated_response",
+                    "stream": "failed_to_deliver_automated_response_text_message",
                     "tap_stream_id": "Rf2Tbd"
                 },
                 {
@@ -149,7 +149,7 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                 "received_automated_response_text_message": {
                     "since": "2022-05-06T09:30:51Z"
                 },
-                "failed_to_deliver_text_message_automated_response": {
+                "failed_to_deliver_automated_response_text_message": {
                     "since": "2022-05-05T10:01:02Z"
                 }
             },

@@ -203,7 +203,7 @@ class KlaviyoBaseTest(unittest.TestCase):
             "lists": "lists",
             "R42wNy": "bounce",
             "RNT5Sf": "failed_to_deliver_text_message",
-            "Rf2Tbd": "failed_to_deliver_text_message_automated_response",
+            "Rf2Tbd": "failed_to_deliver_automated_response_text_message",
             "SM3z68": "unsub_list",
             "SQsqj3": "dropped_email",
             "Si4C3N": "open",
