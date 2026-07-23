@@ -131,7 +131,7 @@ class KlaviyoStartDateTest(KlaviyoBaseTest):
                     for bookmark_key_value in bookmark_key_sync_2:
                         self.assertGreaterEqual(bookmark_key_value, start_date_2_epoch)
 
-                    if stream in ['failed_to_deliver_automated_response', 'failed_to_deliver', 'subscribed_to_email']:
+                    if stream in ['failed_to_deliver_automated_response_text_message', 'failed_to_deliver_text_message', 'subscribed_to_email']:
                         # Verify the number of records replicated in sync 1 is greater than or equal to
                         # the number of records replicated in sync 2 for mentioned streams as
                         # the data is available for only 1 day for these streams

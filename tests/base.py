@@ -125,7 +125,7 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            "subscribed_to_sms": {
+            "subscribed_to_text_message": {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
@@ -149,43 +149,43 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
-            'clicked_sms': {
+            'clicked_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'unsubscribed_from_sms': {
+            'unsubscribed_from_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'received_sms': {
+            'received_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'sent_sms': {
+            'sent_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'failed_to_deliver': {
+            'failed_to_deliver_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'failed_to_deliver_automated_response': {
+            'failed_to_deliver_automated_response_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
                 self.BOOKMARK: {"timestamp"}
             },
-            'received_automated_response': {
+            'received_automated_response_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
                 self.REPLICATION_KEYS:{"since"},
@@ -202,22 +202,22 @@ class KlaviyoBaseTest(unittest.TestCase):
         return {
             "lists": "lists",
             "R42wNy": "bounce",
-            "RNT5Sf": "failed_to_deliver",
-            "Rf2Tbd": "failed_to_deliver_automated_response",
+            "RNT5Sf": "failed_to_deliver_text_message",
+            "Rf2Tbd": "failed_to_deliver_automated_response_text_message",
             "SM3z68": "unsub_list",
             "SQsqj3": "dropped_email",
             "Si4C3N": "open",
-            "SrU8uS": "received_sms",
-            "TBiXnJ": "unsubscribed_from_sms",
+            "SrU8uS": "received_text_message",
+            "TBiXnJ": "unsubscribed_from_text_message",
             "U3MqpH": "subscribe_list",
             "U6uvyh": "click",
-            "UejZZm": "clicked_sms",
+            "UejZZm": "clicked_text_message",
             "VfTks9": "mark_as_spam",
-            "VsTGNN": "received_automated_response",
-            "W2KTvQ": "subscribed_to_sms",
+            "VsTGNN": "received_automated_response_text_message",
+            "W2KTvQ": "subscribed_to_text_message",
             "WprQcH": "update_email_preferences",
             "XmL8Md": "subscribed_to_email",
-            "XPbM2j": "sent_sms",
+            "XPbM2j": "sent_text_message",
             "YfT9Df": "unsubscribe",
             "YimjbS": "receive",
             "campaigns": "campaigns",

@@ -32,14 +32,18 @@ EVENT_MAPPINGS = {
     "Subscribed to List": "subscribe_list",
     "Updated Email Preferences": "update_email_preferences",
     "Dropped Email": "dropped_email",
-    "Clicked SMS": "clicked_sms",
-    "Subscribed to SMS Marketing": "subscribed_to_sms",
-    "Failed to Deliver SMS": "failed_to_deliver",
-    "Failed to deliver Automated Response SMS": "failed_to_deliver_automated_response",
-    "Received Automated Response SMS": "received_automated_response",
-    "Received SMS": "received_sms",
-    "Sent SMS": "sent_sms",
-    "Unsubscribed from SMS Marketing": "unsubscribed_from_sms"
+    # Text-based metrics (Klaviyo renamed SMS to Text Message, July 2026)
+    "Clicked Text Message": "clicked_text_message",
+    "Subscribed to Text Messaging Marketing": "subscribed_to_text_message",
+    "Failed to Deliver Text Message": "failed_to_deliver_text_message",
+    "Failed to Deliver Automated Response Text Message": "failed_to_deliver_automated_response_text_message",
+    "Received Automated Response Text Message": "received_automated_response_text_message",
+    "Received Text Message": "received_text_message",
+    "Sent Text Message": "sent_text_message",
+    "Unsubscribed from Text Messaging Marketing": "unsubscribed_from_text_message",
+    # Transactional Text metrics
+    "Subscribed to Text Messaging Transactional": "subscribed_to_text_message_transactional",
+    "Unsubscribed from Text Messaging Transactional": "unsubscribed_from_text_message_transactional",
 }
 
 

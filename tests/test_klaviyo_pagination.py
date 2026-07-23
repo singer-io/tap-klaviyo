@@ -29,10 +29,10 @@ class PaginationTest(KlaviyoBaseTest):
         for stream in expected_streams:
             stream_page_size[stream] = page_size
         # Page size for streams are set based on available data in test account
-        stream_page_size["received_sms"] = 50
-        stream_page_size["failed_to_deliver_automated_response"] = 20
+        stream_page_size["received_text_message"] = 50
+        stream_page_size["failed_to_deliver_automated_response_text_message"] = 20
         stream_page_size["subscribed_to_email"] = 1
-        stream_page_size["failed_to_deliver"] = 1
+        stream_page_size["failed_to_deliver_text_message"] = 1
 
         found_catalogs = self.run_and_verify_check_mode(conn_id)
 

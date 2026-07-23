@@ -50,7 +50,7 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                     "tap_stream_id": "XmL8Md"
                 },
                 {
-                    "stream": "subscribed_to_sms",
+                    "stream": "subscribed_to_text_message",
                     "tap_stream_id": "W2KTvQ"
                 },
                 {
@@ -70,31 +70,31 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                     "tap_stream_id": "campaigns"
                 },
                 {
-                    "stream": "clicked_sms",
+                    "stream": "clicked_text_message",
                     "tap_stream_id": "UejZZm"
                 },
                 {
-                    "stream": "unsubscribed_from_sms",
+                    "stream": "unsubscribed_from_text_message",
                     "tap_stream_id": "TBiXnJ"
                 },
                 {
-                    "stream": "received_sms",
+                    "stream": "received_text_message",
                     "tap_stream_id": "SrU8uS"
                 },
                 {
-                    "stream": "sent_sms",
+                    "stream": "sent_text_message",
                     "tap_stream_id": "XPbM2j"
                 },
                 {
-                    "stream":  "failed_to_deliver",
+                    "stream":  "failed_to_deliver_text_message",
                     "tap_stream_id": "RNT5Sf"
                 },
                 {
-                    "stream": "failed_to_deliver_automated_response",
+                    "stream": "failed_to_deliver_automated_response_text_message",
                     "tap_stream_id": "Rf2Tbd"
                 },
                 {
-                    "stream": "received_automated_response",
+                    "stream": "received_automated_response_text_message",
                     "tap_stream_id": "VsTGNN"
                 }
             ]
@@ -113,43 +113,43 @@ class TestTranslateStreamNameToMetricId(unittest.TestCase):
                 "receive": {
                     "since": "2022-05-27T12:16:24Z"
                 },
-                "sent_sms": {
+                "sent_text_message": {
                     "since": "2022-05-06T09:30:50Z"
                 },
                 "unsub_list": {
                     "since": "2022-05-06T05:04:00Z"
                 },
-                "clicked_sms": {
+                "clicked_text_message": {
                     "since": "2022-05-06T09:32:12Z"
                 },
                 "unsubscribe": {
                     "since": "2022-04-29T13:13:22Z"
                 },
-                "received_sms": {
+                "received_text_message": {
                     "since": "2022-05-05T06:24:07Z"
                 },
                 "subscribe_list": {
                     "since": "2024-05-06T18:40:13Z"
                 },
-                "failed_to_deliver": {
+                "failed_to_deliver_text_message": {
                     "since": "2022-05-05T08:19:12Z"
                 },
-                "subscribed_to_sms": {
+                "subscribed_to_text_message": {
                     "since": "2022-05-06T09:30:51Z"
                 },
                 "subscribed_to_email": {
                     "since": "2024-05-06T18:40:14Z"
                 },
-                "unsubscribed_from_sms": {
+                "unsubscribed_from_text_message": {
                     "since": "2024-10-17T13:48:50Z"
                 },
                 "update_email_preferences": {
                     "since": "2022-05-06T05:04:29Z"
                 },
-                "received_automated_response": {
+                "received_automated_response_text_message": {
                     "since": "2022-05-06T09:30:51Z"
                 },
-                "failed_to_deliver_automated_response": {
+                "failed_to_deliver_automated_response_text_message": {
                     "since": "2022-05-05T10:01:02Z"
                 }
             },
