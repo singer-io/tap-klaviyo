@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0
+  * Replace sms streams with text message streams [#87](https://github.com/singer-io/tap-klaviyo/pull/87)
+
 ## 1.1.5
   * Bump requests version to 2.33.0 [#85](https://github.com/singer-io/tap-klaviyo/pull/85)
 
