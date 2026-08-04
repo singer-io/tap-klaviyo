@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0
+  * Klaviyo API version upgrade to v2026-07-15 [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
+
 ## 1.2.0
   * Replace sms streams with text message streams [#87](https://github.com/singer-io/tap-klaviyo/pull/87)
 
