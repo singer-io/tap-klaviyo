@@ -262,27 +262,25 @@ def get_full_pulls(resource, endpoint, headers):
 
 
 def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
-    campaigns_params = {
-        "filter": "equals(messages.channel,'email')",
-        "fields[campaign]": "id",
+    # BETA endpoint (GA at revision 2026-10-15) — flat list, no per-campaign walk needed
+    messages_url = "https://a.klaviyo.com/api/campaign-messages/"
+    params = {
+        "filter": "equals(message.channel,'email')",
         "page[size]": 50
     }
 
     with metrics.record_counter(stream['stream']) as counter:
-        for campaign_response in get_all_using_next("campaigns", campaigns_endpoint, headers, campaigns_params):
-            for campaign in campaign_response.json().get('data', []):
-                campaign_id = campaign['id']
-                messages_url = "https://a.klaviyo.com/api/campaigns/{}/campaign-messages/".format(campaign_id)
-                for msg_response in get_all_using_next(stream['stream'], messages_url, headers, {}):
-                    messages = msg_response.json().get('data', [])
-                    counter.increment(len(messages))
-                    for message in messages:
-                        attrs = message.pop('attributes', {})
-                        definition = attrs.pop('definition', {})
-                        message.update(attrs)
-                        message.update(definition)
-                        message['campaign_id'] = campaign_id
-                        singer.write_record(stream['stream'], message)
+        for msg_response in get_all_using_next(stream['stream'], messages_url, headers, params):
+            messages = msg_response.json().get('data', [])
+            counter.increment(len(messages))
+            for message in messages:
+                attrs = message.pop('attributes', {})
+                definition = attrs.pop('definition', {})
+                message.update(attrs)
+                message.update(definition)
+                campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
+                message['campaign_id'] = campaign_rel.get('id')
+                singer.write_record(stream['stream'], message)
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):
