@@ -124,25 +124,6 @@
                             "string"
                         ]
                     },
-                    "label": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "channel": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "content": {
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "properties": {}
-                    },
                     "send_times": {
                         "type": [
                             "null",
@@ -155,13 +136,6 @@
                             ],
                             "properties": {}
                         }
-                    },
-                    "render_options": {
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "properties": {}
                     },
                     "created_at": {
                         "type": [

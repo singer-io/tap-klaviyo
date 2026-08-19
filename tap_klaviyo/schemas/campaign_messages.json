@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {"type": ["null", "string"]},
+    "type": {"type": ["null", "string"]},
+    "label": {"type": ["null", "string"]},
+    "channel": {"type": ["null", "string"]},
+    "content": {
+      "type": ["null", "object"],
+      "properties": {
+        "subject": {"type": ["null", "string"]},
+        "preview_text": {"type": ["null", "string"]},
+        "from_email": {"type": ["null", "string"]},
+        "from_label": {"type": ["null", "string"]},
+        "reply_to_email": {"type": ["null", "string"]},
+        "cc_email": {"type": ["null", "string"]},
+        "bcc_email": {"type": ["null", "string"]}
+      }
+    },
+    "render_options": {
+      "type": ["null", "object"],
+      "properties": {}
+    },
+    "send_times": {
+      "type": ["null", "array"],
+      "items": {
+        "type": ["null", "object"],
+        "properties": {}
+      }
+    },
+    "created_at": {"type": ["null", "string"], "format": "date-time"},
+    "updated_at": {"type": ["null", "string"], "format": "date-time"},
+    "campaign_id": {"type": ["null", "string"]}
+  }
+}

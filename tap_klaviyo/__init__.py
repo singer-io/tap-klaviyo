@@ -5,7 +5,7 @@ import os
 import sys
 import singer
 from singer import metadata, state as st
-from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_using_next
+from tap_klaviyo.utils import get_incremental_pull, get_full_pulls, get_all_using_next, get_campaign_messages_pull
 
 LOGGER = singer.get_logger()
 
@@ -109,7 +109,14 @@ CAMPAIGNS = Stream(
     'FULL_TABLE'
 )
 
-FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, CAMPAIGNS]
+CAMPAIGN_MESSAGES = Stream(
+    'campaign_messages',
+    'campaign_messages',
+    ['id'],
+    'FULL_TABLE'
+)
+
+FULL_STREAMS = [GLOBAL_EXCLUSIONS, LISTS, CAMPAIGNS, CAMPAIGN_MESSAGES]
 
 
 def get_abs_path(path):
@@ -164,6 +171,8 @@ def do_sync(config, state, catalog, headers):
             if stream['stream'] in EVENT_MAPPINGS.values():
                 get_incremental_pull(stream, ENDPOINTS['events'], state,
                                     headers, start_date)
+            elif stream['stream'] == 'campaign_messages':
+                get_campaign_messages_pull(stream, ENDPOINTS['campaigns'], headers)
             else:
                 get_full_pulls(stream, ENDPOINTS[stream['stream']], headers)
 
