@@ -262,16 +262,22 @@ def get_full_pulls(resource, endpoint, headers):
 
 
 def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
-    # BETA endpoint (GA at revision 2026-10-15) — flat list, no per-campaign walk needed
+    # Beta flat endpoint (GA at revision 2026-10-15): single paginated call with sideloaded variations
     messages_url = "https://a.klaviyo.com/api/campaign-messages/"
     params = {
-        "filter": "equals(message.channel,'email')",
-        "page[size]": 50
+        "include": "campaign-variations",
+        "page[size]": 100
     }
 
     with metrics.record_counter(stream['stream']) as counter:
         for msg_response in get_all_using_next(stream['stream'], messages_url, headers, params):
-            messages = msg_response.json().get('data', [])
+            body = msg_response.json()
+            messages = body.get('data', [])
+            included = {
+                obj['id']: obj
+                for obj in body.get('included', [])
+                if obj.get('type') == 'campaign-variation'
+            }
             counter.increment(len(messages))
             for message in messages:
                 attrs = message.pop('attributes', {})
@@ -280,6 +286,24 @@ def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
                 message.update(definition)
                 campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
                 message['campaign_id'] = campaign_rel.get('id')
+                var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
+                for var_ref in var_refs:
+                    variation = included.get(var_ref.get('id'), {})
+                    var_attrs = variation.get('attributes', {})
+                    definition = var_attrs.get('definition', {})
+                    details = definition.get('details', {})
+                    message['channel'] = details.get('channel')
+                    message['label'] = definition.get('name')
+                    message['content'] = {
+                        'subject': details.get('subject'),
+                        'preview_text': details.get('preview_text'),
+                        'from_email': details.get('from_email'),
+                        'from_label': details.get('from_label'),
+                        'reply_to_email': details.get('reply_to_email'),
+                        'cc_email': details.get('cc_email'),
+                        'bcc_email': details.get('bcc_email'),
+                    }
+                    break
                 singer.write_record(stream['stream'], message)
 
 

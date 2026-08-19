@@ -3,6 +3,8 @@
   "properties": {
     "id": {"type": ["null", "string"]},
     "type": {"type": ["null", "string"]},
+    "name": {"type": ["null", "string"]},
+    "status": {"type": ["null", "string"]},
     "label": {"type": ["null", "string"]},
     "channel": {"type": ["null", "string"]},
     "content": {
@@ -17,6 +19,14 @@
         "bcc_email": {"type": ["null", "string"]}
       }
     },
+    "send_options": {
+      "type": ["null", "object"],
+      "properties": {}
+    },
+    "tracking_options": {
+      "type": ["null", "object"],
+      "properties": {}
+    },
     "render_options": {
       "type": ["null", "object"],
       "properties": {}
@@ -28,6 +38,8 @@
         "properties": {}
       }
     },
+    "created": {"type": ["null", "string"], "format": "date-time"},
+    "updated": {"type": ["null", "string"], "format": "date-time"},
     "created_at": {"type": ["null", "string"], "format": "date-time"},
     "updated_at": {"type": ["null", "string"], "format": "date-time"},
     "campaign_id": {"type": ["null", "string"]}
