@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+  * Bump Klaviyo API revision to GA `2026-10-15` [#90](https://github.com/singer-io/tap-klaviyo/pull/90)
+
 ## 2.0.0
   * Klaviyo API version upgrade to v2026-07-15 [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
   * Add new `campaign_messages` stream [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
