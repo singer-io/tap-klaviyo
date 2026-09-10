@@ -18,7 +18,7 @@ STREAM_PARAMS_MAP = {
     "campaigns": [
         {
             "include": "tags",
-            "fields[campaign]": "name,status,archived,audiences,created_at,updated_at"
+            "fields[campaign]": ["name", "status", "archived", "audiences", "created_at", "updated_at"]
         }
     ],
     "global_exclusions": [
@@ -150,7 +150,12 @@ def raise_for_error(response):
             json_resp = {}
 
         error_code = response.status_code
-        message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
+        errors = json_resp.get("errors", [])
+        if errors:
+            detail = "; ".join(e.get("detail", "") for e in errors if e.get("detail"))
+            message_text = detail or ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
+        else:
+            message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
         raise exc(message) from None
