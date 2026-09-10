@@ -17,8 +17,8 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
-            "filter": "equals(messages.channel,'email')",
-            "include": "tags,campaign-messages"
+            "include": "tags",
+            "fields[campaign]": "created_at,definition,updated_at"
         }
     ],
     "global_exclusions": [
@@ -150,7 +150,12 @@ def raise_for_error(response):
             json_resp = {}
 
         error_code = response.status_code
-        message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
+        errors = json_resp.get("errors", []) if isinstance(json_resp, dict) else []
+        if isinstance(errors, list) and errors:
+            detail = "; ".join(e.get("detail", "") for e in errors if isinstance(e, dict) and e.get("detail"))
+            message_text = detail or ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
+        else:
+            message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")) if isinstance(json_resp, dict) else ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
         raise exc(message) from None
@@ -259,6 +264,58 @@ def get_full_pulls(resource, endpoint, headers):
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
                 transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
+
+
+def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
+    # Beta flat endpoint (GA at revision 2026-10-15): single paginated call with sideloaded variations
+    messages_url = "https://a.klaviyo.com/api/campaign-messages/"
+    params = {
+        "include": "campaign-variations",
+        "page[size]": 100
+    }
+
+    with metrics.record_counter(stream['stream']) as counter:
+        for msg_response in get_all_using_next(stream['stream'], messages_url, headers, params):
+            body = msg_response.json()
+            messages = body.get('data', [])
+            included = {
+                obj['id']: obj
+                for obj in body.get('included', [])
+                if obj.get('type') == 'campaign-variation'
+            }
+            counter.increment(len(messages))
+            event_schema = stream['schema']
+            event_mdata = metadata.to_map(stream['metadata'])
+            with Transformer() as transformer:
+                for message in messages:
+                    attrs = message.pop('attributes', {})
+                    definition = attrs.pop('definition', {})
+                    message.update(attrs)
+                    message.update(definition)
+                    campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
+                    message['campaign_id'] = campaign_rel.get('id')
+                    var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
+                    for var_ref in var_refs:
+                        variation = included.get(var_ref.get('id'), {})
+                        var_attrs = variation.get('attributes', {})
+                        definition = var_attrs.get('definition', {})
+                        details = definition.get('details', {})
+                        message['channel'] = details.get('channel')
+                        message['label'] = definition.get('name')
+                        message['content'] = {
+                            'subject': details.get('subject'),
+                            'preview_text': details.get('preview_text'),
+                            'from_email': details.get('from_email'),
+                            'from_label': details.get('from_label'),
+                            'reply_to_email': details.get('reply_to_email'),
+                            'cc_email': details.get('cc_email'),
+                            'bcc_email': details.get('bcc_email'),
+                        }
+                        break
+                    singer.write_record(
+                        stream['stream'],
+                        transformer.transform(message, event_schema, event_mdata)
+                    )
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):

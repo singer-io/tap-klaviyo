@@ -149,6 +149,10 @@ class KlaviyoBaseTest(unittest.TestCase):
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.FULL_TABLE
             },
+            "campaign_messages": {
+                self.PRIMARY_KEYS: ["id"],
+                self.REPLICATION_METHOD: self.FULL_TABLE
+            },
             'clicked_text_message': {
                 self.PRIMARY_KEYS: ["id"],
                 self.REPLICATION_METHOD: self.INCREMENTAL,
@@ -221,6 +225,7 @@ class KlaviyoBaseTest(unittest.TestCase):
             "YfT9Df": "unsubscribe",
             "YimjbS": "receive",
             "campaigns": "campaigns",
+            "campaign_messages": "campaign_messages",
             "global_exclusions": "global_exclusions"
         }
 
