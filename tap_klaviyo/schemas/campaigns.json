@@ -101,59 +101,6 @@
             ],
             "properties": {}
         },
-        "campaign-messages": {
-            "type": [
-                "null",
-                "array"
-            ],
-            "items": {
-                "type": [
-                    "null",
-                    "object"
-                ],
-                "properties": {
-                    "type": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "id": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "send_times": {
-                        "type": [
-                            "null",
-                            "array"
-                        ],
-                        "items": {
-                            "type": [
-                                "null",
-                                "object"
-                            ],
-                            "properties": {}
-                        }
-                    },
-                    "created_at": {
-                        "type": [
-                            "null",
-                            "string"
-                        ],
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": [
-                            "null",
-                            "string"
-                        ],
-                        "format": "date-time"
-                    }
-                }
-            }
-        },
         "tags": {
             "type": [
                 "null",

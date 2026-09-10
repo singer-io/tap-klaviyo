@@ -17,7 +17,8 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
-            "include": "tags"
+            "include": "tags",
+            "fields[campaign]": "name,status,archived,audiences,send_options,tracking_options,send_strategy,send_time,scheduled_at,created_at,updated_at"
         }
     ],
     "global_exclusions": [
@@ -278,32 +279,38 @@ def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
                 if obj.get('type') == 'campaign-variation'
             }
             counter.increment(len(messages))
-            for message in messages:
-                attrs = message.pop('attributes', {})
-                definition = attrs.pop('definition', {})
-                message.update(attrs)
-                message.update(definition)
-                campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
-                message['campaign_id'] = campaign_rel.get('id')
-                var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
-                for var_ref in var_refs:
-                    variation = included.get(var_ref.get('id'), {})
-                    var_attrs = variation.get('attributes', {})
-                    definition = var_attrs.get('definition', {})
-                    details = definition.get('details', {})
-                    message['channel'] = details.get('channel')
-                    message['label'] = definition.get('name')
-                    message['content'] = {
-                        'subject': details.get('subject'),
-                        'preview_text': details.get('preview_text'),
-                        'from_email': details.get('from_email'),
-                        'from_label': details.get('from_label'),
-                        'reply_to_email': details.get('reply_to_email'),
-                        'cc_email': details.get('cc_email'),
-                        'bcc_email': details.get('bcc_email'),
-                    }
-                    break
-                singer.write_record(stream['stream'], message)
+            event_schema = stream['schema']
+            event_mdata = metadata.to_map(stream['metadata'])
+            with Transformer() as transformer:
+                for message in messages:
+                    attrs = message.pop('attributes', {})
+                    definition = attrs.pop('definition', {})
+                    message.update(attrs)
+                    message.update(definition)
+                    campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
+                    message['campaign_id'] = campaign_rel.get('id')
+                    var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
+                    for var_ref in var_refs:
+                        variation = included.get(var_ref.get('id'), {})
+                        var_attrs = variation.get('attributes', {})
+                        definition = var_attrs.get('definition', {})
+                        details = definition.get('details', {})
+                        message['channel'] = details.get('channel')
+                        message['label'] = definition.get('name')
+                        message['content'] = {
+                            'subject': details.get('subject'),
+                            'preview_text': details.get('preview_text'),
+                            'from_email': details.get('from_email'),
+                            'from_label': details.get('from_label'),
+                            'reply_to_email': details.get('reply_to_email'),
+                            'cc_email': details.get('cc_email'),
+                            'bcc_email': details.get('bcc_email'),
+                        }
+                        break
+                    singer.write_record(
+                        stream['stream'],
+                        transformer.transform(message, event_schema, event_mdata)
+                    )
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):

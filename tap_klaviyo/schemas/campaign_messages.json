@@ -27,21 +27,8 @@
       "type": ["null", "object"],
       "properties": {}
     },
-    "render_options": {
-      "type": ["null", "object"],
-      "properties": {}
-    },
-    "send_times": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["null", "object"],
-        "properties": {}
-      }
-    },
     "created": {"type": ["null", "string"], "format": "date-time"},
     "updated": {"type": ["null", "string"], "format": "date-time"},
-    "created_at": {"type": ["null", "string"], "format": "date-time"},
-    "updated_at": {"type": ["null", "string"], "format": "date-time"},
     "campaign_id": {"type": ["null", "string"]}
   }
 }
