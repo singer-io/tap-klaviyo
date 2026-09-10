@@ -18,7 +18,7 @@ STREAM_PARAMS_MAP = {
     "campaigns": [
         {
             "include": "tags",
-            "fields[campaign]": "name,status,archived,audiences,send_options,tracking_options,send_strategy,send_time,scheduled_at,created_at,updated_at"
+            "fields[campaign]": "name,status,archived,audiences,created_at,updated_at"
         }
     ],
     "global_exclusions": [

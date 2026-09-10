@@ -23,13 +23,6 @@
                 "string"
             ]
         },
-        "send_time": {
-            "type": [
-                "null",
-                "string"
-            ],
-            "format": "date-time"
-        },
         "id": {
             "type": [
                 "null",
@@ -80,27 +73,6 @@
                 }
             }
         },
-        "send_options": {
-            "type": [
-                "null",
-                "object"
-            ],
-            "properties": {}
-        },
-        "tracking_options": {
-            "type": [
-                "null",
-                "object"
-            ],
-            "properties": {}
-        },
-        "send_strategy": {
-            "type": [
-                "null",
-                "object"
-            ],
-            "properties": {}
-        },
         "tags": {
             "type": [
                 "null",
@@ -132,13 +104,6 @@
                     }
                 }
             }
-        },
-        "scheduled_at": {
-            "type": [
-                "null",
-                "string"
-            ],
-            "format": "date-time"
         },
         "created_at": {
             "type": [
