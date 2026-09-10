@@ -150,12 +150,12 @@ def raise_for_error(response):
             json_resp = {}
 
         error_code = response.status_code
-        errors = json_resp.get("errors", [])
-        if errors:
-            detail = "; ".join(e.get("detail", "") for e in errors if e.get("detail"))
+        errors = json_resp.get("errors", []) if isinstance(json_resp, dict) else []
+        if isinstance(errors, list) and errors:
+            detail = "; ".join(e.get("detail", "") for e in errors if isinstance(e, dict) and e.get("detail"))
             message_text = detail or ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
         else:
-            message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
+            message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")) if isinstance(json_resp, dict) else ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
         raise exc(message) from None
