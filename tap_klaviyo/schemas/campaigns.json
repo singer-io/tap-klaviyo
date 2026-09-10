@@ -4,11 +4,110 @@
         "object"
     ],
     "properties": {
-        "status": {
+        "id": {
             "type": [
                 "null",
                 "string"
             ]
+        },
+        "type": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "definition": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {
+                "name": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "status": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "archived": {
+                    "type": [
+                        "null",
+                        "boolean"
+                    ]
+                },
+                "audiences": {
+                    "type": [
+                        "null",
+                        "object"
+                    ],
+                    "properties": {
+                        "included": {
+                            "type": [
+                                "null",
+                                "array"
+                            ],
+                            "items": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            }
+                        },
+                        "excluded": {
+                            "type": [
+                                "null",
+                                "array"
+                            ],
+                            "items": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "send_options": {
+                    "type": [
+                        "null",
+                        "object"
+                    ],
+                    "properties": {}
+                },
+                "tracking_options": {
+                    "type": [
+                        "null",
+                        "object"
+                    ],
+                    "properties": {}
+                },
+                "send_strategy": {
+                    "type": [
+                        "null",
+                        "object"
+                    ],
+                    "properties": {}
+                },
+                "send_time": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "format": "date-time"
+                },
+                "scheduled_at": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "format": "date-time"
+                }
+            }
         },
         "updated_at": {
             "type": [
@@ -17,61 +116,12 @@
             ],
             "format": "date-time"
         },
-        "type": {
+        "created_at": {
             "type": [
                 "null",
                 "string"
-            ]
-        },
-        "id": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "name": {
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        "archived": {
-            "type": [
-                "null",
-                "boolean"
-            ]
-        },
-        "audiences": {
-            "type": [
-                "null",
-                "object"
             ],
-            "properties": {
-                "included": {
-                    "type": [
-                        "null",
-                        "array"
-                    ],
-                    "items": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    }
-                },
-                "excluded": {
-                    "type": [
-                        "null",
-                        "array"
-                    ],
-                    "items": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    }
-                }
-            }
+            "format": "date-time"
         },
         "tags": {
             "type": [
@@ -104,13 +154,6 @@
                     }
                 }
             }
-        },
-        "created_at": {
-            "type": [
-                "null",
-                "string"
-            ],
-            "format": "date-time"
         }
     }
 }
