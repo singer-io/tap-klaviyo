@@ -17,8 +17,7 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
-            "filter": "equals(messages.channel,'email')",
-            "include": "tags,campaign-messages"
+            "include": "tags"
         }
     ],
     "global_exclusions": [
