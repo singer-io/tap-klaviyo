@@ -17,7 +17,6 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
-            "include": "tags",
             "fields[campaign]": "created_at,definition,updated_at"
         }
     ],

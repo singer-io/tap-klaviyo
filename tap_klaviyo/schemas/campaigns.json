@@ -28,7 +28,7 @@
                         "string"
                     ]
                 },
-                "status": {
+                "builder": {
                     "type": [
                         "null",
                         "string"
@@ -40,72 +40,55 @@
                         "boolean"
                     ]
                 },
-                "audiences": {
+                "color": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "description": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "send_settings": {
                     "type": [
                         "null",
                         "object"
                     ],
                     "properties": {
-                        "included": {
+                        "send_timezone": {
                             "type": [
                                 "null",
-                                "array"
-                            ],
-                            "items": {
-                                "type": [
-                                    "null",
-                                    "string"
-                                ]
-                            }
+                                "string"
+                            ]
                         },
-                        "excluded": {
+                        "send_strategy": {
                             "type": [
                                 "null",
-                                "array"
-                            ],
-                            "items": {
-                                "type": [
-                                    "null",
-                                    "string"
-                                ]
-                            }
+                                "string"
+                            ]
+                        },
+                        "send_passed_rltz_immediately": {
+                            "type": [
+                                "null",
+                                "boolean"
+                            ]
+                        },
+                        "exit_condition_enabled": {
+                            "type": [
+                                "null",
+                                "boolean"
+                            ]
+                        },
+                        "exit_condition_conversion_metric_id": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
                         }
                     }
-                },
-                "send_options": {
-                    "type": [
-                        "null",
-                        "object"
-                    ],
-                    "properties": {}
-                },
-                "tracking_options": {
-                    "type": [
-                        "null",
-                        "object"
-                    ],
-                    "properties": {}
-                },
-                "send_strategy": {
-                    "type": [
-                        "null",
-                        "object"
-                    ],
-                    "properties": {}
-                },
-                "send_time": {
-                    "type": [
-                        "null",
-                        "string"
-                    ],
-                    "format": "date-time"
-                },
-                "scheduled_at": {
-                    "type": [
-                        "null",
-                        "string"
-                    ],
-                    "format": "date-time"
                 }
             }
         },
@@ -122,38 +105,6 @@
                 "string"
             ],
             "format": "date-time"
-        },
-        "tags": {
-            "type": [
-                "null",
-                "array"
-            ],
-            "items": {
-                "type": [
-                    "null",
-                    "object"
-                ],
-                "properties": {
-                    "type": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "id": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "name": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    }
-                }
-            }
         }
     }
 }
