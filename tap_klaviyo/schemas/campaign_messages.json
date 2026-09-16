@@ -9,7 +9,8 @@
     "channel": {"type": ["null", "string"]},
     "content": {
       "type": ["null", "object"],
-      "description": "Channel-specific variation content. Populated fields depend on `channel` (email, sms, push, whatsapp); see https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview",
+      "description": "Channel-specific variation `details`, passed through as-is from the Klaviyo API (see `channel`); see https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview. `additionalProperties` is intentionally left open since the field set varies by channel and Klaviyo may add fields over time (e.g. sms carries additional fields such as `add_org_prefix`/`cost`/`message_hierarchy` beyond the commonly-documented subset below).",
+      "additionalProperties": true,
       "properties": {
         "template_id": {"type": ["null", "string"]},
         "subject": {"type": ["null", "string"]},
@@ -27,7 +28,15 @@
         "ios_deep_link": {"type": ["null", "string"]},
         "android_deep_link": {"type": ["null", "string"]},
         "sound": {"type": ["null", "boolean"]},
-        "badge": {"type": ["null", "boolean"]}
+        "badge": {"type": ["null", "boolean"]},
+        "cost": {"type": ["null", "number"]},
+        "add_org_prefix": {"type": ["null", "boolean"]},
+        "add_info_link": {"type": ["null", "boolean"]},
+        "add_opt_out_language": {"type": ["null", "boolean"]},
+        "mms_static_image_asset_id": {"type": ["null", "string"]},
+        "mms_dynamic_image_template": {"type": ["null", "string"]},
+        "text_message_type": {"type": ["null", "string"]},
+        "message_hierarchy": {"type": ["null", "string"]}
       }
     },
     "send_options": {

@@ -1,7 +1,8 @@
 import unittest
+from unittest import mock
 
 import tap_klaviyo
-from tap_klaviyo.utils import STREAM_PARAMS_MAP, build_variation_content
+from tap_klaviyo.utils import STREAM_PARAMS_MAP, build_variation_content, get_campaign_messages_pull
 
 
 class TestBetaCampaigns(unittest.TestCase):
@@ -75,16 +76,131 @@ class TestBuildVariationContent(unittest.TestCase):
         details = {"template_id": "wt_1", "shorten_links": True}
         self.assertEqual(build_variation_content("whatsapp", details), details)
 
-    def test_unknown_channel_returns_empty_dict(self):
-        self.assertEqual(build_variation_content("carrier_pigeon", {"foo": "bar"}), {})
-
-    def test_missing_fields_default_to_none(self):
+    def test_unknown_channel_still_passes_through_details(self):
+        # Unrecognized/future channels are not dropped either -- `details` is
+        # returned as-is so nothing is silently lost.
         self.assertEqual(
-            build_variation_content("sms", {}),
-            {
-                "template_id": None,
-                "body": None,
-                "shorten_links": None,
-                "include_contact_card": None,
-            }
+            build_variation_content("carrier_pigeon", {"foo": "bar"}),
+            {"foo": "bar"}
         )
+
+    def test_channel_key_is_excluded_from_content(self):
+        # `channel` is stored separately on the message record, so it should
+        # not also be duplicated inside `content`.
+        details = {"channel": "sms", "body": "Sale today!"}
+        self.assertEqual(build_variation_content("sms", details), {"body": "Sale today!"})
+
+    def test_sms_channel_includes_undocumented_fields(self):
+        # Real Klaviyo sandbox responses include several sms fields beyond the
+        # commonly-documented subset (e.g. add_org_prefix/cost/message_hierarchy);
+        # these must not be dropped.
+        details = {
+            "template_id": "tmpl_2",
+            "body": "Sale today!",
+            "shorten_links": True,
+            "include_contact_card": False,
+            "add_org_prefix": True,
+            "add_info_link": True,
+            "add_opt_out_language": True,
+            "cost": None,
+            "message_hierarchy": None,
+            "mms_static_image_asset_id": None,
+            "mms_dynamic_image_template": "",
+            "text_message_type": "SMS",
+        }
+        self.assertEqual(build_variation_content("sms", details), details)
+
+    def test_missing_fields_are_simply_absent(self):
+        # No fields are invented for a channel -- content mirrors exactly
+        # what Klaviyo returned.
+        self.assertEqual(build_variation_content("sms", {}), {})
+
+
+class TestGetCampaignMessagesPull(unittest.TestCase):
+    """Exercises the full pull path: flattening message attributes, joining
+    page-local `included` variations, and writing every paginated record --
+    not just the isolated `build_variation_content` helper."""
+
+    def _mock_response(self, messages, included, next_url=None):
+        resp = mock.Mock()
+        resp.json.return_value = {
+            "data": messages,
+            "included": included,
+            "links": {"next": next_url},
+        }
+        return resp
+
+    @mock.patch("tap_klaviyo.utils.singer.write_record")
+    @mock.patch("tap_klaviyo.utils.authed_get")
+    def test_flattens_joins_variation_and_writes_every_paginated_record(
+        self, mocked_authed_get, mocked_write_record
+    ):
+        page_1_message = {
+            "type": "campaign-message",
+            "id": "msg_1",
+            "attributes": {
+                "created": "2024-01-01T00:00:00Z",
+                "updated": "2024-01-02T00:00:00Z",
+                "definition": {"name": "Sample", "status": "draft"},
+            },
+            "relationships": {
+                "campaign": {"data": {"type": "campaign", "id": "camp_1"}},
+                "campaign-variations": {"data": [{"type": "campaign-variation", "id": "var_1"}]},
+            },
+        }
+        page_1_variation = {
+            "type": "campaign-variation",
+            "id": "var_1",
+            "attributes": {
+                "definition": {
+                    "name": "Variation A",
+                    "details": {"channel": "sms", "body": "Sale today!"},
+                }
+            },
+        }
+        page_2_message = {
+            "type": "campaign-message",
+            "id": "msg_2",
+            "attributes": {
+                "created": "2024-01-03T00:00:00Z",
+                "updated": "2024-01-04T00:00:00Z",
+                "definition": {"name": "Sample 2", "status": "sent"},
+            },
+            "relationships": {
+                "campaign": {"data": {"type": "campaign", "id": "camp_2"}},
+                "campaign-variations": {"data": []},
+            },
+        }
+
+        mocked_authed_get.side_effect = [
+            self._mock_response(
+                [page_1_message], [page_1_variation],
+                next_url="https://a.klaviyo.com/api/campaign-messages/?page%5Bcursor%5D=next"
+            ),
+            self._mock_response([page_2_message], []),
+        ]
+
+        stream = {
+            "stream": "campaign_messages",
+            "schema": tap_klaviyo.load_schema("campaign_messages"),
+            "metadata": [{"breadcrumb": [], "metadata": {"selected": True}}],
+        }
+
+        get_campaign_messages_pull(stream, "https://a.klaviyo.com/api/campaign-messages/", {})
+
+        self.assertEqual(mocked_authed_get.call_count, 2)
+        self.assertEqual(mocked_write_record.call_count, 2)
+
+        written_1 = mocked_write_record.call_args_list[0][0][1]
+        self.assertEqual(written_1["id"], "msg_1")
+        self.assertEqual(written_1["campaign_id"], "camp_1")
+        self.assertEqual(written_1["channel"], "sms")
+        self.assertEqual(written_1["label"], "Variation A")
+        self.assertEqual(written_1["content"], {"body": "Sale today!"})
+        self.assertEqual(written_1["name"], "Sample")
+
+        written_2 = mocked_write_record.call_args_list[1][0][1]
+        self.assertEqual(written_2["id"], "msg_2")
+        self.assertEqual(written_2["campaign_id"], "camp_2")
+        self.assertNotIn("channel", written_2)
+        self.assertNotIn("content", written_2)

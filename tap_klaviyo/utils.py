@@ -269,29 +269,21 @@ def get_full_pulls(resource, endpoint, headers):
 # Channel-specific `campaign-variation` details fields, per
 # https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview
 # A message targets exactly one channel and has at most one variation, so all
-# channels -- not just email -- are mapped here rather than dropped.
-VARIATION_CONTENT_FIELDS = {
-    'email': (
-        'template_id', 'subject', 'preview_text', 'from_email',
-        'from_label', 'reply_to_email', 'cc_email', 'bcc_email',
-    ),
-    'sms': ('template_id', 'body', 'shorten_links', 'include_contact_card'),
-    'push': (
-        'title', 'body', 'static_asset_id', 'ios_deep_link',
-        'android_deep_link', 'sound', 'badge',
-    ),
-    'whatsapp': ('template_id', 'shorten_links'),
-}
+# channels -- not just email -- are mapped here rather than dropped. `details`
+# already varies per channel (e.g. sms carries several fields beyond the
+# documented subset, such as `add_org_prefix`/`cost`/`message_hierarchy`), so
+# every field Klaviyo returns is passed through instead of an explicit
+# per-channel allowlist -- this avoids silently dropping fields that aren't
+# (yet) documented, for known and future/unrecognized channels alike.
+def build_variation_content(channel, details):  # pylint: disable=unused-argument
+    """Map a campaign-variation's `details` to content fields.
 
-
-def build_variation_content(channel, details):
-    """Map a campaign-variation's `details` to content fields for its channel.
-
-    Falls back to an empty dict for unrecognized/future channels rather than
-    guessing at field names.
+    `channel` is accepted for readability/callers but `details` is passed
+    through as-is (minus `channel` itself, which the caller stores separately
+    on the message record) so no channel-specific field is ever silently
+    dropped.
     """
-    fields = VARIATION_CONTENT_FIELDS.get(channel, ())
-    return {field: details.get(field) for field in fields}
+    return {key: value for key, value in details.items() if key != 'channel'}
 
 
 def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
