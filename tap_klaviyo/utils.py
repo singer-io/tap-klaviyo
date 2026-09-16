@@ -298,7 +298,7 @@ def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
                         variation = included.get(var_ref.get('id'), {})
                         var_attrs = variation.get('attributes', {})
                         definition = var_attrs.get('definition', {})
-                        details = definition.get('details', {})
+                        details = definition.get('details') or {}
                         message['channel'] = details.get('channel')
                         message['label'] = definition.get('name')
                         message['content'] = {
