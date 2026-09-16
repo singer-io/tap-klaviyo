@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.0.0
-  * Klaviyo API version upgrade to v2026-07-15 [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
+  * Adopt Klaviyo beta API revision v2026-07-15.pre [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
   * Add new `campaign_messages` stream [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
   * **BREAKING** — `campaigns` stream field removals and renames; see [#88](https://github.com/singer-io/tap-klaviyo/pull/88) for details
 
