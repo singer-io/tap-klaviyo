@@ -9,14 +9,25 @@
     "channel": {"type": ["null", "string"]},
     "content": {
       "type": ["null", "object"],
+      "description": "Channel-specific variation content. Populated fields depend on `channel` (email, sms, push, whatsapp); see https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview",
       "properties": {
+        "template_id": {"type": ["null", "string"]},
         "subject": {"type": ["null", "string"]},
         "preview_text": {"type": ["null", "string"]},
         "from_email": {"type": ["null", "string"]},
         "from_label": {"type": ["null", "string"]},
         "reply_to_email": {"type": ["null", "string"]},
         "cc_email": {"type": ["null", "string"]},
-        "bcc_email": {"type": ["null", "string"]}
+        "bcc_email": {"type": ["null", "string"]},
+        "body": {"type": ["null", "string"]},
+        "shorten_links": {"type": ["null", "boolean"]},
+        "include_contact_card": {"type": ["null", "boolean"]},
+        "title": {"type": ["null", "string"]},
+        "static_asset_id": {"type": ["null", "integer"]},
+        "ios_deep_link": {"type": ["null", "string"]},
+        "android_deep_link": {"type": ["null", "string"]},
+        "sound": {"type": ["null", "boolean"]},
+        "badge": {"type": ["null", "boolean"]}
       }
     },
     "send_options": {

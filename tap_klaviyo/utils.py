@@ -265,6 +265,35 @@ def get_full_pulls(resource, endpoint, headers):
                 transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
 
 
+
+# Channel-specific `campaign-variation` details fields, per
+# https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview
+# A message targets exactly one channel and has at most one variation, so all
+# channels -- not just email -- are mapped here rather than dropped.
+VARIATION_CONTENT_FIELDS = {
+    'email': (
+        'template_id', 'subject', 'preview_text', 'from_email',
+        'from_label', 'reply_to_email', 'cc_email', 'bcc_email',
+    ),
+    'sms': ('template_id', 'body', 'shorten_links', 'include_contact_card'),
+    'push': (
+        'title', 'body', 'static_asset_id', 'ios_deep_link',
+        'android_deep_link', 'sound', 'badge',
+    ),
+    'whatsapp': ('template_id', 'shorten_links'),
+}
+
+
+def build_variation_content(channel, details):
+    """Map a campaign-variation's `details` to content fields for its channel.
+
+    Falls back to an empty dict for unrecognized/future channels rather than
+    guessing at field names.
+    """
+    fields = VARIATION_CONTENT_FIELDS.get(channel, ())
+    return {field: details.get(field) for field in fields}
+
+
 def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
     # Beta flat endpoint (GA at revision 2026-10-15): single paginated call with sideloaded variations
     messages_url = "https://a.klaviyo.com/api/campaign-messages/"
@@ -293,24 +322,17 @@ def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
                     message.update(definition)
                     campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
                     message['campaign_id'] = campaign_rel.get('id')
+                    # Per Klaviyo docs a message has at most one variation (one per channel)
                     var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
-                    for var_ref in var_refs:
-                        variation = included.get(var_ref.get('id'), {})
+                    if var_refs:
+                        variation = included.get(var_refs[0].get('id'), {})
                         var_attrs = variation.get('attributes', {})
                         definition = var_attrs.get('definition', {})
                         details = definition.get('details') or {}
-                        message['channel'] = details.get('channel')
+                        channel = details.get('channel')
+                        message['channel'] = channel
                         message['label'] = definition.get('name')
-                        message['content'] = {
-                            'subject': details.get('subject'),
-                            'preview_text': details.get('preview_text'),
-                            'from_email': details.get('from_email'),
-                            'from_label': details.get('from_label'),
-                            'reply_to_email': details.get('reply_to_email'),
-                            'cc_email': details.get('cc_email'),
-                            'bcc_email': details.get('bcc_email'),
-                        }
-                        break
+                        message['content'] = build_variation_content(channel, details)
                     singer.write_record(
                         stream['stream'],
                         transformer.transform(message, event_schema, event_mdata)
