@@ -168,6 +168,32 @@ class TestCompareApiRevisions(unittest.TestCase):
         self.assertEqual(records[0]["id"], "msg_multi")
         self.assertEqual(records[0]["channel"], "email")
 
+    def test_get_flat_campaign_messages_handles_single_variation_object(self):
+        body = {
+            "data": [
+                {
+                    "id": "msg_single",
+                    "relationships": {
+                        "campaign-variations": {"data": {"id": "var_email", "type": "campaign-variation"}},
+                    },
+                    "attributes": {"definition": {"name": "Email message"}},
+                }
+            ],
+            "included": [
+                {
+                    "id": "var_email",
+                    "type": "campaign-variation",
+                    "attributes": {"definition": {"details": {"channel": "email"}}},
+                }
+            ],
+        }
+
+        records = compare_api_revisions.get_flat_campaign_messages(body, channel="email")
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["id"], "msg_single")
+        self.assertEqual(records[0]["channel"], "email")
+
     @mock.patch.object(compare_api_revisions, "fetch")
     def test_get_nested_campaign_messages_annotates_parent_campaign_id(self, mocked_fetch):
         response = mock.Mock()

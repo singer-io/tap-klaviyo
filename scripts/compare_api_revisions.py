@@ -228,6 +228,8 @@ def variation_channel(variation):
 
 def message_variation_channels(record, variations):
     refs = ((record.get("relationships", {}) or {}).get("campaign-variations", {}) or {}).get("data", [])
+    if isinstance(refs, dict):
+        refs = [refs]
     channels = []
     for ref in refs:
         channel = variation_channel(variations.get(ref.get("id"), {}))
