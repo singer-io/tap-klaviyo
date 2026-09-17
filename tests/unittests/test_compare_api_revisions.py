@@ -67,7 +67,6 @@ class TestCompareApiRevisions(unittest.TestCase):
         old = [
             {
                 "id": "legacy_id",
-                "campaign_id": "camp_1",
                 "attributes": {
                     "name": "Message A",
                     "created": "2024-01-01T00:00:00Z",
@@ -79,16 +78,11 @@ class TestCompareApiRevisions(unittest.TestCase):
         new = [
             {
                 "id": "new_id",
+                "channel": "sms",
                 "attributes": {
                     "created": "2024-01-01T00:00:00Z",
                     "updated": "2024-01-02T00:00:00Z",
-                    "definition": {
-                        "name": "Message A",
-                        "details": {"channel": "sms", "body": "Sale today!"},
-                    },
-                },
-                "relationships": {
-                    "campaign": {"data": {"id": "camp_1", "type": "campaign"}},
+                    "definition": {"name": "Message A"},
                 },
             }
         ]
@@ -99,6 +93,44 @@ class TestCompareApiRevisions(unittest.TestCase):
         self.assertEqual(len(mismatches), 1)
         self.assertEqual(mismatches[0]["old_id"], "legacy_id")
         self.assertEqual(mismatches[0]["new_id"], "new_id")
+
+    def test_get_flat_campaign_messages_filters_by_sideloaded_channel(self):
+        body = {
+            "data": [
+                {
+                    "id": "msg_email",
+                    "relationships": {
+                        "campaign-variations": {"data": [{"id": "var_email", "type": "campaign-variation"}]},
+                    },
+                    "attributes": {"definition": {"name": "Email message"}},
+                },
+                {
+                    "id": "msg_sms",
+                    "relationships": {
+                        "campaign-variations": {"data": [{"id": "var_sms", "type": "campaign-variation"}]},
+                    },
+                    "attributes": {"definition": {"name": "SMS message"}},
+                },
+            ],
+            "included": [
+                {
+                    "id": "var_email",
+                    "type": "campaign-variation",
+                    "attributes": {"definition": {"details": {"channel": "email"}}},
+                },
+                {
+                    "id": "var_sms",
+                    "type": "campaign-variation",
+                    "attributes": {"definition": {"details": {"channel": "sms"}}},
+                },
+            ],
+        }
+
+        records = compare_api_revisions.get_flat_campaign_messages(body, channel="email")
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["id"], "msg_email")
+        self.assertEqual(records[0]["channel"], "email")
 
     @mock.patch.object(compare_api_revisions, "fetch")
     def test_get_nested_campaign_messages_annotates_parent_campaign_id(self, mocked_fetch):

@@ -27,6 +27,9 @@ import requests
 
 BASE = "https://a.klaviyo.com/api"
 CAMPAIGN_MESSAGES_SAMPLE_CAMPAIGNS = 5
+# Mirror the tap's actual flat endpoint request size; the smaller campaign
+# sample only limits how many legacy nested requests this script makes.
+CAMPAIGN_MESSAGES_PAGE_SIZE = 100
 
 
 def headers_for(api_key, version):
@@ -54,6 +57,13 @@ def campaign_message_name(record):
     return definition.get("name") or attrs.get("name")
 
 
+def campaign_message_channel(record):
+    if record.get("channel"):
+        return record["channel"]
+    attrs = record.get("attributes", {}) or {}
+    return attrs.get("channel")
+
+
 def relationship_id(record, relationship_name):
     data = ((record.get("relationships", {}) or {}).get(relationship_name, {}) or {}).get("data")
     if isinstance(data, dict):
@@ -70,14 +80,11 @@ def business_key(case_name, record):
             attrs.get("updated_at"),
         )
     if case_name == "campaign_messages":
-        definition = attrs.get("definition", {}) or {}
-        details = definition.get("details", {}) or {}
         return (
-            relationship_id(record, "campaign") or record.get("campaign_id"),
             campaign_message_name(record),
             attrs.get("created") or attrs.get("created_at"),
             attrs.get("updated") or attrs.get("updated_at"),
-            details.get("channel") or attrs.get("channel"),
+            campaign_message_channel(record),
         )
     return None
 
@@ -205,6 +212,34 @@ def get_nested_campaign_messages(api_key, version, campaign_ids):
     return None, records
 
 
+def variation_lookup(included):
+    return {
+        record["id"]: record
+        for record in included
+        if record.get("type") == "campaign-variation"
+    }
+
+
+def variation_channel(variation):
+    definition = (variation.get("attributes", {}) or {}).get("definition", {}) or {}
+    details = definition.get("details", {}) or {}
+    return details.get("channel")
+
+
+def get_flat_campaign_messages(body, channel=None):
+    variations = variation_lookup(body.get("included", []))
+    messages = []
+    for record in body.get("data", []):
+        normalized = dict(record)
+        refs = ((record.get("relationships", {}) or {}).get("campaign-variations", {}) or {}).get("data", [])
+        if refs:
+            normalized["channel"] = variation_channel(variations.get(refs[0].get("id"), {}))
+        if channel is not None and normalized.get("channel") != channel:
+            continue
+        messages.append(normalized)
+    return messages
+
+
 def run_comparison(name, data_old, data_new):
     old_record, new_record = comparable_records(name, data_old, data_new)
     keys_old = top_level_keys(old_record) if old_record else []
@@ -276,7 +311,7 @@ def run(api_key, old_version, new_version):
         r_new = fetch(
             api_key,
             f"{BASE}/campaign-messages",
-            {"include": "campaign-variations", "page[size]": 100},
+            {"include": "campaign-variations", "page[size]": CAMPAIGN_MESSAGES_PAGE_SIZE},
             new_version,
         )
     except requests.RequestException as e:
@@ -292,7 +327,10 @@ def run(api_key, old_version, new_version):
             print()
         else:
             print(f"  old ({old_version}): fetched nested messages for {len(old_campaign_ids)} campaigns")
-            print("  new params={'include': 'campaign-variations', 'page[size]': 100}")
+            print(
+                "  new params={'include': 'campaign-variations', "
+                f"'page[size]': {CAMPAIGN_MESSAGES_PAGE_SIZE}, 'channel': 'email'}}"
+            )
             print(f"  new ({new_version}): HTTP {r_new.status_code}")
             if r_new.status_code != 200:
                 print(f"  new error body: {r_new.text[:300]}")
@@ -302,7 +340,7 @@ def run(api_key, old_version, new_version):
                 status, detail = run_comparison(
                     "campaign_messages",
                     data_old,
-                    r_new.json().get("data", []),
+                    get_flat_campaign_messages(r_new.json(), channel="email"),
                 )
                 results.append(("campaign_messages", status, detail))
         print()
