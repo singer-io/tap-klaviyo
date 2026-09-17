@@ -1,4 +1,7 @@
 
 *.egg-info/
-*/__pycache__/
-*/config.json
+**/__pycache__/
+config.json
+catalog*.json
+data_*.json
+.env/

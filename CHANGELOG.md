@@ -1,8 +1,10 @@
 # Changelog
 
-## 1.3.0
-  * Klaviyo API version upgrade to v2026-07-15 [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
-  * **Campaigns stream data change** (Klaviyo API revision 2025-01-15): `campaign-messages[].content` (subject, from_email, preview_text, etc.), `campaign-messages[].label`, `campaign-messages[].channel`, and `campaign-messages[].render_options` are no longer returned by the API. `send_strategy.options_static` is renamed to `send_strategy.options` with `datetime` promoted to the top level of `send_strategy`.
+## 2.0.0
+  * Adopt Klaviyo beta API revision v2026-07-15.pre [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
+  * Add new `campaign_messages` stream [#88](https://github.com/singer-io/tap-klaviyo/pull/88)
+  * **BREAKING** — `campaigns` stream field removals and renames; see [#88](https://github.com/singer-io/tap-klaviyo/pull/88) for details
+  * **BREAKING** — `campaigns` (and `campaign_messages`) resource `id` values change format for existing campaigns at this revision (e.g. `QPru3L` → `01JV8RR1TAREVW8TJNDNWRZ8ZM`); downstream joins/reports keyed on the old `id` will need remapping. Other streams (`lists`, `global_exclusions`, `metrics`, events) are unaffected. See [#89](https://github.com/singer-io/tap-klaviyo/pull/89) for details.
 
 ## 1.2.0
   * Replace sms streams with text message streams [#87](https://github.com/singer-io/tap-klaviyo/pull/87)
