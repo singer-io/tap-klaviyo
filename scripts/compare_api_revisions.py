@@ -226,16 +226,28 @@ def variation_channel(variation):
     return details.get("channel")
 
 
+def message_variation_channels(record, variations):
+    refs = ((record.get("relationships", {}) or {}).get("campaign-variations", {}) or {}).get("data", [])
+    channels = []
+    for ref in refs:
+        channel = variation_channel(variations.get(ref.get("id"), {}))
+        if channel is not None:
+            channels.append(channel)
+    return channels
+
+
 def get_flat_campaign_messages(body, channel=None):
     variations = variation_lookup(body.get("included", []))
     messages = []
     for record in body.get("data", []):
         normalized = dict(record)
-        refs = ((record.get("relationships", {}) or {}).get("campaign-variations", {}) or {}).get("data", [])
-        if refs:
-            normalized["channel"] = variation_channel(variations.get(refs[0].get("id"), {}))
-        if channel is not None and normalized.get("channel") != channel:
-            continue
+        channels = message_variation_channels(record, variations)
+        if channel is not None:
+            if channel not in channels:
+                continue
+            normalized["channel"] = channel
+        elif channels:
+            normalized["channel"] = channels[0]
         messages.append(normalized)
     return messages
 
@@ -329,7 +341,8 @@ def run(api_key, old_version, new_version):
             print(f"  old ({old_version}): fetched nested messages for {len(old_campaign_ids)} campaigns")
             print(
                 "  new params={'include': 'campaign-variations', "
-                f"'page[size]': {CAMPAIGN_MESSAGES_PAGE_SIZE}, 'channel': 'email'}}"
+                f"'page[size]': {CAMPAIGN_MESSAGES_PAGE_SIZE}}} + "
+                "client-side channel filter=email"
             )
             print(f"  new ({new_version}): HTTP {r_new.status_code}")
             if r_new.status_code != 200:
