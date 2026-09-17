@@ -166,7 +166,8 @@ class TestCompareApiRevisions(unittest.TestCase):
 
         self.assertEqual(len(records), 1)
         self.assertEqual(records[0]["id"], "msg_multi")
-        self.assertEqual(records[0]["channel"], "email")
+        self.assertEqual(records[0]["variation_channels"], ["sms", "email"])
+        self.assertNotIn("channel", records[0])
 
     def test_get_flat_campaign_messages_handles_single_variation_object(self):
         body = {
@@ -207,15 +208,28 @@ class TestCompareApiRevisions(unittest.TestCase):
         error, records = compare_api_revisions.get_nested_campaign_messages(
             "api_key",
             "2024-10-15",
-            ["camp_1", "camp_2"],
+            {
+                "camp_1": ("Campaign 1", "2024-01-01T00:00:00Z", "2024-01-02T00:00:00Z"),
+                "camp_2": ("Campaign 2", "2024-01-03T00:00:00Z", "2024-01-04T00:00:00Z"),
+            },
         )
 
         self.assertIsNone(error)
         self.assertEqual(
             records,
             [
-                {"id": "msg_1", "attributes": {}, "campaign_id": "camp_1"},
-                {"id": "msg_2", "attributes": {}, "campaign_id": "camp_2"},
+                {
+                    "id": "msg_1",
+                    "attributes": {},
+                    "campaign_id": "camp_1",
+                    "campaign_business_key": ("Campaign 1", "2024-01-01T00:00:00Z", "2024-01-02T00:00:00Z"),
+                },
+                {
+                    "id": "msg_2",
+                    "attributes": {},
+                    "campaign_id": "camp_2",
+                    "campaign_business_key": ("Campaign 2", "2024-01-03T00:00:00Z", "2024-01-04T00:00:00Z"),
+                },
             ],
         )
 
@@ -228,7 +242,7 @@ class TestCompareApiRevisions(unittest.TestCase):
         error, records = compare_api_revisions.get_nested_campaign_messages(
             "api_key",
             "2024-10-15",
-            ["camp_1"],
+            {"camp_1": ("Campaign 1", "2024-01-01T00:00:00Z", "2024-01-02T00:00:00Z")},
         )
 
         self.assertIs(error, response)

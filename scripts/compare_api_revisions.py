@@ -57,13 +57,6 @@ def campaign_message_name(record):
     return definition.get("name") or attrs.get("name")
 
 
-def campaign_message_channel(record):
-    if record.get("channel"):
-        return record["channel"]
-    attrs = record.get("attributes", {}) or {}
-    return attrs.get("channel")
-
-
 def relationship_id(record, relationship_name):
     data = ((record.get("relationships", {}) or {}).get(relationship_name, {}) or {}).get("data")
     if isinstance(data, dict):
@@ -81,12 +74,16 @@ def business_key(case_name, record):
         )
     if case_name == "campaign_messages":
         return (
+            record.get("campaign_business_key"),
             campaign_message_name(record),
             attrs.get("created") or attrs.get("created_at"),
             attrs.get("updated") or attrs.get("updated_at"),
-            campaign_message_channel(record),
         )
     return None
+
+
+def sorted_shared_keys(keyed_old, keyed_new):
+    return sorted((key for key in keyed_old if key in keyed_new), key=repr)
 
 
 def records_by_business_key(case_name, records):
@@ -101,7 +98,7 @@ def records_by_business_key(case_name, records):
 def comparable_records(case_name, data_old, data_new):
     keyed_old = records_by_business_key(case_name, data_old)
     keyed_new = records_by_business_key(case_name, data_new)
-    shared_keys = [key for key in keyed_old if key in keyed_new]
+    shared_keys = sorted_shared_keys(keyed_old, keyed_new)
     if shared_keys:
         shared_key = shared_keys[0]
         return keyed_old[shared_key], keyed_new[shared_key]
@@ -115,7 +112,7 @@ def compare_ids(case_name, data_old, data_new):
     keyed_old = records_by_business_key(case_name, data_old)
     keyed_new = records_by_business_key(case_name, data_new)
     if keyed_old and keyed_new:
-        shared_keys = [key for key in keyed_old if key in keyed_new]
+        shared_keys = sorted_shared_keys(keyed_old, keyed_new)
         if not shared_keys:
             return None, []
         mismatches = [
@@ -185,29 +182,21 @@ def build_cases(metric_id):
         ),
     ]
 
-
-def get_sample_campaign_ids(api_key, version):
-    r = fetch(
-        api_key,
-        f"{BASE}/campaigns",
-        {
-            "filter": "equals(messages.channel,'email')",
-            "page[size]": CAMPAIGN_MESSAGES_SAMPLE_CAMPAIGNS,
-        },
-        version,
-    )
-    r.raise_for_status()
-    return [campaign["id"] for campaign in r.json().get("data", [])]
+def get_campaign_sample(api_key, version, params):
+    response = fetch(api_key, f"{BASE}/campaigns", params, version)
+    response.raise_for_status()
+    return response.json().get("data", [])
 
 
-def get_nested_campaign_messages(api_key, version, campaign_ids):
+def get_nested_campaign_messages(api_key, version, campaign_keys_by_id):
     records = []
-    for campaign_id in campaign_ids:
+    for campaign_id, campaign_key in campaign_keys_by_id.items():
         response = fetch(api_key, f"{BASE}/campaigns/{campaign_id}/campaign-messages", {}, version)
         if response.status_code != 200:
             return response, []
         for record in response.json().get("data", []):
             record["campaign_id"] = campaign_id
+            record["campaign_business_key"] = campaign_key
             records.append(record)
     return None, records
 
@@ -238,18 +227,24 @@ def message_variation_channels(record, variations):
     return channels
 
 
-def get_flat_campaign_messages(body, channel=None):
+def get_flat_campaign_messages(body, channel=None, campaign_keys_by_id=None, campaign_ids=None):
     variations = variation_lookup(body.get("included", []))
     messages = []
     for record in body.get("data", []):
         normalized = dict(record)
+        campaign_id = relationship_id(record, "campaign")
+        if campaign_ids is not None and campaign_id not in campaign_ids:
+            continue
+        if campaign_keys_by_id is not None and campaign_id in campaign_keys_by_id:
+            normalized["campaign_business_key"] = campaign_keys_by_id[campaign_id]
         channels = message_variation_channels(record, variations)
+        if channels:
+            normalized["variation_channels"] = channels
+            if len(channels) == 1:
+                normalized["channel"] = channels[0]
         if channel is not None:
             if channel not in channels:
                 continue
-            normalized["channel"] = channel
-        elif channels:
-            normalized["channel"] = channels[0]
         messages.append(normalized)
     return messages
 
@@ -320,8 +315,35 @@ def run(api_key, old_version, new_version):
 
     print("=== campaign_messages ===")
     try:
-        old_campaign_ids = get_sample_campaign_ids(api_key, old_version)
-        old_error, data_old = get_nested_campaign_messages(api_key, old_version, old_campaign_ids)
+        old_campaigns = get_campaign_sample(
+            api_key,
+            old_version,
+            {
+                "filter": "equals(messages.channel,'email')",
+                "page[size]": CAMPAIGN_MESSAGES_SAMPLE_CAMPAIGNS,
+            },
+        )
+        new_campaigns = get_campaign_sample(
+            api_key,
+            new_version,
+            {
+                "filter": "equals(messages.channel,'email')",
+                "fields[campaign]": "created_at,definition,updated_at",
+                "page[size]": CAMPAIGN_MESSAGES_PAGE_SIZE,
+            },
+        )
+        old_campaigns_by_key = records_by_business_key("campaigns", old_campaigns)
+        new_campaigns_by_key = records_by_business_key("campaigns", new_campaigns)
+        matched_campaign_keys = sorted_shared_keys(old_campaigns_by_key, new_campaigns_by_key)
+        old_campaign_keys_by_id = {
+            old_campaigns_by_key[key]["id"]: key
+            for key in matched_campaign_keys
+        }
+        new_campaign_keys_by_id = {
+            new_campaigns_by_key[key]["id"]: key
+            for key in matched_campaign_keys
+        }
+        old_error, data_old = get_nested_campaign_messages(api_key, old_version, old_campaign_keys_by_id)
         r_new = fetch(
             api_key,
             f"{BASE}/campaign-messages",
@@ -333,18 +355,21 @@ def run(api_key, old_version, new_version):
         results.append(("campaign_messages", "REQUEST_ERROR", str(e)))
         print()
     else:
-        print(f"  old params={{'campaign_ids': {old_campaign_ids}}}")
+        print(f"  old params={{'campaign_sample_size': {CAMPAIGN_MESSAGES_SAMPLE_CAMPAIGNS}}}")
         if old_error is not None:
             print(f"  old ({old_version}): HTTP {old_error.status_code}")
             print(f"  old error body: {old_error.text[:300]}")
             results.append(("campaign_messages", "HTTP_ERROR", None))
             print()
         else:
-            print(f"  old ({old_version}): fetched nested messages for {len(old_campaign_ids)} campaigns")
+            print(
+                f"  old ({old_version}): fetched nested messages for "
+                f"{len(old_campaign_keys_by_id)} matched campaigns"
+            )
             print(
                 "  new params={'include': 'campaign-variations', "
                 f"'page[size]': {CAMPAIGN_MESSAGES_PAGE_SIZE}}} + "
-                "client-side channel filter=email"
+                f"client-side channel filter=email + matched campaign keys={len(matched_campaign_keys)}"
             )
             print(f"  new ({new_version}): HTTP {r_new.status_code}")
             if r_new.status_code != 200:
@@ -355,7 +380,12 @@ def run(api_key, old_version, new_version):
                 status, detail = run_comparison(
                     "campaign_messages",
                     data_old,
-                    get_flat_campaign_messages(r_new.json(), channel="email"),
+                    get_flat_campaign_messages(
+                        r_new.json(),
+                        channel="email",
+                        campaign_keys_by_id=new_campaign_keys_by_id,
+                        campaign_ids=set(new_campaign_keys_by_id),
+                    ),
                 )
                 results.append(("campaign_messages", status, detail))
         print()
