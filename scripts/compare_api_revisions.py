@@ -231,7 +231,7 @@ def message_variation_channels(record, variations):
     channels = []
     for ref in refs:
         channel = variation_channel(variations.get(ref.get("id"), {}))
-        if channel is not None:
+        if channel is not None and channel not in channels:
             channels.append(channel)
     return channels
 

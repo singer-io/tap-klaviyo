@@ -192,3 +192,18 @@ class TestCompareApiRevisions(unittest.TestCase):
                 {"id": "msg_2", "attributes": {}, "campaign_id": "camp_2"},
             ],
         )
+
+    @mock.patch.object(compare_api_revisions, "fetch")
+    def test_get_nested_campaign_messages_returns_error_response_on_non_200(self, mocked_fetch):
+        response = mock.Mock()
+        response.status_code = 500
+        mocked_fetch.return_value = response
+
+        error, records = compare_api_revisions.get_nested_campaign_messages(
+            "api_key",
+            "2024-10-15",
+            ["camp_1"],
+        )
+
+        self.assertIs(error, response)
+        self.assertEqual(records, [])
