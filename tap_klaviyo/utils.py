@@ -17,8 +17,7 @@ logger = singer.get_logger()
 STREAM_PARAMS_MAP = {
     "campaigns": [
         {
-            "filter": "equals(messages.channel,'email')",
-            "include": "tags,campaign-messages"
+            "fields[campaign]": "created_at,definition,updated_at"
         }
     ],
     "global_exclusions": [
@@ -150,7 +149,12 @@ def raise_for_error(response):
             json_resp = {}
 
         error_code = response.status_code
-        message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error"))
+        errors = json_resp.get("errors", []) if isinstance(json_resp, dict) else []
+        if isinstance(errors, list) and errors:
+            detail = "; ".join(e.get("detail", "") for e in errors if isinstance(e, dict) and e.get("detail"))
+            message_text = detail or ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
+        else:
+            message_text = json_resp.get("message", ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")) if isinstance(json_resp, dict) else ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("message", "Unknown Error")
         message = "HTTP-error-code: {}, Error: {}".format(error_code, message_text)
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(error_code, {}).get("raise_exception", KlaviyoError)
         raise exc(message) from None
@@ -259,6 +263,94 @@ def get_full_pulls(resource, endpoint, headers):
                     included[included_relationship['id']] = included_relationship
                 counter.increment(len(records))
                 transfrom_and_write_records(records, resource, included, params.get("include","").split(","))
+
+
+
+# Channel-specific `campaign-variation` details fields, per
+# https://developers.klaviyo.com/en/reference/campaigns_omni_api_overview
+# A message targets exactly one channel and has at most one variation, so all
+# channels -- not just email -- are mapped here rather than dropped. `details`
+# already varies per channel (e.g. sms carries several fields beyond the
+# documented subset, such as `add_org_prefix`/`cost`/`message_hierarchy`), so
+# every field Klaviyo returns is passed through instead of an explicit
+# per-channel allowlist -- this avoids silently dropping fields that aren't
+# (yet) documented, for known and future/unrecognized channels alike.
+def build_variation_content(channel, details):  # pylint: disable=unused-argument
+    """Map a campaign-variation's `details` to content fields.
+
+    `channel` is accepted for readability/callers but `details` is passed
+    through as-is (minus `channel` itself, which the caller stores separately
+    on the message record) so no channel-specific field is ever silently
+    dropped.
+    """
+    return {key: value for key, value in details.items() if key != 'channel'}
+
+
+def _build_variation_record(variation):
+    """Map a single sideloaded campaign-variation resource into a compact
+    {id, label, channel, content} record."""
+    var_attrs = variation.get('attributes', {})
+    definition = var_attrs.get('definition', {})
+    details = definition.get('details') or {}
+    channel = details.get('channel')
+    return {
+        'id': variation.get('id'),
+        'label': definition.get('name'),
+        'channel': channel,
+        'content': build_variation_content(channel, details),
+    }
+
+
+def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
+    # Beta flat endpoint (GA at revision 2026-10-15): single paginated call with sideloaded variations
+    messages_url = "https://a.klaviyo.com/api/campaign-messages/"
+    params = {
+        "include": "campaign-variations",
+        "page[size]": 100
+    }
+
+    with metrics.record_counter(stream['stream']) as counter:
+        for msg_response in get_all_using_next(stream['stream'], messages_url, headers, params):
+            body = msg_response.json()
+            messages = body.get('data', [])
+            included = {
+                obj['id']: obj
+                for obj in body.get('included', [])
+                if obj.get('type') == 'campaign-variation'
+            }
+            counter.increment(len(messages))
+            event_schema = stream['schema']
+            event_mdata = metadata.to_map(stream['metadata'])
+            with Transformer() as transformer:
+                for message in messages:
+                    attrs = message.pop('attributes', {})
+                    definition = attrs.pop('definition', {})
+                    message.update(attrs)
+                    message.update(definition)
+                    campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
+                    message['campaign_id'] = campaign_rel.get('id')
+                    # A message's variations relationship is an array: usually one
+                    # per channel, but live data also shows same-channel A/B test
+                    # variations on a single message (2+ entries). Every variation
+                    # is preserved in `variations`; `channel`/`label`/`content`
+                    # mirror the first variation for backward compatibility.
+                    var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
+                    if isinstance(var_refs, dict):
+                        var_refs = [var_refs]
+                    variations = [
+                        _build_variation_record(included[ref['id']])
+                        for ref in var_refs
+                        if ref.get('id') in included
+                    ]
+                    if variations:
+                        message['variations'] = variations
+                        message['channel'] = variations[0]['channel']
+                        message['label'] = variations[0]['label']
+                        message['content'] = variations[0]['content']
+                    singer.write_record(
+                        stream['stream'],
+                        transformer.transform(message, event_schema, event_mdata)
+                    )
 
 
 def transfrom_and_write_records(events, stream, included, valid_relationships):
