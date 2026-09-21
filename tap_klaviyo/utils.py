@@ -286,6 +286,21 @@ def build_variation_content(channel, details):  # pylint: disable=unused-argumen
     return {key: value for key, value in details.items() if key != 'channel'}
 
 
+def _build_variation_record(variation):
+    """Map a single sideloaded campaign-variation resource into a compact
+    {id, label, channel, content} record."""
+    var_attrs = variation.get('attributes', {})
+    definition = var_attrs.get('definition', {})
+    details = definition.get('details') or {}
+    channel = details.get('channel')
+    return {
+        'id': variation.get('id'),
+        'label': definition.get('name'),
+        'channel': channel,
+        'content': build_variation_content(channel, details),
+    }
+
+
 def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
     # Beta flat endpoint (GA at revision 2026-10-15): single paginated call with sideloaded variations
     messages_url = "https://a.klaviyo.com/api/campaign-messages/"
@@ -314,17 +329,24 @@ def get_campaign_messages_pull(stream, campaigns_endpoint, headers):
                     message.update(definition)
                     campaign_rel = message.get('relationships', {}).get('campaign', {}).get('data', {})
                     message['campaign_id'] = campaign_rel.get('id')
-                    # Per Klaviyo docs a message has at most one variation (one per channel)
+                    # A message's variations relationship is an array: usually one
+                    # per channel, but live data also shows same-channel A/B test
+                    # variations on a single message (2+ entries). Every variation
+                    # is preserved in `variations`; `channel`/`label`/`content`
+                    # mirror the first variation for backward compatibility.
                     var_refs = message.get('relationships', {}).get('campaign-variations', {}).get('data', [])
-                    if var_refs:
-                        variation = included.get(var_refs[0].get('id'), {})
-                        var_attrs = variation.get('attributes', {})
-                        definition = var_attrs.get('definition', {})
-                        details = definition.get('details') or {}
-                        channel = details.get('channel')
-                        message['channel'] = channel
-                        message['label'] = definition.get('name')
-                        message['content'] = build_variation_content(channel, details)
+                    if isinstance(var_refs, dict):
+                        var_refs = [var_refs]
+                    variations = [
+                        _build_variation_record(included[ref['id']])
+                        for ref in var_refs
+                        if ref.get('id') in included
+                    ]
+                    if variations:
+                        message['variations'] = variations
+                        message['channel'] = variations[0]['channel']
+                        message['label'] = variations[0]['label']
+                        message['content'] = variations[0]['content']
                     singer.write_record(
                         stream['stream'],
                         transformer.transform(message, event_schema, event_mdata)
