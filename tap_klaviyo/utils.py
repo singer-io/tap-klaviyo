@@ -284,6 +284,8 @@ def transfrom_and_write_records(events, stream, included, valid_relationships):
                     # Check if current relationship is present in included relationship dict
                     if included_relationship is not None:
                         # Flatten the included_relationship dict with attributes
+                        if stream["tap_stream_id"] == "campaigns" and relationship_key =="campaign-messages":
+                            included_relationship['attributes'].update(included_relationship['attributes']["definition"])
                         included_relationship.update(included_relationship['attributes'])
                         relationship.update(included_relationship)
                 event.update({relationship_key: relationship_data})
