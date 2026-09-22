@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0
+  * Remove Deprecated fields from campaign-messages (api) [#93](https://github.com/singer-io/tap-klaviyo/pull/87)
+
 ## 1.2.0
   * Replace sms streams with text message streams [#87](https://github.com/singer-io/tap-klaviyo/pull/87)
 
