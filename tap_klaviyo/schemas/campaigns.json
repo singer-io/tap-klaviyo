@@ -156,13 +156,6 @@
                             "properties": {}
                         }
                     },
-                    "options": {
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "properties": {}
-                    },
                     "created_at": {
                         "type": [
                             "null",
