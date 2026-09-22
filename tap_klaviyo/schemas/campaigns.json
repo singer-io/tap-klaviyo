@@ -124,58 +124,66 @@
                             "string"
                         ]
                     },
-                    "label": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "channel": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "content": {
+                    "definition": {
                         "type": [
                             "null",
                             "object"
                         ],
-                        "properties": {}
-                    },
-                    "send_times": {
-                        "type": [
-                            "null",
-                            "array"
-                        ],
-                        "items": {
-                            "type": [
-                                "null",
-                                "object"
-                            ],
-                            "properties": {}
+                        "properties": {
+                            "label": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            },
+                            "channel": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            },
+                            "content": {
+                                "type": [
+                                    "null",
+                                    "object"
+                                ],
+                                "properties": {}
+                            },
+                            "send_times": {
+                                "type": [
+                                    "null",
+                                    "array"
+                                ],
+                                "items": {
+                                    "type": [
+                                        "null",
+                                        "object"
+                                    ],
+                                    "properties": {}
+                                }
+                            },
+                            "render_options": {
+                                "type": [
+                                    "null",
+                                    "object"
+                                ],
+                                "properties": {}
+                            },
+                            "created_at": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ],
+                                "format": "date-time"
+                            },
+                            "updated_at": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ],
+                                "format": "date-time"
+                            }
                         }
-                    },
-                    "render_options": {
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "properties": {}
-                    },
-                    "created_at": {
-                        "type": [
-                            "null",
-                            "string"
-                        ],
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": [
-                            "null",
-                            "string"
-                        ],
-                        "format": "date-time"
                     }
                 }
             }
