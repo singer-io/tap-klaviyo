@@ -17,19 +17,31 @@ class InterruptedSyncTest(KlaviyoBaseTest):
     def test_run(self):
         """Simulate interruption using page-level bookmarks from stable test data.
 
-        Requires three populated incremental streams, including one with
-        multiple event timestamps so that resumption excludes earlier records.
+        Requires data in every selected stream and three incremental streams,
+        including one with multiple timestamps to verify partial resumption.
+        Excludes unsubscribe, mark_as_spam, and dropped_email, which have no
+        test-account data, matching the other Klaviyo integration tests.
         """
         conn_id = connections.ensure_connection(self)
         found_catalogs = self.run_and_verify_check_mode(conn_id)
-        self.perform_and_verify_table_and_field_selection(conn_id, found_catalogs)
+        untestable_streams = {'unsubscribe', 'mark_as_spam', 'dropped_email'}
+        test_catalogs = [
+            catalog for catalog in found_catalogs
+            if catalog['stream_name'] not in untestable_streams
+        ]
+        self.perform_and_verify_table_and_field_selection(conn_id, test_catalogs)
 
         self.run_and_verify_sync(conn_id)
+        full_sync_order = runner.get_stream_sync_order_from_target()
         full_sync_output = runner.get_records_from_target_output()
         full_sync_state = menagerie.get_state(conn_id)
+        self.assertIsInstance(full_sync_state, dict)
+        self.assertIsInstance(full_sync_state.get('bookmarks'), dict)
+        self.assertTrue(full_sync_state['bookmarks'])
+        self.assertIsNone(full_sync_state.get('currently_syncing'))
         stream_ids = {
             catalog['stream_name']: catalog['tap_stream_id']
-            for catalog in found_catalogs
+            for catalog in test_catalogs
         }
         full_records = {
             stream: [message['data'] for message in
@@ -37,8 +49,25 @@ class InterruptedSyncTest(KlaviyoBaseTest):
                      if message.get('action') == 'upsert']
             for stream in stream_ids
         }
+        self.assertCountEqual(full_sync_order, list(stream_ids))
+        start_timestamp = self.dt_to_ts(self.get_properties()['start_date'])
+        for stream, records in full_records.items():
+            with self.subTest(stream=stream, sync='baseline'):
+                self.assertGreater(
+                    len(records), 0,
+                    msg="Every selected stream needs data to verify recovery."
+                )
+                if self.is_incremental(stream):
+                    self.assertIn(stream_ids[stream], full_sync_state['bookmarks'])
+                    self.assertIsInstance(
+                        full_sync_state['bookmarks'][stream_ids[stream]]['since'], str
+                    )
+                    for record in records:
+                        self.assertGreaterEqual(record['timestamp'], start_timestamp)
+                else:
+                    self.assertNotIn(stream_ids[stream], full_sync_state['bookmarks'])
         populated_incremental_streams = [
-            stream for stream in stream_ids
+            stream for stream in full_sync_order
             if self.is_incremental(stream) and full_records[stream]
         ]
         self.assertGreaterEqual(
@@ -76,15 +105,33 @@ class InterruptedSyncTest(KlaviyoBaseTest):
                 stream_ids[interrupted_stream]: {'since': interrupted_bookmark}
             }
         }
+        yet_to_be_synced_streams = {
+            stream for stream, tap_stream_id in stream_ids.items()
+            if tap_stream_id not in interrupted_state['bookmarks']
+        }
+        self.assertTrue(yet_to_be_synced_streams)
+        self.assertTrue(any(self.is_incremental(stream)
+                            for stream in yet_to_be_synced_streams))
         menagerie.set_state(conn_id, interrupted_state)
 
         self.run_and_verify_sync(conn_id)
+        resumed_sync_order = runner.get_stream_sync_order_from_target()
         resumed_output = runner.get_records_from_target_output()
         resumed_state = menagerie.get_state(conn_id)
+        self.assertIsInstance(resumed_state, dict)
+        self.assertIsInstance(resumed_state.get('bookmarks'), dict)
+        self.assertTrue(resumed_state['bookmarks'])
+        self.assertIsNone(resumed_state.get('currently_syncing'))
         self.assertDictEqual(
             resumed_state, full_sync_state,
             msg="Resumed sync must reach the uninterrupted sync's final state."
         )
+        self.assertCountEqual(resumed_sync_order, list(stream_ids))
+        self.assertEqual(
+            resumed_sync_order, full_sync_order,
+            msg="Klaviyo must preserve catalog sync order when resuming."
+        )
+        self.assertTrue(yet_to_be_synced_streams.issubset(resumed_sync_order))
 
         for stream, tap_stream_id in stream_ids.items():
             with self.subTest(stream=stream):
@@ -93,8 +140,16 @@ class InterruptedSyncTest(KlaviyoBaseTest):
                     resumed_output.get(stream, {}).get('messages', [])
                     if message.get('action') == 'upsert'
                 ]
+                self.assertGreater(
+                    len(resumed_records), 0,
+                    msg="Every selected stream must replicate records on resume."
+                )
                 expected_records = full_records[stream]
                 if self.is_incremental(stream):
+                    self.assertIn(tap_stream_id, resumed_state['bookmarks'])
+                    self.assertIsInstance(
+                        resumed_state['bookmarks'][tap_stream_id]['since'], str
+                    )
                     bookmark = interrupted_state['bookmarks'].get(tap_stream_id)
                     starting_timestamp = self.dt_to_ts(
                         bookmark['since'] if bookmark else
@@ -109,8 +164,27 @@ class InterruptedSyncTest(KlaviyoBaseTest):
                             record['timestamp'], starting_timestamp,
                             msg="Resumed sync must respect the saved bookmark."
                         )
+                    self.assertTrue(expected_records)
+                    self.assertEqual(
+                        min(record['timestamp'] for record in resumed_records),
+                        min(record['timestamp'] for record in expected_records),
+                        msg="Resume must start at the earliest expected event."
+                    )
+                    if stream in yet_to_be_synced_streams:
+                        self.assertEqual(
+                            min(record['timestamp'] for record in resumed_records),
+                            min(record['timestamp'] for record in full_records[stream]),
+                            msg="Unstarted streams must replay from the original start date."
+                        )
+                    self.assertCountEqual(resumed_records, expected_records)
                 else:
+                    self.assertNotIn(tap_stream_id, full_sync_state['bookmarks'])
                     self.assertNotIn(tap_stream_id, resumed_state['bookmarks'])
+                    self.assertEqual(len(resumed_records), len(expected_records))
+                    self.assertEqual(
+                        resumed_records, expected_records,
+                        msg="Full-table streams must replay the same records in order."
+                    )
 
                 primary_keys = self.expected_primary_keys()[stream]
                 self.assertEqual(
