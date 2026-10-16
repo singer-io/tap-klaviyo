@@ -21,6 +21,10 @@ class InterruptedSyncTest(KlaviyoBaseTest):
         including one with multiple timestamps to verify partial resumption.
         Excludes unsubscribe, mark_as_spam, and dropped_email, which have no
         test-account data, matching the other Klaviyo integration tests.
+
+        Klaviyo does not prioritize the interrupted stream on resume. It takes
+        selected streams in catalog order, which this test verifies against the
+        uninterrupted sync order.
         """
         conn_id = connections.ensure_connection(self)
         found_catalogs = self.run_and_verify_check_mode(conn_id)
@@ -106,12 +110,10 @@ class InterruptedSyncTest(KlaviyoBaseTest):
             }
         }
         yet_to_be_synced_streams = {
-            stream for stream, tap_stream_id in stream_ids.items()
-            if tap_stream_id not in interrupted_state['bookmarks']
+            stream for stream in populated_incremental_streams
+            if stream_ids[stream] not in interrupted_state['bookmarks']
         }
         self.assertTrue(yet_to_be_synced_streams)
-        self.assertTrue(any(self.is_incremental(stream)
-                            for stream in yet_to_be_synced_streams))
         menagerie.set_state(conn_id, interrupted_state)
 
         self.run_and_verify_sync(conn_id)
